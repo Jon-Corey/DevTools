@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 const CACHE_DIR = path.resolve(__dirname, '..', '..', '.cache', 'icons');
 const METADATA_PATH = path.join(CACHE_DIR, 'metadata.json');
 const ICONS_JSON_PATH = path.join(CACHE_DIR, 'icons.json');
-const ZIP_PATH = path.join(CACHE_DIR, 'tabler-icons.zip');
+const TAR_PATH = path.join(CACHE_DIR, 'tabler-icons.tar.gz');
 const EXTRACT_DIR = path.join(CACHE_DIR, 'tabler-icons');
 
 const LATEST_RELEASE_URL = 'https://api.github.com/repos/tabler/tabler-icons/releases/latest';
@@ -106,7 +106,7 @@ async function getLatestReleaseInfo() {
 
     return {
         version: data.tag_name,
-        zipUrl: data.zipball_url
+        tarUrl: data.tarball_url
     };
 }
 
@@ -129,8 +129,8 @@ async function fetchLatestRelease(latestReleaseInfo) {
         return null;
     }
 
-    await donwloadZipFile(latestReleaseInfo.zipUrl, ZIP_PATH);
-    await extractZipFile(ZIP_PATH, EXTRACT_DIR);
+    await downloadTarFile(latestReleaseInfo.tarUrl, TAR_PATH);
+    await extractTarFile(TAR_PATH, EXTRACT_DIR);
 
     const iconsFolder = await findIconsFolder();
     if (!iconsFolder) {
@@ -154,8 +154,8 @@ async function fetchLatestRelease(latestReleaseInfo) {
     // Update cache metadata
     await updateVersionInMetadata(latestReleaseInfo.version);
 
-    // Clean up zip and extracted files
-    await rmWithRetry(ZIP_PATH, { force: true });
+    // Clean up tar and extracted files
+    await rmWithRetry(TAR_PATH, { force: true });
     await rmWithRetry(EXTRACT_DIR, { recursive: true, force: true });
 }
 
@@ -176,18 +176,18 @@ async function rmWithRetry(targetPath, options) {
     }
 }
 
-async function donwloadZipFile(url, destinationPath) {
+async function downloadTarFile(url, destinationPath) {
     // Ensure output directory exists
     await fs.mkdir(EXTRACT_DIR, { recursive: true });
 
     const response = await fetch(url, { headers: GITHUB_HEADERS });
     if (!response.ok) {
         const body = await response.text().catch(() => '');
-        console.error(`Failed to download latest release zip: ${response.status} ${response.statusText}. ${body}`.trim());
+        console.error(`Failed to download latest release tar: ${response.status} ${response.statusText}. ${body}`.trim());
         return null;
     }
     if (!response.body) {
-        console.error('Failed to download latest release zip: no response body');
+        console.error('Failed to download latest release tar: no response body');
         return null;
     }
 
@@ -197,10 +197,10 @@ async function donwloadZipFile(url, destinationPath) {
     );
 }
 
-async function extractZipFile(zipPath, extractTo) {
-    // Use tar, which is installed by default on most systems, to extract the zip file.
+async function extractTarFile(tarPath, extractTo) {
+    // Use tar, which is installed by default on most systems, to extract the tar file.
     return new Promise((resolve, reject) => {
-        const tarProcess = spawn('tar', ['-xf', zipPath, '-C', extractTo], { stdio: 'inherit' });
+        const tarProcess = spawn('tar', ['-xf', tarPath, '-C', extractTo], { stdio: 'inherit' });
         tarProcess.on('close', (code) => {
             if (code === 0) {
                 resolve();
