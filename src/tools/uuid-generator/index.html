@@ -1,0 +1,23 @@
+---
+title: UUID Generator
+description: This tool generates a random UUID (Universally Unique Identifier). UUIDs (also known as GUIDs) are 128-bit values that are typically used as identifiers in software applications. There are so many possible UUIDs that the chance of generating a duplicate is extremely low.
+short_description: Generate a random UUID (Universally Unique Identifier).
+tags: Utility
+icon: fingerprint
+js: ./tool.js
+---
+
+<div class="flex-row">
+    <label class="card-small"><input type="checkbox" id="uppercase"> Uppercase</label>
+    <label class="card-small"><input type="checkbox" id="include-dashes" checked> Include Dashes</label>
+</div>
+
+<pre id="output" class="card text-large">00000000-0000-0000-0000-000000000000</pre>
+
+<div class="flex-row">
+    <button type="button" id="regenerate-button">{% icon "refresh" %} Regenerate</button>
+    <button type="button" id="copy-button" class="primary">
+        <span class="default-content">{% icon "copy" %} Copy</span>
+        <span class="alternate-content">{% icon "check" %} Copied!</span>
+    </button>
+</div>

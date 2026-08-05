@@ -1,0 +1,32 @@
+---
+title: Base64 Text Converter
+description: This tool allows you to encode and decode text using Base64 encoding. Base64 is a binary-to-text encoding scheme that is commonly used to encode data for transmission over text-based protocols.
+short_description: Encode and decode text using Base64.
+tags: Text
+icon: file-digit
+js: ./tool.js
+---
+
+<div class="flex-column">
+    <div class="flex-column-small" id="input-container">
+        <label for="input">Input</label>
+        <textarea id="input" rows="5" placeholder="Text to convert..."></textarea>
+        <div class="validation-message" id="validation-message"></div>
+    </div>
+
+    <select id="conversion" aria-label="Conversion type">
+        <option value="encode-base64" selected>To Base64</option>
+        <option value="encode-url-safe">To URL-safe Base64</option>
+        <option value="decode">From Base64 / URL-safe Base64</option>
+    </select>
+
+    <div class="flex-column-small">
+        <span>Output</span>
+        <div class="card" id="output"></div>
+    </div>
+
+    <button type="button" id="copy-button" class="primary">
+        <span class="default-content">{% icon "copy" %} Copy</span>
+        <span class="alternate-content">{% icon "check" %} Copied!</span>
+    </button>
+</div>

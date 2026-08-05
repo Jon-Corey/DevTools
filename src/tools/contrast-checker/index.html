@@ -1,0 +1,81 @@
+---
+title: Contrast Checker
+description: This tool allows you to check the contrast between two colors to ensure they meet accessibility standards. It also allows you to adjust the colors to meet the required contrast ratio and provides a visual preview of the contrast.
+short_description: Check the contrast between two colors.
+tags: Colors
+icon: contrast
+js:
+    - ./tool.js
+    - /assets/components/color-input.js
+css: ./tool.css
+---
+
+<div class="flex-row" id="color-row">
+    <div class="card color-card">
+        <color-input id="foreground-color" default-value="#000000" label="Foreground Color"></color-input>
+        <div class="flex-row-small">
+            <button type="button" id="fix-foreground-4-5" disabled>Fix to 4.5:1</button>
+            <button type="button" id="fix-foreground-7" disabled>Fix to 7:1</button>
+        </div>
+    </div>
+
+    <button type="button" id="switch-colors-button" aria-label="Switch Colors">{% icon "arrows-left-right" %}<span id="switch-colors-text"> Switch Colors</span></button>
+
+    <div class="card color-card">
+        <color-input id="background-color" default-value="#ffffff" label="Background Color"></color-input>
+        <div class="flex-row-small">
+            <button type="button" id="fix-background-4-5" disabled>Fix to 4.5:1</button>
+            <button type="button" id="fix-background-7" disabled>Fix to 7:1</button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <p class="text-subtle">Contrast Ratio:</p>
+    <strong id="contrast-ratio">21.00:1</strong>
+</div>
+
+<div id="results-row">
+    <div class="card">
+        <div class="remove-margin-from-children">
+            <strong>Normal Text</strong>
+            <p id="normal-text-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+            <p id="normal-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+        </div>
+        <div id="normal-text-preview" class="card contrast-preview">
+            <p>The quick brown fox jumps over the lazy dog.</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="remove-margin-from-children">
+            <strong>Large Text</strong>
+            <p id="large-text-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+            <p id="large-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+        </div>
+        <div id="large-text-preview" class="card contrast-preview">
+            <p class="wcag-large-text">Large Text (~24px+)</p>
+            <strong class="wcag-bold-text">Bold Text (bold & ~18.7px+)</strong>
+        </div>
+    </div>
+    <div class="card">
+        <div class="remove-margin-from-children">
+            <strong>Graphical and UI</strong>
+            <p id="ui-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+        </div>
+        <div id="ui-preview" class="card contrast-preview">
+            <p>{% icon "user" %} {% icon "home" %} {% icon "search" %}</p>
+            <input type="text" value="Input field" name="sample-input" aria-label="Sample input field">
+        </div>
+    </div>
+</div>
+
+<div class="alert">
+    <strong>{% icon "info-circle" %} About WCAG Contrast</strong>
+    <p>WCAG (Web Content Accessibility Guidelines) is a standard for how to make the web more accessible. Part of the specification includes guidelines for text contrast to ensure readability for users with visual impairments.</p>
+    <p>WCAG defines contrast ratio requirements for different levels of accessibility:</p>
+    <ul>
+        <li><strong>WCAG AA:</strong> Requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. It also requires a contrast ratio of at least 3:1 for graphical objects and user interface components (icons, inputs, etc.).</li>
+        <li><strong>WCAG AAA:</strong> Requires a contrast ratio of at least 7:1 for normal text and 4.5:1 for large text.</li>
+    </ul>
+    <p>Large text is defined as 18pt+ (~24px+) or 14pt+ (~18.7px+) and bold.</p>
+</div>

@@ -1,0 +1,36 @@
+---
+title: Lorem Ipsum Generator
+description: This tool generates Lorem Ipsum text for use in design mockups and content placeholders.
+short_description: Generate placeholder Lorem Ipsum text.
+tags: Text
+icon: text-plus
+js: ./tool.js
+css: ./tool.css
+---
+
+<div class="card" id="options-card">
+    <fieldset>
+        <legend>Generate</legend>
+        <input type="number" id="number" min="1" max="100000" value="3" step="1" aria-label="Number of items to generate">
+        <select id="type" aria-label="Type of items to generate">
+            <option value="paragraphs">Paragraphs</option>
+            <option value="sentences" selected>Sentences</option>
+            <option value="words">Words</option>
+        </select>
+    </fieldset>
+
+    <label>
+        <input type="checkbox" id="start-with-lorem-ipsum" checked>
+        Start with "Lorem ipsum..."
+    </label>
+</div>
+
+<div class="flex-row">
+    <button type="button" id="regenerate-button">{% icon "refresh" %} Regenerate</button>
+    <button type="button" id="copy-button" class="primary">
+        <span class="default-content">{% icon "copy" %} Copy</span>
+        <span class="alternate-content">{% icon "check" %} Copied!</span>
+    </button>
+</div>
+
+<div id="output" class="card" aria-live="polite"></div>

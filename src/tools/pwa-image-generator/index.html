@@ -1,0 +1,98 @@
+---
+title: PWA Image Generator
+description: This tool generates images for a Progressive Web App (PWA). It generates various images such as favicons, app icons, and splash screens. PWAs are a type of website that can be installed and run on your device like an app. They require more image assets than traditional websites to provide a native app-like experience.
+short_description: Generate images for a Progressive Web App (PWA).
+tags: Image
+icon: library-photo
+js:
+    - /assets/components/file-input.js
+    - /assets/components/color-input.js
+    - /assets/components/range-input.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<div class="danger alert" id="image-too-small-warning">
+    <strong>
+        {% icon "alert-circle" %}
+        Source Image is Too Small
+    </strong>
+    <p>The image you uploaded is too small to generate the required images. Please upload an image that is at least 512x512 pixels or upload an SVG image.</p>
+</div>
+
+<file-input accept=".aai,.art,.avif,.avs,.bmp,.bmp2,.bmp3,.cin,.cur,.dcx,.dds,.dpx,.dxt1,.dxt5,.exr,.farbfeld,.fax,.ff,.fits,.fl32,.fts,.g3,.gif,.gif87,.hdr,.heic,.heif,.hrz,.icb,.ico,.icon,.ipl,.j2c,.j2k,.jng,.jp2,.jpc,.jpe,.jpeg,.jpg,.jpm,.jps,.jxl,.mat,.miff,.mng,.mpo,.mtv,.otb,.palm,.pam,.pbm,.pcd,.pcds,.pct,.pcx,.pdb,.pfm,.pgm,.pgx,.phm,.picon,.pict,.pjpeg,.png,.png00,.png24,.png32,.png48,.png64,.png8,.pnm,.ppm,.psb,.psd,.ptif,.qoi,.ras,.sgi,.six,.sixel,.sun,.svg,.tga,.tiff,.tiff64,.txt,.vda,.vicar,.viff,.vips,.vst,.wbmp,.webp,.wpg,.xbm,.xpm,.xv" id="file-input"></file-input>
+
+<div class="card" id="options-card">
+    <div class="icon-preview">
+        <div id="regular-preview-image"></div>
+        <strong>Regular Icon</strong>
+    </div>
+    <div class="icon-preview">
+        <div id="maskable-preview-image"></div>
+        <strong>Maskable Icon</strong>
+    </div>
+    <range-input id="regular-padding" label="Regular Icon Padding" min="0" max="49" value="0" disabled></range-input>
+    <range-input id="maskable-padding" label="Maskable Icon Padding" min="0" max="49" value="10" disabled></range-input>
+    <color-input id="background-color" label="Background Color" default-value="#ffffff" disabled></color-input>
+</div>
+
+<button id="generate-button" class="primary" disabled>Generate</button>
+
+<hr>
+
+<button id="download-button" disabled>{% icon "download" %} Download Bundle</button>
+
+<details id="generated-images-details">
+    <summary>Generated Images</summary>
+    <ul id="generated-images"></ul>
+</details>
+
+<details id="meta-tags-details">
+    <summary>HTML Meta Tags</summary>
+    <p>Place the following in the <code>&lt;head&gt;</code> section of each of your HTML files.</p>
+    <pre><code id="meta-tags" class="language-html"></code></pre>
+</details>
+
+<details id="web-app-manifest-details">
+    <summary>Web App Manifest</summary>
+    <p>Save the following JSON as <code>manifest.webmanifest</code> in the root of your web application.</p>
+    <pre><code id="web-app-manifest" class="language-json"></code></pre>
+</details>
+
+<details id="documentation-details">
+    <summary>Explanation / Documentation</summary>
+
+    <p>Progressive Web Apps (PWAs) need a lot of images in order to function and look right. This tool generates all of the required images from a single source image.</p>
+    
+    <h2>Favicons</h2>
+    <ul>
+        <li><code>favicon.svg</code></li>
+        <li><code>favicon-16.png</code></li>
+        <li><code>favicon-32.png</code></li>
+    </ul>
+    <p>Favicons are the small icons that appear in the browser tab and on bookmarks. There is a lot of discussion around what sizes and formats to provide. From the research I have done, the best approach seems to be to have three images: a 16x16 PNG, a 32x32 PNG, and an SVG. The PNGs are there for legacy support. The SVG is for modern browsers and can be scaled to any size the browser needs.</p>
+    <p>If you are using a PNG as your source image, the favicons will include a 48x48 PNG instead of the SVG.</p>
+
+    <h2>Apple Touch Icon</h2>
+    <ul>
+        <li><code>icon-180.png</code></li>
+    </ul>
+    <p>The Apple Touch Icon is used when users add your web app to their home screen on iOS devices. It should be a PNG image with a size of 180x180 pixels.</p>
+
+    <h2>Manifest Icons</h2>
+    <ul>
+        <li><code>icon-192.png</code></li>
+        <li><code>icon-512.png</code></li>
+        <li><code>icon-192-maskable.png</code></li>
+        <li><code>icon-512-maskable.png</code></li>
+    </ul>
+    <p>These icons are specified in the web app manifest and are used when users install your web app on their devices. The exception to this is Apple devices, which use the Apple Touch Icon instead. The maskable icons are used on platforms that crop icons into non-rectangular shapes (such as circles). They contain extra padding so that the important parts of the icon are not cut off.</p>
+    <p>The images should be four PNG images: two standard icons (192x192 and 512x512) and two maskable icons (192x192 and 512x512).</p>
+
+    <h2>Splash Screens</h2>
+    <ul>
+        <li><code>splash-{width}x{height}.png</code></li>
+    </ul>
+    <p>Splash screens are displayed while your web app is being opened. Most platforms generate these images automatically from your Manifest Icon, but iOS does not. iOS requires your web app to provide an image with the exact dimensions of the device's screen, which means providing a lot of very specific images. If you don't provide splash screen images, iOS will show a black screen while your app is opening.</p>
+    <p>The images should be PNG images with the exact dimensions of the device screens they are intended for.</p>
+</details>

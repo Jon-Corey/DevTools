@@ -1,0 +1,29 @@
+#number {
+    flex: 0 0 auto;
+    width: 6rem;
+}
+
+#type {
+    width: 8rem;
+}
+
+#options-card {
+    text-align: start;
+    margin-block-end: 1rem;
+}
+
+#options-card > fieldset {
+    margin-block-end: 1rem;
+}
+
+#output > p {
+    margin-block: 1rem;;
+}
+
+#output > p:first-child {
+    margin-block-start: 0;
+}
+
+#output > p:last-child {
+    margin-block-end: 0;
+}

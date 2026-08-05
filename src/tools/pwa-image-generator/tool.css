@@ -1,0 +1,70 @@
+#image-too-small-warning {
+    display: none;
+}
+
+#options-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.icon-preview strong {
+    display: block;
+    margin-block-start: 0.5rem;
+    margin-block-end: 0;
+}
+
+#regular-preview-image, #maskable-preview-image {
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    background-color: #80808040;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#regular-preview-image {
+    /* iOS app icons are technically a superellipse, but the effect is subtle enough that after some testing, the closest result I could find was to just use a normal border radius */
+    border-radius: 26%;
+}
+
+#maskable-preview-image {
+    /* Maskable safe area is a circle with a diameter of 80% of the image width */
+    /* {Background Size} = 1 / {Diameter}   ==   1.25 = 1 / 0.8 */
+    border-radius: 50%;
+    background-size: 125%;
+}
+
+#generate-button, #download-button {
+    display: block;
+    margin-block: 1rem;
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-inline: 0;
+    margin-block-start: 0;
+    margin-block-end: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#generated-images-details, #meta-tags-details, #web-app-manifest-details {
+    display: none;
+}
+
+@media (max-width: 500px) {
+    #options-card {
+        grid-template-columns: 1fr;
+    }
+
+    #regular-preview-image, #maskable-preview-image {
+        max-width: 12.5rem;
+    }
+}

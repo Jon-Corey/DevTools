@@ -1,0 +1,32 @@
+---
+title: Font File Converter
+description: This tool allows you to convert font files between different formats. Convert between TTF/OTF, WOFF, and WOFF2 formats.
+short_description: Convert font files between formats.
+tags: Text
+icon: file-typography
+js:
+    - /assets/components/file-input.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<file-input id="file-input" accept=".ttf,.otf,.woff,.woff2" multiple></file-input>
+
+<div class="flex-row">
+    <div class="card">
+        <fieldset aria-labelledby="output-format-label">
+            <span id="output-format-label">Output Formats:</span>
+            <label><input type="checkbox" id="output-ttf" name="output-format" value="ttf"> TTF/OTF</label>
+            <label><input type="checkbox" id="output-woff" name="output-format" value="woff"> WOFF</label>
+            <label><input type="checkbox" id="output-woff2" name="output-format" value="woff2" checked> WOFF2</label>
+        </fieldset>
+    </div>
+
+    <button type="button" id="convert-button" class="primary" disabled>Convert</button>
+</div>
+
+<hr>
+
+<button type="button" id="download-all-button" disabled>{% icon "download" %} Download All</button>
+
+<ul id="generated-files"></ul>

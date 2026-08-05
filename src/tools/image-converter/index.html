@@ -1,0 +1,64 @@
+---
+title: Image Converter
+description: This tool allows you to convert images between different formats. It supports converting a wide range of formats to PNG, JPEG, WebP, GIF, AVIF, BMP, TIFF, and ICO.
+short_description: Convert images between different formats.
+tags: Image
+icon: photo
+js:
+    - /assets/components/file-input.js
+    - /assets/components/color-input.js
+    - /assets/components/range-input.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<file-input id="file-input" accept=".aai,.art,.avif,.avs,.bmp,.bmp2,.bmp3,.cin,.cur,.dcx,.dds,.dpx,.dxt1,.dxt5,.exr,.farbfeld,.fax,.ff,.fits,.fl32,.fts,.g3,.gif,.gif87,.hdr,.heic,.heif,.hrz,.icb,.ico,.icon,.ipl,.j2c,.j2k,.jng,.jp2,.jpc,.jpe,.jpeg,.jpg,.jpm,.jps,.jxl,.mat,.miff,.mng,.mpo,.mtv,.otb,.palm,.pam,.pbm,.pcd,.pcds,.pct,.pcx,.pdb,.pfm,.pgm,.pgx,.phm,.picon,.pict,.pjpeg,.png,.png00,.png24,.png32,.png48,.png64,.png8,.pnm,.ppm,.psb,.psd,.ptif,.qoi,.ras,.sgi,.six,.sixel,.sun,.svg,.tga,.tiff,.tiff64,.txt,.vda,.vicar,.viff,.vips,.vst,.wbmp,.webp,.wpg,.xbm,.xpm,.xv" multiple ask-for-dimensions-for-svg></file-input>
+
+<div class="flex-row" id="format-and-convert-row">
+    <div class="card-small">
+        <label for="format-select">Convert to:</label>
+        <select id="format-select">
+            <option value="PNG" selected>PNG</option>
+            <option value="JPEG">JPEG</option>
+            <option value="WEBP">WebP</option>
+            <option value="GIF">GIF</option>
+            <option value="AVIF">AVIF</option>
+            <option value="BMP">BMP</option>
+            <option value="TIFF">TIFF</option>
+            <option value="ICO">ICO</option>
+        </select>
+    </div>
+
+    <button type="button" id="convert-button" class="primary" disabled>Convert</button>
+</div>
+
+<div class="flex-row" id="options-row" style="display: none;">
+    <div class="card" id="background-color-card" style="display: none;">
+        <color-input id="background-color" default-value="#000000" label="Background Color"></color-input>
+        <span class="text-subtle">Used when the source image has transparency</span>
+    </div>
+    <div class="card" id="quality-card" style="display: none;">
+        <range-input id="quality" label="Quality" default-value="90" min="1" max="100" step="1"></range-input>
+    </div>
+</div>
+
+<div class="flex-row" id="sizes-row" style="display: none;">
+    <div class="card">
+        <fieldset id="sizes-fieldset">
+            <legend>Sizes</legend>
+            <label><input type="checkbox" id="size-16x16" checked> 16x16</label>
+            <label><input type="checkbox" id="size-24x24" checked> 24x24</label>
+            <label><input type="checkbox" id="size-32x32" checked> 32x32</label>
+            <label><input type="checkbox" id="size-48x48" checked> 48x48</label>
+            <label><input type="checkbox" id="size-64x64" checked> 64x64</label>
+            <label><input type="checkbox" id="size-128x128" checked> 128x128</label>
+            <label><input type="checkbox" id="size-256x256" checked> 256x256</label>
+        </fieldset>
+    </div>
+</div>
+
+<hr>
+
+<button type="button" id="download-all-button" disabled>{% icon "download" %} Download All</button>
+
+<ul id="converted-images"></ul>

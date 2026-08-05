@@ -1,0 +1,80 @@
+.flex-row {
+    margin: 0;
+}
+
+.flex-row .card {
+    flex: 1 0 24rem;
+}
+
+.flex-row button {
+    flex: 0 0 8rem;
+}
+
+.card fieldset > * {
+    flex: 0 0 auto;
+    width: auto;
+}
+
+#generated-files {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+#generated-files li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "preview name download"
+        "preview size download";
+    column-gap: 1rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+li .preview {
+    grid-area: preview;
+    display: block;
+    width: 3rem;
+    height: 3rem;
+}
+
+li .name {
+    grid-area: name;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+li .size {
+    grid-area: size;
+}
+
+li button {
+    grid-area: download;
+    width: 3rem;
+    height: 3rem;
+}
+
+@media (max-width: 600px) {
+    .flex-row {
+        flex-direction: column;
+    }
+
+    .flex-row .card, .flex-row button {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 450px) {
+    .card fieldset {
+        flex-direction: column;
+    }
+}

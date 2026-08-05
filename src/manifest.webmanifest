@@ -1,0 +1,39 @@
+{
+    "name": "DevTools",
+    "short_name": "DevTools",
+    "description": "A collection of tools for web developers.",
+    "id": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#13161a",
+    "theme_color": "#006889",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/assets/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/images/icon-192-maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/assets/images/icon-512-maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    }
+}
