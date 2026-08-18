@@ -1,7 +1,7 @@
 import { previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions } from '/assets/js/utils.js';
 
 class FileItem extends HTMLElement {
-    static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg'];
+    static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg', 'original-file-size'];
 
     static buttonIcons = {
         x: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>',
@@ -197,6 +197,14 @@ class FileItem extends HTMLElement {
 
         .toggle-button:has(input[type="checkbox"]:checked) .alternate-content {
             display: block !important;
+        }
+
+        .text-danger {
+            color: var(--color-text-danger);
+        }
+
+        .text-success {
+            color: var(--color-text-success);
         }
 
         @container (width < 500px) {
@@ -421,6 +429,10 @@ class FileItem extends HTMLElement {
             if (this.#file) {
                 this.updateUI();
             }
+        } else if (name === 'original-file-size') {
+            if (this.#file) {
+                this.updateUI();
+            }
         }
     }
 
@@ -499,6 +511,7 @@ class FileItem extends HTMLElement {
         const showDimensions = this.hasAttribute('ask-for-dimensions-for-svg')
             && this.#file
             && getFileExtension(this.#file.name) === 'svg';
+        const originalFileSize = this.getAttribute('original-file-size');
 
         const layoutDiv = this.shadowRoot.querySelector('.layout');
         const previewContainer = this.shadowRoot.querySelector('.preview-container');
@@ -535,7 +548,18 @@ class FileItem extends HTMLElement {
             }
 
             nameSpan.textContent = this.#file.name;
-            sizeSpan.textContent = formatFileSize(this.#file.size);
+            if (originalFileSize) {
+                const reductionPercentage = Math.round((1 - (this.#file.size / originalFileSize)) * 10000) / 100;
+                if (reductionPercentage > 0) {
+                    sizeSpan.innerHTML = `${formatFileSize(this.#file.size)} <span class="text-success">(-${reductionPercentage}%)</span>`;
+                } else if (reductionPercentage === 0) {
+                    sizeSpan.textContent = `${formatFileSize(this.#file.size)} (No change)`;
+                } else {
+                    sizeSpan.innerHTML = `${formatFileSize(this.#file.size)} <span class="text-danger">(+${Math.abs(reductionPercentage)}%)</span>`;
+                }
+            } else {
+                sizeSpan.textContent = formatFileSize(this.#file.size);
+            }
         } else {
             previewContainer.innerHTML = FileItem.defaultFileIcon;
 

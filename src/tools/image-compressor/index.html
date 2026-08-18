@@ -1,0 +1,23 @@
+---
+title: Image Compressor
+description: This tool allows you to compress images, reducing their file size while maintaining quality.
+short_description: Compress images to reduce file size.
+tags: Image
+icon: photo-down
+js:
+    - /assets/components/file-input.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<file-input id="file-input" accept=".png,.jpeg,.jpg,.webp,.gif,.avif,.bmp,.tiff,.ico" multiple></file-input>
+
+<button type="button" id="compress-button" class="primary" disabled>Compress</button>
+
+<hr>
+
+<button type="button" id="download-all-button" disabled>{% icon "download" %} Download All</button>
+
+<ul id="compressed-images"></ul>
+
+{% icon "loader-2" "loading-spinner text-accent" %}
