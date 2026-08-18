@@ -120,7 +120,7 @@ export default async function (eleventyConfig) {
         }
 
         const siteOutputDir = directories?.output ?? '_site';
-        await generateServiceWorkerAssetsFile(siteOutputDir);
+        await addAssetsManifestToServiceWorker(siteOutputDir);
     });
 
     // Add a shortcode for rendering icons (e.g. {% icon 'user' %})
@@ -213,7 +213,7 @@ function copyNamedFiles(entryPath, outputDir, filePaths) {
     }
 }
 
-async function generateServiceWorkerAssetsFile(siteOutputDir) {
+async function addAssetsManifestToServiceWorker(siteOutputDir) {
     const ignoredFolders = new Set((SERVICE_WORKER_ASSET_OPTIONS.ignoredFolders ?? []).map(normalizePathForMatch));
     const ignoredFiles = new Set((SERVICE_WORKER_ASSET_OPTIONS.ignoredFiles ?? []).map(normalizePathForMatch));
 
@@ -223,10 +223,6 @@ async function generateServiceWorkerAssetsFile(siteOutputDir) {
         .filter(relPath => !shouldIgnorePath(relPath, ignoredFolders, ignoredFiles))
         .map(relPath => `/${relPath}`)
         .sort((a, b) => a.localeCompare(b));
-    // Allow the generated manifest to be cached too.
-    if (!assets.includes('/service-worker-assets.js') && !ignoredFiles.has('service-worker-assets.js')) {
-        assets.push('/service-worker-assets.js');
-    }
 
     assets.sort((a, b) => a.localeCompare(b));
 
@@ -235,9 +231,13 @@ async function generateServiceWorkerAssetsFile(siteOutputDir) {
         assets
     };
 
-    const fileContent = `self.assetsManifest = ${JSON.stringify(manifest, null, 2)};\n`;
-    const outputPath = path.join(siteOutputDir, 'service-worker-assets.js');
-    fs.writeFileSync(outputPath, fileContent, 'utf8');
+    const stringContent = `self.assetsManifest = ${JSON.stringify(manifest, null, 2)};`;
+    const serviceWorkerPath = path.join(siteOutputDir, 'service-worker.js');
+
+    // Replace {{ assetsManifest }} with the actual manifest content
+    let serviceWorkerContent = fs.readFileSync(serviceWorkerPath, 'utf-8');
+    serviceWorkerContent = serviceWorkerContent.replace('{{ assetsManifest }}', stringContent);
+    fs.writeFileSync(serviceWorkerPath, serviceWorkerContent, 'utf8');
 }
 
 function listFilesRecursively(rootDir) {
