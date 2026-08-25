@@ -50,6 +50,10 @@ const THIRD_PARTY_MODULES = [
         entry: 'prismjs',
         output: 'prism/prism.js',
         bundleFiles: ['components/prism-json.js']
+    },
+    {
+        entry: 'svgo/browser',
+        output: 'svgo/svgo.js'
     }
 ];
 const SERVICE_WORKER_ASSET_OPTIONS = {

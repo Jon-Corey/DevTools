@@ -1,0 +1,18 @@
+---
+title: SVG Optimizer
+description: This tool optimizes SVG files by removing redundant data, reducing the file size without affecting how the SVG looks.
+short_description: Optimize SVG files to reduce file size.
+tags: Image
+icon: photo-cog
+js:
+    - /assets/components/file-input.js
+    - ./tool.js
+---
+
+<file-input id="file-input" accept=".svg" multiple></file-input>
+
+<hr>
+
+<button type="button" id="download-all-button" disabled>{% icon "download" %} Download All</button>
+
+<ul id="file-output" class="file-item-list"></ul>

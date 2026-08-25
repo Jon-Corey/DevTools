@@ -13,6 +13,7 @@
     "@imagemagick/magick-wasm": "^0.0.40",
     "esbuild": "^0.28.0",
     "fflate": "^0.8.3",
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "svgo": "^4.1.0"
   }
 }

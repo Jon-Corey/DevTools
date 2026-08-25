@@ -44,17 +44,6 @@
     width: 100%;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin-inline: 0;
-    margin-block-start: 0;
-    margin-block-end: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
 #generated-images-details, #meta-tags-details, #web-app-manifest-details {
     display: none;
 }
