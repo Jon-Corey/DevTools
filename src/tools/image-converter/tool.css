@@ -18,10 +18,6 @@ label[for="format-select"] {
     flex: 0 0 8rem;
 }
 
-#background-color-card {
-    text-align: start;
-}
-
 #quality-card {
     display: flex;
     flex-direction: column;

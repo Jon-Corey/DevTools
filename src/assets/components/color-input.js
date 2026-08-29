@@ -1,4 +1,13 @@
 import { colordx, extend } from '/assets/js/vendor/colordx/colordx.js';
+import lab from '/assets/js/vendor/colordx/lab.js';
+import lch from '/assets/js/vendor/colordx/lch.js';
+import cmyk from '/assets/js/vendor/colordx/cmyk.js';
+import hsv from '/assets/js/vendor/colordx/hsv.js';
+import hwb from '/assets/js/vendor/colordx/hwb.js';
+import p3 from '/assets/js/vendor/colordx/p3.js';
+import rec2020 from '/assets/js/vendor/colordx/rec2020.js';
+import a98rgb from '/assets/js/vendor/colordx/a98rgb.js';
+import prophoto from '/assets/js/vendor/colordx/prophoto.js';
 import names from '/assets/js/vendor/colordx/names.js';
 
 class ColorInput extends HTMLElement {
@@ -154,7 +163,7 @@ class ColorInput extends HTMLElement {
     constructor() {
         super();
 
-        extend([names]);
+        extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names]);
         
         this.#value = this.getAttribute('default-value') || '#000000';
     }

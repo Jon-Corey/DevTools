@@ -169,11 +169,33 @@ function convertColorToFormat(colordx, format) {
         case 'rgb':
             return colordx.toRgbString();
         case 'hsl':
-            return colordx.toHslString(3);
-        case 'oklch':
-            return colordx.toOklchString(3);
+            return colordx.toHslString();
+        case 'hsv':
+            return colordx.toHsvString();
+        case 'hwb': // Double-check this
+            return colordx.toHwbString();
+        case 'lab':
+            return colordx.toLabString();
+        case 'lch':
+            return colordx.toLchString();
         case 'oklab':
-            return colordx.toOklabString(3);
+            return colordx.toOklabString();
+        case 'oklch':
+            return colordx.toOklchString();
+        case 'p3':
+            return colordx.toP3String();
+        case 'xyz':
+            return colordx.toXyzString();
+        case 'xyz-d65':
+            return colordx.toXyzD65String();
+        case 'cmyk':
+            return colordx.toCmykString();
+        case 'rec2020':
+            return colordx.toRec2020String();
+        case 'a98-rgb':
+            return colordx.toA98String();
+        case 'prophoto-rgb':
+            return colordx.toProphotoString();
         default:
             return colordx.toHex();
     }

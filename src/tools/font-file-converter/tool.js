@@ -37,7 +37,6 @@ function initialize() {
         localStorage.setItem(ttfKey, outputTtfCheckbox.checked);
 
         const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        console.log('Format count:', formatCount);
         if (fileInput.files.length > 0 && formatCount > 0) {
             convertButton.disabled = false;
         } else {
@@ -48,7 +47,6 @@ function initialize() {
         localStorage.setItem(woffKey, outputWoffCheckbox.checked);
 
         const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        console.log('Format count:', formatCount);
         if (fileInput.files.length > 0 && formatCount > 0) {
             convertButton.disabled = false;
         } else {
@@ -59,7 +57,6 @@ function initialize() {
         localStorage.setItem(woff2Key, outputWoff2Checkbox.checked);
 
         const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        console.log('Format count:', formatCount);
         if (fileInput.files.length > 0 && formatCount > 0) {
             convertButton.disabled = false;
         } else {

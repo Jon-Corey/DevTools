@@ -1,0 +1,13 @@
+/* Format Column */
+tr > *:nth-child(1) {
+    width: 9rem;
+}
+
+/* Copy Column */
+tr > *:nth-child(3), button[data-copy-target] {
+    width: 7rem;
+}
+
+.copy-unavailable tr > *:nth-child(3) {
+    display: none;
+}

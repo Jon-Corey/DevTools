@@ -31,8 +31,6 @@
     display: grid;
     grid-template-rows: subgrid;
     grid-row: span 2;
-
-    text-align: start;
 }
 
 .wcag-pass, .wcag-fail {

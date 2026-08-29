@@ -12,12 +12,44 @@ const THIRD_PARTY_MODULES = [
         output: 'colordx/colordx.js'
     },
     {
-        entry: '@colordx/core/plugins/names',
-        output: 'colordx/names.js'
+        entry: '@colordx/core/plugins/lab',
+        output: 'colordx/lab.js'
     },
     {
-        entry: '@colordx/core/plugins/harmonies',
-        output: 'colordx/harmonies.js'
+        entry: '@colordx/core/plugins/lch',
+        output: 'colordx/lch.js'
+    },
+    {
+        entry: '@colordx/core/plugins/cmyk',
+        output: 'colordx/cmyk.js'
+    },
+    {
+        entry: '@colordx/core/plugins/hsv',
+        output: 'colordx/hsv.js'
+    },
+    {
+        entry: '@colordx/core/plugins/hwb',
+        output: 'colordx/hwb.js'
+    },
+    {
+        entry: '@colordx/core/plugins/p3',
+        output: 'colordx/p3.js'
+    },
+    {
+        entry: '@colordx/core/plugins/rec2020',
+        output: 'colordx/rec2020.js'
+    },
+    {
+        entry: '@colordx/core/plugins/a98rgb',
+        output: 'colordx/a98rgb.js'
+    },
+    {
+        entry: '@colordx/core/plugins/prophoto',
+        output: 'colordx/prophoto.js'
+    },
+    {
+        entry: '@colordx/core/plugins/names',
+        output: 'colordx/names.js'
     },
     {
         entry: '@colordx/core/plugins/a11y',
