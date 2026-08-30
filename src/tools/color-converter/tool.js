@@ -12,8 +12,8 @@ import names from '/assets/js/vendor/colordx/names.js';
 
 extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names]);
 
+const container = document.getElementById('container');
 const colorInput = document.getElementById('color-input');
-const outputTable = document.getElementById('output-table');
 const outputHex = document.getElementById('output-hex');
 const outputRgb = document.getElementById('output-rgb');
 const outputHsl = document.getElementById('output-hsl');
@@ -45,7 +45,7 @@ function initialize() {
 
     // Hide copy buttons if clipboard API is not available
     if (!navigator.clipboard || !navigator.clipboard.writeText) {
-        outputTable.classList.add('copy-unavailable');
+        container.classList.add('copy-unavailable');
     }
 
     colorInputChanged();

@@ -434,26 +434,6 @@ progress::-moz-progress-bar {
     border-end-end-radius: var(--border-radius);
 }
 
-/* Tables */
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: var(--border-radius);
-}
-
-th, td {
-    padding: 0.5rem;
-    text-align: left;
-    border-bottom: var(--border);
-}
-
 /* Tool cards */
 
 .tool-card-list {

@@ -1,13 +1,46 @@
-/* Format Column */
-tr > *:nth-child(1) {
-    width: 9rem;
+h2 {
+    margin-block-start: 0.5rem;
+    margin-block-end: 0;
 }
 
-/* Copy Column */
-tr > *:nth-child(3), button[data-copy-target] {
-    width: 7rem;
-}
-
-.copy-unavailable tr > *:nth-child(3) {
+.copy-unavailable .copy-button {
     display: none;
+}
+
+.output-card {
+    display: grid;
+    grid-template-columns: minmax(min(9rem, 100%), 1fr) 2fr 7rem;
+    grid-template-areas: "format value copy";
+    gap: 1rem;
+    align-items: center;
+}
+
+.copy-unavailable .output-card {
+    grid-template-columns: minmax(min(9rem, 100%), 1fr) 2fr;
+    grid-template-areas: "format value";
+}
+
+.output-card .format {
+    grid-area: format;
+    font-weight: bold;
+}
+
+.output-card .value {
+    grid-area: value;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+}
+
+.output-card .copy-button {
+    grid-area: copy;
+}
+
+@media (max-width: 600px) {
+    .output-card, .copy-unavailable .output-card {
+        grid-template-columns: 1fr 7rem;
+        grid-template-areas:
+            "format copy"
+            "value value";
+    }
 }

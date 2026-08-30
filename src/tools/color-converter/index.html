@@ -10,195 +10,163 @@ js:
 css: ./tool.css
 ---
 
-<div class="flex-column">
+<div class="flex-column" id="container">
     <div class="card">
         <color-input id="color-input" default-value="#000000" label="Input Color"></color-input>
     </div>
 
-    <div class="card">
-        <h2 class="space-after">Output Formats</h2>
-        <div class="table-container">
-            <table id="output-table">
-                <thead>
-                    <tr>
-                        <th>Format</th>
-                        <th>Value</th>
-                        <th>Copy</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>HEX</th>
-                        <td id="output-hex">#000000</td>
-                        <td>
-                            <button data-copy-target="output-hex">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>RGB</th>
-                        <td id="output-rgb">rgb(0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-rgb">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>HSL</th>
-                        <td id="output-hsl">hsl(0 0% 0%)</td>
-                        <td>
-                            <button data-copy-target="output-hsl">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>HSV</th>
-                        <td id="output-hsv">hsv(0 0% 0%)</td>
-                        <td>
-                            <button data-copy-target="output-hsv">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>HWB</th>
-                        <td id="output-hwb">hwb(0 0% 100%)</td>
-                        <td>
-                            <button data-copy-target="output-hwb">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>LAB</th>
-                        <td id="output-lab">lab(0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-lab">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>LCH</th>
-                        <td id="output-lch">lch(0 0 none)</td>
-                        <td>
-                            <button data-copy-target="output-lch">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>OKLAB</th>
-                        <td id="output-oklab">oklab(0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-oklab">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>OKLCH</th>
-                        <td id="output-oklch">oklch(0 0 none)</td>
-                        <td>
-                            <button data-copy-target="output-oklch">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>P3</th>
-                        <td id="output-p3">color(display-p3 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-p3">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>XYZ</th>
-                        <td id="output-xyz">color(xyz-d50 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-xyz">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>XYZ-D65</th>
-                        <td id="output-xyz-d65">color(xyz-d65 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-xyz-d65">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>CMYK</th>
-                        <td id="output-cmyk">device-cmyk(0% 0% 0% 100%)</td>
-                        <td>
-                            <button data-copy-target="output-cmyk">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>REC2020</th>
-                        <td id="output-rec2020">color(rec2020 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-rec2020">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>A98</th>
-                        <td id="output-a98rgb">color(a98-rgb 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-a98rgb">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>PROPHOTO</th>
-                        <td id="output-prophoto">color(prophoto-rgb 0 0 0)</td>
-                        <td>
-                            <button data-copy-target="output-prophoto">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Closest CSS Name</th>
-                        <td id="output-css-name">black</td>
-                        <td>
-                            <button data-copy-target="output-css-name">
-                                <span class="default-content">{% icon "copy" %} Copy</span>
-                                <span class="alternate-content">{% icon "check" %} Copied!</span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <h2>Output Formats</h2>
+
+    <div class="card output-card">
+        <span class="format">HEX</span>
+        <span class="value" id="output-hex">#000000</span>
+        <button class="copy-button" data-copy-target="output-hex">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">RGB</span>
+        <span class="value" id="output-rgb">rgb(0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-rgb">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">HSL</span>
+        <span class="value" id="output-hsl">hsl(0 0% 0%)</span>
+        <button class="copy-button" data-copy-target="output-hsl">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">HSV</span>
+        <span class="value" id="output-hsv">hsv(0 0% 0%)</span>
+        <button class="copy-button" data-copy-target="output-hsv">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">HWB</span>
+        <span class="value" id="output-hwb">hwb(0 0% 100%)</span>
+        <button class="copy-button" data-copy-target="output-hwb">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">LAB</span>
+        <span class="value" id="output-lab">lab(0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-lab">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">LCH</span>
+        <span class="value" id="output-lch">lch(0 0 none)</span>
+        <button class="copy-button" data-copy-target="output-lch">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">OKLAB</span>
+        <span class="value" id="output-oklab">oklab(0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-oklab">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">OKLCH</span>
+        <span class="value" id="output-oklch">oklch(0 0 none)</span>
+        <button class="copy-button" data-copy-target="output-oklch">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">P3</span>
+        <span class="value" id="output-p3">color(display-p3 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-p3">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">XYZ</span>
+        <span class="value" id="output-xyz">color(xyz-d50 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-xyz">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">XYZ-D65</span>
+        <span class="value" id="output-xyz-d65">color(xyz-d65 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-xyz-d65">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">CMYK</span>
+        <span class="value" id="output-cmyk">device-cmyk(0% 0% 0% 100%)</span>
+        <button class="copy-button" data-copy-target="output-cmyk">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">REC2020</span>
+        <span class="value" id="output-rec2020">color(rec2020 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-rec2020">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">A98</span>
+        <span class="value" id="output-a98rgb">color(a98-rgb 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-a98rgb">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">PROPHOTO</span>
+        <span class="value" id="output-prophoto">color(prophoto-rgb 0 0 0)</span>
+        <button class="copy-button" data-copy-target="output-prophoto">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
+    </div>
+
+    <div class="card output-card">
+        <span class="format">Closest CSS Name</span>
+        <span class="value" id="output-css-name">black</span>
+        <button class="copy-button" data-copy-target="output-css-name">
+            <span class="default-content">{% icon "copy" %} Copy</span>
+            <span class="alternate-content">{% icon "check" %} Copied!</span>
+        </button>
     </div>
 </div>
