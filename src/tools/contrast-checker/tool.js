@@ -98,7 +98,6 @@ function fixBackground(targetRatio) {
 }
 
 function updateContrastResults() {
-    console.log('Foreground Color:', colordx(foregroundColorInput.value), 'Background Color:', colordx(backgroundColorInput.value));
     const contrastRatio = colordx(foregroundColorInput.value).contrast(colordx(backgroundColorInput.value));
     contrastRatioElement.textContent = contrastRatio.toFixed(2) + ':1';
 
