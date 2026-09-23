@@ -82,8 +82,9 @@
         flex: 0 0 auto;
     }
 
-    #switch-colors-button .icon {
+    #switch-colors-button .ti {
         transform: rotate(90deg);
+        display: inline-block;
     }
 
     #switch-colors-text {

@@ -11,6 +11,7 @@
     "@colordx/core": "^5.4.2",
     "@glypht/core": "^0.0.8",
     "@imagemagick/magick-wasm": "^0.0.40",
+    "@tabler/icons-webfont": "^3.48.0",
     "esbuild": "^0.28.0",
     "fflate": "^0.8.3",
     "prismjs": "^1.30.0",

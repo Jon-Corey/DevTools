@@ -36,15 +36,8 @@ class FileInput extends HTMLElement {
             border-color: transparent;
         }
 
-        label .icon {
-            display: inline-block;
-            width: 3rem;
-            height: 3rem;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        label .ti {
+            font-size: 3rem;
             pointer-events: none;
         }
 
@@ -72,7 +65,7 @@ class FileInput extends HTMLElement {
 
     /* Shadow DOM Structure:
     <label>
-        <svg class="icon" viewBox="0 0 24 24">...</svg>
+        <i class="ti ti-upload"></i>
         <span class="label-text">Drop a file here or click to browse</span>
         <input type="file" style="display: none;" accept="...">
     </label>
@@ -95,7 +88,7 @@ class FileInput extends HTMLElement {
         return Object.freeze(this._items.map(item => item.file));
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         this.upgradeProperty('value');
         this.upgradeProperty('files');
 
@@ -104,16 +97,22 @@ class FileInput extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
+            const iconStyleSheet = new CSSStyleSheet();
+            iconStyleSheet.replaceSync(await fetch('/assets/css/tabler-icons.css').then(res => res.text()));
+
             const styleSheet = new CSSStyleSheet();
             styleSheet.replaceSync(FileInput.css);
-            shadow.adoptedStyleSheets = [styleSheet];
+            shadow.adoptedStyleSheets = [styleSheet, iconStyleSheet];
 
             // Label / dropzone
             const label = document.createElement('label');
             label.tabIndex = 0;
             label.role = 'button';
-            label.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 9l5 -5l5 5" /><path d="M12 4l0 12" /></svg>';
             shadow.appendChild(label);
+
+            const icon = document.createElement('i');
+            icon.className = 'ti ti-upload';
+            label.appendChild(icon);
 
             const labelText = document.createElement('span');
             labelText.className = 'label-text';

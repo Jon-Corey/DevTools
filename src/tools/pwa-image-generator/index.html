@@ -3,7 +3,7 @@ title: PWA Image Generator
 description: This tool generates images for a Progressive Web App (PWA). It generates various images such as favicons, app icons, and splash screens. PWAs are a type of website that can be installed and run on your device like an app. They require more image assets than traditional websites to provide a native app-like experience.
 short_description: Generate images for a Progressive Web App (PWA).
 tags: Image
-icon: library-photo
+icon: ti-library-photo
 js:
     - /assets/components/file-input.js
     - /assets/components/color-input.js
@@ -14,7 +14,7 @@ css: ./tool.css
 
 <div class="danger alert" id="image-too-small-warning">
     <strong>
-        {% icon "alert-circle" %}
+        <i class="ti ti-alert-circle"></i>
         Source Image is Too Small
     </strong>
     <p>The image you uploaded is too small to generate the required images. Please upload an image that is at least 512x512 pixels or upload an SVG image.</p>
@@ -40,7 +40,7 @@ css: ./tool.css
 
 <hr>
 
-<button id="download-button" disabled>{% icon "download" %} Download Bundle</button>
+<button id="download-button" disabled><i class="ti ti-download"></i> Download Bundle</button>
 
 <details id="generated-images-details">
     <summary>Generated Images</summary>

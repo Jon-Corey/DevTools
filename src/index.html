@@ -8,20 +8,16 @@ description: A collection of tools and resources for developers.
 <p class="text-subtle">DevTools is a collection of tools and resources for developers. All processing is done locally on your device so that your data stays private.</p>
 <hr class="space-after-large">
 
-{% assign sorted_collections = collections | sort_collections %}
-{% for collection in sorted_collections %}
-    {% if collection[0] == "all" %}
-        {% continue %}
-    {% endif %}
-
+{% assign tool_categories = collections | get_tool_categories %}
+{% for category in tool_categories %}
     <section>
-        <h2>{{ collection[0] }}</h2>
+        <h2>{{ category[0] }}</h2>
         <ul class="tool-card-list">
-            {% assign sorted_items = collection[1] | sort_natural: "data.title" %}
+            {% assign sorted_items = category[1] | sort_natural: "data.title" %}
             {% for item in sorted_items %}
                 <li class="tool-card">
                     <a href="{{ item.url }}">
-                        {% icon item.data.icon "text-accent" %}
+                        <i class="ti {{ item.data.icon }} text-accent"></i>
                         <h3>
                             {{ item.data.title }}
                         </h3>

@@ -3,7 +3,7 @@ title: Contrast Checker
 description: This tool allows you to check the contrast between two colors to ensure they meet accessibility standards. It also allows you to adjust the colors to meet the required contrast ratio and provides a visual preview of the contrast.
 short_description: Check the contrast between two colors.
 tags: Colors
-icon: contrast
+icon: ti-contrast
 js:
     - ./tool.js
     - /assets/components/color-input.js
@@ -19,7 +19,7 @@ css: ./tool.css
         </div>
     </div>
 
-    <button type="button" id="switch-colors-button" aria-label="Switch Colors">{% icon "arrows-left-right" %}<span id="switch-colors-text"> Switch Colors</span></button>
+    <button type="button" id="switch-colors-button" aria-label="Switch Colors"><i class="ti ti-arrows-left-right"></i> <span id="switch-colors-text"> Switch Colors</span></button>
 
     <div class="card color-card">
         <color-input id="background-color" default-value="#ffffff" label="Background Color"></color-input>
@@ -39,8 +39,8 @@ css: ./tool.css
     <div class="card">
         <div class="remove-margin-from-children">
             <strong>Normal Text</strong>
-            <p id="normal-text-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
-            <p id="normal-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+            <p id="normal-text-aa-result">WCAG AA: <span class="wcag-pass default-content"><i class="ti ti-check"></i> Pass</span><span class="wcag-fail alternate-content-inline-block"><i class="ti ti-x"></i> Fail</span></p>
+            <p id="normal-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content"><i class="ti ti-check"></i> Pass</span><span class="wcag-fail alternate-content-inline-block"><i class="ti ti-x"></i> Fail</span></p>
         </div>
         <div id="normal-text-preview" class="card text-center contrast-preview">
             <p>The quick brown fox jumps over the lazy dog.</p>
@@ -49,8 +49,8 @@ css: ./tool.css
     <div class="card">
         <div class="remove-margin-from-children">
             <strong>Large Text</strong>
-            <p id="large-text-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
-            <p id="large-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+            <p id="large-text-aa-result">WCAG AA: <span class="wcag-pass default-content"><i class="ti ti-check"></i> Pass</span><span class="wcag-fail alternate-content-inline-block"><i class="ti ti-x"></i> Fail</span></p>
+            <p id="large-text-aaa-result">WCAG AAA: <span class="wcag-pass default-content"><i class="ti ti-check"></i> Pass</span><span class="wcag-fail alternate-content-inline-block"><i class="ti ti-x"></i> Fail</span></p>
         </div>
         <div id="large-text-preview" class="card text-center contrast-preview">
             <p class="wcag-large-text">Large Text (~24px+)</p>
@@ -60,17 +60,17 @@ css: ./tool.css
     <div class="card">
         <div class="remove-margin-from-children">
             <strong>Graphical and UI</strong>
-            <p id="ui-aa-result">WCAG AA: <span class="wcag-pass default-content">{% icon "check" %} Pass</span><span class="wcag-fail alternate-content-inline-block">{% icon "x" %} Fail</span></p>
+            <p id="ui-aa-result">WCAG AA: <span class="wcag-pass default-content"><i class="ti ti-check"></i> Pass</span><span class="wcag-fail alternate-content-inline-block"><i class="ti ti-x"></i> Fail</span></p>
         </div>
         <div id="ui-preview" class="card text-center contrast-preview">
-            <p>{% icon "user" %} {% icon "home" %} {% icon "search" %}</p>
+            <p><i class="ti ti-user"></i> <i class="ti ti-home"></i> <i class="ti ti-search"></i></p>
             <input type="text" value="Input field" name="sample-input" aria-label="Sample input field">
         </div>
     </div>
 </div>
 
 <div class="alert">
-    <strong>{% icon "info-circle" %} About WCAG Contrast</strong>
+    <strong><i class="ti ti-info-circle"></i> About WCAG Contrast</strong>
     <p>WCAG (Web Content Accessibility Guidelines) is a standard for how to make the web more accessible. Part of the specification includes guidelines for text contrast to ensure readability for users with visual impairments.</p>
     <p>WCAG defines contrast ratio requirements for different levels of accessibility:</p>
     <ul>

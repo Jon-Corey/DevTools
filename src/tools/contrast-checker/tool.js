@@ -1,8 +1,17 @@
 import { colordx, extend, getFormat } from '/assets/js/vendor/colordx/colordx.js';
+import lab from '/assets/js/vendor/colordx/lab.js';
+import lch from '/assets/js/vendor/colordx/lch.js';
+import cmyk from '/assets/js/vendor/colordx/cmyk.js';
+import hsv from '/assets/js/vendor/colordx/hsv.js';
+import hwb from '/assets/js/vendor/colordx/hwb.js';
+import p3 from '/assets/js/vendor/colordx/p3.js';
+import rec2020 from '/assets/js/vendor/colordx/rec2020.js';
+import a98rgb from '/assets/js/vendor/colordx/a98rgb.js';
+import prophoto from '/assets/js/vendor/colordx/prophoto.js';
 import names from '/assets/js/vendor/colordx/names.js';
 import a11y from '/assets/js/vendor/colordx/a11y.js';
 
-extend([names, a11y]);
+extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names, a11y]);
 
 const foregroundColorInput = document.getElementById('foreground-color');
 const fixForeground45Button = document.getElementById('fix-foreground-4-5');
@@ -89,6 +98,7 @@ function fixBackground(targetRatio) {
 }
 
 function updateContrastResults() {
+    console.log('Foreground Color:', colordx(foregroundColorInput.value), 'Background Color:', colordx(backgroundColorInput.value));
     const contrastRatio = colordx(foregroundColorInput.value).contrast(colordx(backgroundColorInput.value));
     contrastRatioElement.textContent = contrastRatio.toFixed(2) + ':1';
 

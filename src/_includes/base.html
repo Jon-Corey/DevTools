@@ -70,6 +70,7 @@
     <link rel="preload" href="/assets/fonts/AtkinsonHyperlegibleNext-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/fonts/AtkinsonHyperlegibleMono-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
 
+    <link rel="stylesheet" href="/assets/css/tabler-icons.css">
     <link rel="stylesheet" href="/assets/css/site.css">
     {% for styleSheet in css %}
         <link rel="stylesheet" href="{{ styleSheet }}">
@@ -128,42 +129,60 @@
                 </strong>
             </a>
             <button type="button" id="close-menu-button" class="icon-only-button" aria-label="Close Sidebar" onclick="closeSidebarSmall()">
-                {% icon "x" %}
+                <i class="ti ti-x"></i>
             </button>
         </div>
 
         <header class="topbar">
             <button type="button" id="toggle-sidebar-button" class="icon-only-button" aria-label="Toggle Sidebar" onclick="toggleSidebarLarge()">
-                {% icon "layout-sidebar" %}
+                <i class="ti ti-layout-sidebar"></i>
             </button>
             <button type="button" id="open-menu-button" class="icon-only-button" aria-label="Open Sidebar" onclick="openSidebarSmall()">
-                {% icon "menu-2" %}
+                <i class="ti ti-menu-2"></i>
             </button>
+
+            <search>
+                <div id="search-input-container">
+                    <i id="search-icon" class="ti ti-search"></i>
+                    <input id="search-input" type="search" placeholder="Search tools..." aria-label="Search tools" aria-keyshortcuts="Control+K">
+                    <span id="search-input-overlay-apple"><kbd><i class="ti ti-command"></i></kbd>+<kbd>K</kbd></span>
+                    <span id="search-input-overlay"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>
+                </div>
+                <div id="results-panel">
+                    <ul id="search-results"></ul>
+                    <div id="recent-results-container">
+                        <p>Recent results:</p>
+                        <ul id="recent-results"></ul>
+                    </div>
+                    <div id="results-panel-footer">
+                        <span><kbd aria-label="Arrow Up"><i class="ti ti-arrow-up"></i></kbd> <kbd aria-label="Arrow Down"><i class="ti ti-arrow-down"></i></kbd> to navigate</span>
+                        <span><kbd aria-label="Enter"><i class="ti ti-corner-down-left"></i></kbd> to select</span>
+                        <span><kbd>Esc</kbd> to close</span>
+                    </div>
+                </div>
+            </search>
+
             <a href="https://github.com/Jon-Corey/DevTools" class="button icon-only-button" aria-label="GitHub Repository" target="_blank" rel="noopener noreferrer">
-                {% icon "brand-github" %}
+                <i class="ti ti-brand-github"></i>
             </a>
             <button type="button" class="icon-only-button" aria-label="Toggle Theme" onclick="toggleTheme()">
-                {% icon "moon" "light-only" %}
-                {% icon "sun" "dark-only" %}
+                <i class="ti ti-moon light-only"></i>
+                <i class="ti ti-sun dark-only"></i>
             </button>
         </header>
 
         <aside class="sidebar">
             <nav>
-                {% assign sorted_collections = collections | sort_collections %}
-                {% for collection in sorted_collections %}
-                    {% if collection[0] == "all" %}
-                        {% continue %}
-                    {% endif %}
-
+                {% assign tool_categories = collections | get_tool_categories %}
+                {% for category in tool_categories %}
                     <section>
-                        <h2 class="text-subtle">{{ collection[0] }}</h2>
+                        <h2 class="text-subtle">{{ category[0] }}</h2>
                         <ul>
-                            {% assign sorted_items = collection[1] | sort_natural: "data.title" %}
+                            {% assign sorted_items = category[1] | sort_natural: "data.title" %}
                             {% for item in sorted_items %}
                                 <li{% if item.url == page.url %} aria-current="page"{% endif %}>
                                     <a href="{{ item.url }}">
-                                        {% icon item.data.icon "text-accent" %}
+                                        <i class="ti {{ item.data.icon }} text-accent"></i>
                                         {{ item.data.title }}
                                     </a>
                                 </li>
@@ -187,6 +206,20 @@
         </div>
     </div>
 
+    <script type="application/json" id="search-data">
+        [
+            {% for item in collections.tool %}
+            {
+                "title": "{{ item.data.title }}",
+                "description": "{{ item.data.description }}",
+                "short_description": "{{ item.data.short_description }}",
+                "keywords": "{{ item.data.keywords }}",
+                "icon": "{{ item.data.icon }}",
+                "url": "{{ item.url }}"
+            }{% if forloop.last == false %},{% endif %}
+            {% endfor %}
+        ]
+    </script>
     <script src="/assets/js/app.js" defer></script>
     {% for script in js %}
         <script src="{{ script }}" type="module"></script>

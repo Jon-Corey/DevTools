@@ -52,7 +52,7 @@ async function optimizeSVG(file) {
 function renderFileToList(file, originalSize) {
     const fileItem = document.createElement('file-item');
     fileItem.file = file;
-    fileItem.setAttribute('button-icon', 'download');
+    fileItem.setAttribute('button-icon', 'ti-download');
     fileItem.setAttribute('button-label', 'Download file');
     fileItem.setAttribute('original-file-size', originalSize);
     fileItem.addEventListener('button-clicked', () => downloadFile(file));

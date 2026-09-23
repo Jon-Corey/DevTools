@@ -3,27 +3,22 @@ import { previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHas
 class FileItem extends HTMLElement {
     static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg', 'original-file-size'];
 
-    static buttonIcons = {
-        x: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>',
-        download: '<svg class="icon" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>'
-    }
-
-    static defaultFileIcon = '<svg class="icon" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /></svg>';
+    static defaultFileIcon = 'ti-file';
     static fileIcons = [
         {
             // Image
             extensions: ['png', 'jpeg', 'jpg', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico', 'avif', 'heic', 'heif', 'apng'],
-            icon: '<svg class="icon" viewBox="0 0 24 24"><path d="M15 8h.01" /><path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" /><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" /></svg>'
+            icon: 'ti-photo'
         },
         {
             // Video
             extensions: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'mpeg', 'mpg'],
-            icon: '<svg class="icon" viewBox="0 0 24 24"><path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4" /><path d="M3 8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -8" /></svg>'
+            icon: 'ti-video'
         },
         {
             // Font
             extensions: ['woff', 'woff2', 'ttf', 'otf'],
-            icon: '<svg class="icon" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M11 18h2" /><path d="M12 18v-7" /><path d="M9 12v-1h6v1" /></svg>'
+            icon: 'ti-file-typography'
         }
     ]
 
@@ -58,12 +53,16 @@ class FileItem extends HTMLElement {
             grid-area: preview;
         }
 
-        .layout .preview-container img, .layout .preview-container .icon {
+        .layout .preview-container img {
             display: block;
             width: 3rem;
             height: 3rem;
             object-fit: cover;
             border-radius: var(--border-radius);
+        }
+
+        .layout .preview-container .ti {
+            font-size: 3rem;
         }
 
         .layout .name {
@@ -107,17 +106,6 @@ class FileItem extends HTMLElement {
             height: 3rem;
         }
 
-        .icon {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         button, .button {
             background-color: transparent;
             color: var(--color-text);
@@ -143,10 +131,6 @@ class FileItem extends HTMLElement {
 
         button:active, .button:active {
             color: var(--color-text-muted);
-        }
-
-        button .icon, .button .icon {
-            vertical-align: -0.125em;
         }
 
         label {
@@ -243,8 +227,8 @@ class FileItem extends HTMLElement {
                 </label>
                 <label class="button toggle-button">
                     <input type="checkbox" class="aspect-ratio-locked" name="aspect-ratio-locked" aria-label="Lock the aspect ratio to the image's original aspect ratio" checked />
-                    <div class="default-content"><svg class="icon" viewBox="0 0 24 24">...</svg></div>
-                    <div class="alternate-content"><svg class="icon" viewBox="0 0 24 24">...</svg></div>
+                    <div class="default-content"><i class="ti ti-link"></i></div>
+                    <div class="alternate-content"><i class="ti ti-link-off"></i></div>
                 </label>
                 <label>
                     Height (px)
@@ -289,20 +273,23 @@ class FileItem extends HTMLElement {
         super();
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         this.upgradeProperty('file');
         this.upgradeProperty('width');
         this.upgradeProperty('height');
 
-        const buttonIcon = this.getAttribute('button-icon') || 'x';
+        const buttonIcon = this.getAttribute('button-icon') || 'ti-x';
         const buttonLabel = this.getAttribute('button-label') || 'Remove file';
 
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
+            const iconStyleSheet = new CSSStyleSheet();
+            iconStyleSheet.replaceSync(await fetch('/assets/css/tabler-icons.css').then(res => res.text()));
+
             const styleSheet = new CSSStyleSheet();
             styleSheet.replaceSync(FileItem.css);
-            shadow.adoptedStyleSheets = [styleSheet];
+            shadow.adoptedStyleSheets = [styleSheet, iconStyleSheet];
 
             const li = document.createElement('li');
             li.classList.add('root');
@@ -316,7 +303,9 @@ class FileItem extends HTMLElement {
             previewContainer.classList.add('preview-container');
             layoutDiv.appendChild(previewContainer);
 
-            previewContainer.innerHTML = FileItem.defaultFileIcon;
+            const fileIcon = document.createElement('i');
+            fileIcon.className = 'ti ti-file';
+            previewContainer.appendChild(fileIcon);
 
             const nameSpan = document.createElement('span');
             nameSpan.classList.add('name');
@@ -362,13 +351,19 @@ class FileItem extends HTMLElement {
 
             const defaultContentDiv = document.createElement('div');
             defaultContentDiv.classList.add('default-content');
-            defaultContentDiv.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M9 15l3 -3m2 -2l1 -1" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M3 3l18 18" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>';
             aspectRatioLabel.appendChild(defaultContentDiv);
+
+            const linkIcon = document.createElement('i');
+            linkIcon.className = 'ti ti-link';
+            defaultContentDiv.appendChild(linkIcon);
 
             const alternateContentDiv = document.createElement('div');
             alternateContentDiv.classList.add('alternate-content');
-            alternateContentDiv.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>';
             aspectRatioLabel.appendChild(alternateContentDiv);
+
+            const linkOffIcon = document.createElement('i');
+            linkOffIcon.className = 'ti ti-link-off';
+            alternateContentDiv.appendChild(linkOffIcon);
 
             const heightLabel = document.createElement('label');
             heightLabel.textContent = 'Height (px)';
@@ -387,8 +382,11 @@ class FileItem extends HTMLElement {
             const button = document.createElement('button');
             button.type = 'button';
             button.setAttribute('aria-label', buttonLabel);
-            button.innerHTML = FileItem.buttonIcons[buttonIcon] || FileItem.buttonIcons['x'];
             layoutDiv.appendChild(button);
+
+            const buttonIconElement = document.createElement('i');
+            buttonIconElement.className = `ti ${buttonIcon}`;
+            button.appendChild(buttonIconElement);
 
             button.onclick = this.fireButtonClickedEvent.bind(this);
         }
@@ -412,9 +410,9 @@ class FileItem extends HTMLElement {
         if (!this.shadowRoot) return;
 
         if (name === 'button-icon') {
-            const button = this.shadowRoot.querySelector('button');
-            if (button) {
-                button.innerHTML = FileItem.buttonIcons[newValue] || FileItem.buttonIcons['x'];
+            const buttonIcon = this.shadowRoot.querySelector('button .ti');
+            if (buttonIcon) {
+                buttonIcon.className = `ti ${newValue}`;
             }
         } else if (name === 'button-label') {
             const button = this.shadowRoot.querySelector('button');
@@ -544,7 +542,7 @@ class FileItem extends HTMLElement {
                 img.src = await this.getPreviewUrl(this.#file);
                 previewContainer.appendChild(img);
             } else {
-                previewContainer.innerHTML = this.getFileIcon(extension);
+                previewContainer.innerHTML = `<i class="ti ${this.getFileIcon(extension)}"></i>`;
             }
 
             nameSpan.textContent = this.#file.name;
@@ -561,7 +559,7 @@ class FileItem extends HTMLElement {
                 sizeSpan.textContent = formatFileSize(this.#file.size);
             }
         } else {
-            previewContainer.innerHTML = FileItem.defaultFileIcon;
+            previewContainer.innerHTML = `<i class="ti ${FileItem.defaultFileIcon}"></i>`;
 
             nameSpan.textContent = 'No file selected';
             sizeSpan.textContent = '0 B';

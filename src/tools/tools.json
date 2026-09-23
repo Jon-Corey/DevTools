@@ -1,3 +1,4 @@
 {
-  "layout": "tool"
+    "layout": "tool",
+    "tags": ["tool"]
 }

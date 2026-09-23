@@ -1,10 +1,8 @@
 import * as fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { randomUUID } from 'node:crypto';
-import esbuild from 'esbuild';
-
-import getIcons from './src/_data/icons.js';
+import bundleModules from './config/bundle-modules.js';
+import assetsManifest from './config/assets-manifest.js';
+import subsetTabler from './config/subset-tabler.js';
 
 const THIRD_PARTY_MODULES = [
     {
@@ -96,14 +94,11 @@ const SERVICE_WORKER_ASSET_OPTIONS = {
     ignoredFiles: [
         'staticwebapp.config.json', // Only used server-side
         'service-worker.js', // The service worker itself should not be cached by the service worker
-        'service-worker-assets.js', // The service worker assets manifest should not be cached by the service worker
         'robots.txt', // Only used by crawlers
         '/assets/images/card.svg', // Just a source for the PNG version
         '/assets/images/card.png' // Just used for link previews on other sites
     ]
 };
-
-let thirdPartyModulesBuilt = false;
 
 export default async function (eleventyConfig) {
     // Set the input directory to `src`
@@ -134,189 +129,15 @@ export default async function (eleventyConfig) {
     // Merge data from multiple sources (such as tags)
     eleventyConfig.setDataDeepMerge(true);
 
-    // Build third-party modules and place them in the output directory
-    eleventyConfig.on('eleventy.before', async ({ directories, outputMode }) => {
-        if (outputMode && outputMode !== 'fs') {
-            return;
-        }
-
-        if (thirdPartyModulesBuilt) {
-            return;
-        }
-        
-        const siteOutputDir = directories?.output ?? '_site';
-        await buildThirdPartyModules(siteOutputDir);
-        thirdPartyModulesBuilt = true;
-    });
-
-    // Generate the service worker assets manifest
-    eleventyConfig.on('eleventy.after', async ({ directories, outputMode }) => {
-        if (outputMode && outputMode !== 'fs') {
-            return;
-        }
-
-        const siteOutputDir = directories?.output ?? '_site';
-        await addAssetsManifestToServiceWorker(siteOutputDir);
-    });
-
-    // Add a shortcode for rendering icons (e.g. {% icon 'user' %})
-    const icons = await getIcons();
-    eleventyConfig.addShortcode('icon', function(name, cssClass = '') {
-        let svg = icons[name];
-        if (!svg) {
-            const pageContext = this?.page ?? {};
-            const pageRef = pageContext.inputPath || pageContext.url || 'unknown template';
-            console.warn(`[icon shortcode] Icon not found: '${name}' in ${pageRef} (url: ${pageContext.url ?? 'unknown'})`);
-            return '';
-        }
-        if (cssClass && cssClass.trim() !== '') {
-            // Add the CSS class to the SVG element
-            svg = svg.replace('class=\"', `class="${cssClass} `);
-        }
-        return svg;
-    });
-
-    // Add a shortcode to filter and sort collections
-    eleventyConfig.addFilter('sort_collections', function(collections) {
+    // Add a shortcode to filter and sort collections down to just tool categories
+    eleventyConfig.addFilter('get_tool_categories', function(collections) {
         return Object.entries(collections)
-            .filter(([name, items]) => name !== 'all')
+            .filter(([name]) => name !== 'all' && name !== 'tool')
             .sort(([nameA], [nameB]) => nameA.localeCompare(nameB));
     });
+
+    // Add plugins
+    eleventyConfig.addPlugin(bundleModules, { modules: THIRD_PARTY_MODULES });
+    eleventyConfig.addPlugin(assetsManifest, SERVICE_WORKER_ASSET_OPTIONS);
+    eleventyConfig.addPlugin(subsetTabler);
 };
-
-async function buildThirdPartyModules(siteOutputDir) {
-    const outputDir = path.join(siteOutputDir, 'assets', 'js', 'vendor');
-
-    for (const module of THIRD_PARTY_MODULES) {
-        const outputPath = path.join(outputDir, module.output);
-
-        await bundleFile(module.entry, outputPath);
-
-        const url = import.meta.resolve(module.entry);
-        const entryPath = fileURLToPath(url);
-
-        if (module.bundleFiles && module.bundleFiles.length > 0) {
-            await bundleNamedFiles(entryPath, path.dirname(outputPath), module.bundleFiles);
-        }
-
-        if (module.copyFiles && module.copyFiles.length > 0) {
-            copyNamedFiles(entryPath, path.dirname(outputPath), module.copyFiles);
-        }
-    }
-}
-
-async function bundleFile(entryPath, outputPath) {
-    await esbuild.build({
-        entryPoints: [entryPath],
-        absWorkingDir: process.cwd(),
-        outfile: outputPath,
-        bundle: true,
-        platform: 'browser',
-        mainFields: ['browser', 'module', 'main'],
-        conditions: ['browser'],
-        format: 'esm',
-        minify: true,
-        sourcemap: false,
-        legalComments: 'none'
-    });
-}
-
-async function bundleNamedFiles(entryPath, outputDir, filePaths) {
-    const moduleDir = path.dirname(entryPath);
-    for (const filePath of filePaths) {
-        const sourcePath = path.join(moduleDir, filePath);
-        const outputPath = path.join(outputDir, path.basename(filePath));
-
-        if (!fs.existsSync(sourcePath)) {
-            throw new Error(`Bundled file not found: ${sourcePath}`);
-        }
-
-        await bundleFile(sourcePath, outputPath);
-    }
-}
-
-function copyNamedFiles(entryPath, outputDir, filePaths) {
-    const moduleDir = path.dirname(entryPath);
-    for (const filePath of filePaths) {
-        const sourcePath = path.join(moduleDir, filePath);
-        const outputPath = path.join(outputDir, path.basename(filePath));
-
-        if (!fs.existsSync(sourcePath)) {
-            throw new Error(`Copied file not found: ${sourcePath}`);
-        }
-
-        fs.copyFileSync(sourcePath, outputPath);
-    }
-}
-
-async function addAssetsManifestToServiceWorker(siteOutputDir) {
-    const ignoredFolders = new Set((SERVICE_WORKER_ASSET_OPTIONS.ignoredFolders ?? []).map(normalizePathForMatch));
-    const ignoredFiles = new Set((SERVICE_WORKER_ASSET_OPTIONS.ignoredFiles ?? []).map(normalizePathForMatch));
-
-    const allFiles = listFilesRecursively(siteOutputDir)
-        .map(filePath => filePath.split(path.sep).join('/'));
-    const assets = allFiles
-        .filter(relPath => !shouldIgnorePath(relPath, ignoredFolders, ignoredFiles))
-        .map(relPath => `/${relPath}`)
-        .sort((a, b) => a.localeCompare(b));
-
-    assets.sort((a, b) => a.localeCompare(b));
-
-    const manifest = {
-        version: randomUUID(),
-        assets
-    };
-
-    const stringContent = `self.assetsManifest = ${JSON.stringify(manifest, null, 2)};`;
-    const serviceWorkerPath = path.join(siteOutputDir, 'service-worker.js');
-
-    // Replace {{ assetsManifest }} with the actual manifest content
-    let serviceWorkerContent = fs.readFileSync(serviceWorkerPath, 'utf-8');
-    serviceWorkerContent = serviceWorkerContent.replace('{{ assetsManifest }}', stringContent);
-    fs.writeFileSync(serviceWorkerPath, serviceWorkerContent, 'utf8');
-}
-
-function listFilesRecursively(rootDir) {
-    const files = [];
-
-    function walk(currentDir) {
-        const entries = fs.readdirSync(currentDir, { withFileTypes: true });
-        for (const entry of entries) {
-            const absolutePath = path.join(currentDir, entry.name);
-            if (entry.isDirectory()) {
-                walk(absolutePath);
-            } else if (entry.isFile()) {
-                files.push(path.relative(rootDir, absolutePath));
-            }
-        }
-    }
-
-    walk(rootDir);
-    return files;
-}
-
-function normalizePathForMatch(input) {
-    return String(input)
-        .replace(/\\/g, '/')
-        .replace(/^\/+/, '')
-        .replace(/\/+$/, '')
-        .trim();
-}
-
-function shouldIgnorePath(relPath, ignoredFolders, ignoredFiles) {
-    const normalized = normalizePathForMatch(relPath);
-    const baseName = path.posix.basename(normalized);
-
-    if (ignoredFiles.has(normalized) || ignoredFiles.has(baseName)) {
-        return true;
-    }
-
-    for (const folder of ignoredFolders) {
-        if (!folder) continue;
-        if (normalized === folder || normalized.startsWith(`${folder}/`)) {
-            return true;
-        }
-    }
-
-    return false;
-}

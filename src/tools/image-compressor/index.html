@@ -3,7 +3,7 @@ title: Image Compressor
 description: This tool compresses images by using lossy compression techniques. It aims to make the file size as small as possible while maintaining visual quality.
 short_description: Compress images to reduce file size.
 tags: Image
-icon: photo-down
+icon: ti-photo-down
 js:
     - /assets/components/file-input.js
     - ./tool.js
@@ -16,8 +16,8 @@ css: ./tool.css
 
 <hr>
 
-<button type="button" id="download-all-button" disabled>{% icon "download" %} Download All</button>
+<button type="button" id="download-all-button" disabled><i class="ti ti-download"></i> Download All</button>
 
 <ul id="compressed-images" class="file-item-list"></ul>
 
-{% icon "loader-2" "loading-spinner text-accent" %}
+<i class="ti ti-loader-2 loading-spinner text-accent"></i>

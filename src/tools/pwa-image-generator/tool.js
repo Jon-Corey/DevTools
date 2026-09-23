@@ -345,7 +345,7 @@ async function generateImage(file, options) {
 function renderImageToList(file) {
     const fileItem = document.createElement('file-item');
     fileItem.file = file;
-    fileItem.setAttribute('button-icon', 'download');
+    fileItem.setAttribute('button-icon', 'ti-download');
     fileItem.setAttribute('button-label', 'Download file');
     fileItem.addEventListener('button-clicked', () => downloadFile(file));
     generatedImagesList.appendChild(fileItem);

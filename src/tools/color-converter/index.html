@@ -3,7 +3,7 @@ title: Color Converter
 description: This tool allows you to convert colors between different formats (HEX, RGB, HSL, and more).
 short_description: Convert colors between different formats.
 tags: Colors
-icon: palette
+icon: ti-palette
 js:
     - ./tool.js
     - /assets/components/color-input.js
@@ -21,8 +21,8 @@ css: ./tool.css
         <span class="format">HEX</span>
         <span class="value" id="output-hex">#000000</span>
         <button class="copy-button" data-copy-target="output-hex">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -30,8 +30,8 @@ css: ./tool.css
         <span class="format">RGB</span>
         <span class="value" id="output-rgb">rgb(0 0 0)</span>
         <button class="copy-button" data-copy-target="output-rgb">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -39,8 +39,8 @@ css: ./tool.css
         <span class="format">HSL</span>
         <span class="value" id="output-hsl">hsl(0 0% 0%)</span>
         <button class="copy-button" data-copy-target="output-hsl">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -48,8 +48,8 @@ css: ./tool.css
         <span class="format">HSV</span>
         <span class="value" id="output-hsv">hsv(0 0% 0%)</span>
         <button class="copy-button" data-copy-target="output-hsv">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -57,8 +57,8 @@ css: ./tool.css
         <span class="format">HWB</span>
         <span class="value" id="output-hwb">hwb(0 0% 100%)</span>
         <button class="copy-button" data-copy-target="output-hwb">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -66,8 +66,8 @@ css: ./tool.css
         <span class="format">LAB</span>
         <span class="value" id="output-lab">lab(0 0 0)</span>
         <button class="copy-button" data-copy-target="output-lab">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -75,8 +75,8 @@ css: ./tool.css
         <span class="format">LCH</span>
         <span class="value" id="output-lch">lch(0 0 none)</span>
         <button class="copy-button" data-copy-target="output-lch">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -84,8 +84,8 @@ css: ./tool.css
         <span class="format">OKLAB</span>
         <span class="value" id="output-oklab">oklab(0 0 0)</span>
         <button class="copy-button" data-copy-target="output-oklab">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -93,8 +93,8 @@ css: ./tool.css
         <span class="format">OKLCH</span>
         <span class="value" id="output-oklch">oklch(0 0 none)</span>
         <button class="copy-button" data-copy-target="output-oklch">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -102,8 +102,8 @@ css: ./tool.css
         <span class="format">P3</span>
         <span class="value" id="output-p3">color(display-p3 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-p3">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -111,8 +111,8 @@ css: ./tool.css
         <span class="format">XYZ</span>
         <span class="value" id="output-xyz">color(xyz-d50 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-xyz">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -120,8 +120,8 @@ css: ./tool.css
         <span class="format">XYZ-D65</span>
         <span class="value" id="output-xyz-d65">color(xyz-d65 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-xyz-d65">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -129,8 +129,8 @@ css: ./tool.css
         <span class="format">CMYK</span>
         <span class="value" id="output-cmyk">device-cmyk(0% 0% 0% 100%)</span>
         <button class="copy-button" data-copy-target="output-cmyk">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -138,8 +138,8 @@ css: ./tool.css
         <span class="format">REC2020</span>
         <span class="value" id="output-rec2020">color(rec2020 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-rec2020">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -147,8 +147,8 @@ css: ./tool.css
         <span class="format">A98</span>
         <span class="value" id="output-a98rgb">color(a98-rgb 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-a98rgb">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -156,8 +156,8 @@ css: ./tool.css
         <span class="format">PROPHOTO</span>
         <span class="value" id="output-prophoto">color(prophoto-rgb 0 0 0)</span>
         <button class="copy-button" data-copy-target="output-prophoto">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 
@@ -165,8 +165,8 @@ css: ./tool.css
         <span class="format">Closest CSS Name</span>
         <span class="value" id="output-css-name">black</span>
         <button class="copy-button" data-copy-target="output-css-name">
-            <span class="default-content">{% icon "copy" %} Copy</span>
-            <span class="alternate-content">{% icon "check" %} Copied!</span>
+            <span class="default-content"><i class="ti ti-copy"></i> Copy</span>
+            <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
         </button>
     </div>
 </div>

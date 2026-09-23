@@ -101,7 +101,7 @@ async function convertButtonClicked() {
     generatedFiles.forEach(file => {
         const fileItem = document.createElement('file-item');
         fileItem.file = file;
-        fileItem.setAttribute('button-icon', 'download');
+        fileItem.setAttribute('button-icon', 'ti-download');
         fileItem.setAttribute('button-label', 'Download file');
         fileItem.addEventListener('button-clicked', () => downloadFile(file));
         generatedFilesList.appendChild(fileItem);
