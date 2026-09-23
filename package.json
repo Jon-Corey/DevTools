@@ -8,11 +8,11 @@
   "type": "module",
   "dependencies": {
     "@11ty/eleventy": "^3.1.5",
-    "@colordx/core": "^5.4.2",
-    "@glypht/core": "^0.0.8",
-    "@imagemagick/magick-wasm": "^0.0.40",
+    "@colordx/core": "^6.7.0",
+    "@glypht/core": "^0.0.9",
+    "@imagemagick/magick-wasm": "^0.0.43",
     "@tabler/icons-webfont": "^3.48.0",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.2",
     "fflate": "^0.8.3",
     "prismjs": "^1.30.0",
     "svgo": "^4.1.0"

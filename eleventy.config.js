@@ -69,7 +69,7 @@ const THIRD_PARTY_MODULES = [
         entry: '@imagemagick/magick-wasm',
         output: 'magick/magick.js',
         copyFiles: [
-            'magick.wasm'
+            'x86/magick.wasm'
         ]
     },
     {
