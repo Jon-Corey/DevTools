@@ -191,11 +191,11 @@ function handleSearchKeyDown(event) {
         const selectedItem = resultsPanel.querySelector('li.selected');
         if (selectedItem && selectedItem.previousElementSibling) {
             selectedItem.classList.remove('selected');
-            selectedItem.previousElementSibling.classList.add('selected');
+            selectElement(selectedItem.previousElementSibling);
         } else if (!selectedItem) {
             const firstItem = resultsPanel.querySelector('li');
             if (firstItem) {
-                firstItem.classList.add('selected');
+                selectElement(firstItem);
             }
         }
     } else if (event.key === 'ArrowDown') {
@@ -204,11 +204,11 @@ function handleSearchKeyDown(event) {
         const selectedItem = resultsPanel.querySelector('li.selected');
         if (selectedItem && selectedItem.nextElementSibling) {
             selectedItem.classList.remove('selected');
-            selectedItem.nextElementSibling.classList.add('selected');
+            selectElement(selectedItem.nextElementSibling);
         } else if (!selectedItem) {
             const firstItem = resultsPanel.querySelector('li');
             if (firstItem) {
-                firstItem.classList.add('selected');
+                selectElement(firstItem);
             }
         }
     } else if (event.key === 'Enter') {
@@ -261,7 +261,7 @@ function updateResultsPanel() {
         // Add 'selected' class to the most recent result, if any.
         const firstItem = recentResultsList.querySelector('li');
         if (firstItem) {
-            firstItem.classList.add('selected');
+            selectElement(firstItem);
         }
     } else {
         updateSearchResults();
@@ -275,7 +275,7 @@ function updateResultsPanel() {
         // Add 'selected' class to the first search result, if any.
         const firstItem = searchResultsList.querySelector('li');
         if (firstItem) {
-            firstItem.classList.add('selected');
+            selectElement(firstItem);
         }
     }
 }
@@ -366,6 +366,17 @@ function renderSearchResult(item, parent) {
     a.appendChild(descriptionSpan);
 
     a.addEventListener('click', handleLinkClick);
+}
+
+/**
+ * Selects the specified element and scrolls it into view smoothly.
+ * @param {HTMLElement} element The element to select and scroll into view.
+ */
+function selectElement(element) {
+    if (element) {
+        element.classList.add('selected');
+        element.scrollIntoView({ behavior: 'smooth', block: 'center', container: 'nearest' });
+    }
 }
 
 function isApplePlatform() {
