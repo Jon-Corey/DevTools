@@ -36,7 +36,6 @@ const metaTagsDetailsKey = 'pwa-image-generator.metaTagsDetailsOpen';
 const webAppManifestDetailsKey = 'pwa-image-generator.webAppManifestDetailsOpen';
 const documentationDetailsKey = 'pwa-image-generator.documentationDetailsOpen';
 
-// Source: https://developer.apple.com/design/human-interface-guidelines/layout/
 // dpr: Device Pixel Ratio (how many pixels per point)
 // width: Width of the screen in points - smaller than height since portrait orientation is assumed
 // height: Height of the screen in points - larger than width since portrait orientation is assumed
@@ -63,7 +62,9 @@ const splashScreenSizes = [
     { dpr: 3, width: 420, height: 912 },
     { dpr: 3, width: 428, height: 926 },
     { dpr: 3, width: 430, height: 932 },
-    { dpr: 3, width: 440, height: 956 }
+    { dpr: 3, width: 440, height: 956 },
+    { dpr: 3, width: 466, height: 678 },
+    { dpr: 3, width: 626, height: 890 }
 ];
 
 let regularPreviewUpdateTimeoutId;
