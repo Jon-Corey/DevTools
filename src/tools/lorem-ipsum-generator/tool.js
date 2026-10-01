@@ -105,20 +105,41 @@ function generateLoremIpsum() {
 
     if (type === 'paragraphs') {
         for (let i = 0; i < number; i++) {
-            output.push(generateParagraph(startWithLoremIpsum));
+            output.push(generateParagraph(startWithLoremIpsum && i === 0));
         }
         outputElement.innerHTML = output.map(p => `<p>${p}</p>`).join('');
     } else if (type === 'sentences') {
         for (let i = 0; i < number; i++) {
             output.push(generateSentence(startWithLoremIpsum && i === 0));
         }
-        outputElement.innerHTML = output.join(' ');
+        outputElement.innerText = output.join(' ');
     } else if (type === 'words') {
-        for (let i = 0; i < number; i++) {
-            output.push(getRandomWord());
-        }
-        outputElement.innerHTML = output.join(' ');
+        outputElement.innerText = generateWords(number, startWithLoremIpsum);
     }
+}
+
+function generateWords(wordCount, startWithLoremIpsum) {
+    const introWordCount = intro.split(' ').length - 1;
+    let output = '';
+
+    if (startWithLoremIpsum) {
+        if (wordCount <= (introWordCount + 4) && wordCount > 4) {
+            output += intro.split(' ').slice(0, 2).join(' ') + ' ';
+            wordCount -= 2;
+        } else if (wordCount > introWordCount + 4) {
+            output += intro.replace(',', '');
+            wordCount -= introWordCount;
+        }
+    }
+
+    for (let i = 0; i < wordCount; i++) {
+        output += getRandomWord() + ' ';
+    }
+
+    output = output.trim();
+    output = output.charAt(0).toUpperCase() + output.slice(1);
+
+    return output;
 }
 
 function generateParagraph(startWithLoremIpsum) {
@@ -136,7 +157,7 @@ function generateSentence(startWithLoremIpsum) {
 
     if (startWithLoremIpsum) {
         output += intro;
-        wordCount -= intro.split(' ').length;
+        wordCount -= intro.split(' ').length - 1;
     }
 
     for (let i = 0; i < wordCount; i++) {
