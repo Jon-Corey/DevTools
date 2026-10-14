@@ -216,7 +216,7 @@ class FileItem extends HTMLElement {
     <li class="root">
         <div class="layout">
             <div class="preview-container">
-                    <img src="..." alt="">
+                <img src="..." alt="">
             </div>
             <span class="name">filename.ext</span>
             <span class="size">481 B</span>

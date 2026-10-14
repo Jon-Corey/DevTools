@@ -71,7 +71,6 @@ class RangeInput extends HTMLElement {
         input:disabled, select:disabled, textarea:disabled {
             opacity: 0.7;
             pointer-events: none;
-            filter: grayscale(1);
         }
     `;
 

@@ -24,6 +24,6 @@ This site uses the [PWA Image Generator](https://devtools.joncorey.dev/tools/pwa
 - Input Image: `/src/assets/images/favicon.svg`
 - Regular Icon Padding: `12`
 - Maskable Icon Padding: `22`
-- Background Color: `#13161a`
+- Background Color: `#0e1014`
 
 </details>

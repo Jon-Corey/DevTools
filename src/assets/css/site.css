@@ -80,8 +80,8 @@
 
     /* Dark Theme Colors */
     --color-bg-muted-dark: #020306;
-    --color-bg-dark: #13161a;
-    --color-bg-highlight-dark: #2a2e33;
+    --color-bg-dark: #0e1014;
+    --color-bg-highlight-dark: #1a1d21;
 
     --color-text-muted-dark: #dedede;
     --color-text-dark: #eeeeee;
@@ -727,7 +727,6 @@ textarea {
 input:disabled, select:disabled, textarea:disabled {
     opacity: 0.7;
     pointer-events: none;
-    filter: grayscale(1);
 }
 
 fieldset {
