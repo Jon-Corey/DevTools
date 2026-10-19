@@ -84,6 +84,10 @@ const THIRD_PARTY_MODULES = [
     {
         entry: 'svgo/browser',
         output: 'svgo/svgo.js'
+    },
+    {
+        entry: 'qrcode-with-logos',
+        output: 'qrcode-with-logos/qrcode-with-logos.js'
     }
 ];
 const SERVICE_WORKER_ASSET_OPTIONS = {

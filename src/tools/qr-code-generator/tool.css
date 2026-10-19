@@ -1,0 +1,35 @@
+tab-panel i {
+    color: var(--color-text-accent);
+}
+
+.style-options-card {
+    margin-block: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 700px) {
+    .style-options-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contrast-buttons {
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+}
+
+.flex-row {
+    margin: 0;
+}
+
+#output-card {
+    max-width: 20rem;
+    margin-inline: auto;
+}
+
+#no-output-message p {
+    margin: 0;
+    text-align: center;
+}

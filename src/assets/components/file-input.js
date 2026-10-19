@@ -185,7 +185,13 @@ class FileInput extends HTMLElement {
         if (name === 'accept') {
             const input = this.shadowRoot.querySelector('input');
 
-            input.accept = newValue;
+            if (input) {
+                if (newValue?.trim()) {
+                    input.accept = newValue;
+                } else {
+                    input.removeAttribute('accept');
+                }
+            }
         } else if (name === 'multiple') {
             const input = this.shadowRoot.querySelector('input');
             const labelText = this.shadowRoot.querySelector('.label-text');

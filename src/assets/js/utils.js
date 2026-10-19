@@ -1,4 +1,18 @@
 import { Zip, ZipDeflate } from '/assets/js/vendor/fflate/fflate.js';
+import { colordx, extend, getFormat } from '/assets/js/vendor/colordx/colordx.js';
+import lab from '/assets/js/vendor/colordx/lab.js';
+import lch from '/assets/js/vendor/colordx/lch.js';
+import cmyk from '/assets/js/vendor/colordx/cmyk.js';
+import hsv from '/assets/js/vendor/colordx/hsv.js';
+import hwb from '/assets/js/vendor/colordx/hwb.js';
+import p3 from '/assets/js/vendor/colordx/p3.js';
+import rec2020 from '/assets/js/vendor/colordx/rec2020.js';
+import a98rgb from '/assets/js/vendor/colordx/a98rgb.js';
+import prophoto from '/assets/js/vendor/colordx/prophoto.js';
+import names from '/assets/js/vendor/colordx/names.js';
+import a11y from '/assets/js/vendor/colordx/a11y.js';
+
+extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names, a11y]);
 
 /**
  * List of image formats that can be shown natively by the browser. Used to determine whether to show a preview or just an icon for uploaded files.
@@ -531,5 +545,135 @@ function loadImage(src) {
         img.onload = () => resolve(img);
         img.onerror = (e) => reject(e);
         img.src = src;
+    });
+}
+
+/**
+ * Calculates the contrast ratio between two colors.
+ * @param {string} firstColor The first color to compare.
+ * @param {string} secondColor The second color to compare.
+ * @returns {number} The contrast ratio between the two colors.
+ */
+export function getContrastRatio(firstColor, secondColor) {
+    const firstColordx = colordx(firstColor);
+    const secondColordx = colordx(secondColor);
+    return firstColordx.contrast(secondColordx).toFixed(2);
+}
+
+/**
+ * Adjusts a color to achieve a target contrast ratio against a fixed color.
+ * @param {string} adjustColor The color to adjust.
+ * @param {string} fixedColor The fixed color to contrast against.
+ * @param {number} targetRatio The target contrast ratio to achieve.
+ * @returns {{ hitTarget: boolean, color: string }} An object containing whether the target contrast was hit and the resulting color.
+ */
+export function adjustToTargetContrast(adjustColor, fixedColor, targetRatio) {
+    const step = 0.01;
+    const white = '#ffffff';
+    const black = '#000000';
+
+    const colorFormat = getFormat(adjustColor);
+
+    const adjustColordx = colordx(adjustColor);
+    const fixedColordx = colordx(fixedColor);
+    
+    let lightenedColor = adjustColordx;
+    let darkenedColor = adjustColordx;
+
+    while (lightenedColor.contrast(fixedColordx) < targetRatio
+        && darkenedColor.contrast(fixedColordx) < targetRatio) {
+        lightenedColor = lightenedColor.lighten(step);
+        darkenedColor = darkenedColor.darken(step);
+
+        if (formatAsHexWithoutAlpha(lightenedColor) === white && formatAsHexWithoutAlpha(darkenedColor) === black) {
+            // We've reached both ends of the spectrum without hitting the target ratio
+            break;
+        }
+    }
+
+    const lightenedContrast = lightenedColor.contrast(fixedColordx);
+    const darkenedContrast = darkenedColor.contrast(fixedColordx);
+
+    if (lightenedContrast >= darkenedContrast) {
+        const outputColor = convertColorToFormat(lightenedColor, colorFormat);
+        return { hitTarget: lightenedContrast >= targetRatio, color: outputColor };
+    } else {
+        const outputColor = convertColorToFormat(darkenedColor, colorFormat);
+        return { hitTarget: darkenedContrast >= targetRatio, color: outputColor };
+    }
+}
+
+/**
+ * Formats a color in any format as a hex color string without an alpha channel.
+ * @param {string} color The color to format as hex without alpha.
+ * @param {string} defaultColor The default color to return if the input color is invalid.
+ * @returns {string} The color formatted as hex without alpha, or the default color if invalid.
+ */
+export function formatAsHexWithoutAlpha(color, defaultColor = '#000000') {
+    let colorObject = colordx(color);
+
+    if (colorObject.isValid() === false) {
+        return defaultColor;
+    }
+
+    colorObject = colorObject.alpha(1);
+
+    return colorObject.toHex();
+}
+
+/**
+ * Converts a colordx color instance to the specified format.
+ * @param {colordx} colordx The colordx instance representing the color to convert.
+ * @param {string} format The target color format (e.g., 'rgb', 'hsl', 'hex').
+ * @returns {string} The color converted to the specified format.
+ */
+function convertColorToFormat(colordx, format) {
+    switch (format) {
+        case 'rgb':
+            return colordx.toRgbString();
+        case 'hsl':
+            return colordx.toHslString();
+        case 'hsv':
+            return colordx.toHsvString();
+        case 'hwb':
+            return colordx.toHwbString();
+        case 'lab':
+            return colordx.toLabString();
+        case 'lch':
+            return colordx.toLchString();
+        case 'oklab':
+            return colordx.toOklabString();
+        case 'oklch':
+            return colordx.toOklchString();
+        case 'p3':
+            return colordx.toP3String();
+        case 'xyz':
+            return colordx.toXyzString();
+        case 'xyz-d65':
+            return colordx.toXyzD65String();
+        case 'cmyk':
+            return colordx.toCmykString();
+        case 'rec2020':
+            return colordx.toRec2020String();
+        case 'a98-rgb':
+            return colordx.toA98String();
+        case 'prophoto-rgb':
+            return colordx.toProphotoString();
+        default:
+            return colordx.toHex();
+    }
+}
+
+/**
+ * Converts a File object to a Base64 data URL.
+ * @param {File} file The file to convert to a Base64 data URL.
+ * @returns {Promise<string>} A promise that resolves with the Base64 data URL string containing the file's data.
+ */
+export function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
     });
 }

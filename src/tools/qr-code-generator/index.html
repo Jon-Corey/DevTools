@@ -1,0 +1,254 @@
+---
+title: QR Code Generator
+description: This tool allows you to generate various types of QR codes. QR codes are a type of barcode that can store information such as URLs, contact details, and more. They are typically used for providing quick access to information via scanning the QR code with a smartphone.
+short_description: Create QR codes.
+keywords: wifi wi-fi email phone sms text url link vcard .svg .png
+tags: Utility
+icon: ti-qrcode
+js:
+    - /assets/components/color-input.js
+    - /assets/components/range-input.js
+    - /assets/components/small-file-input.js
+    - /assets/components/tab-panel.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<tab-panel id="tab-panel">
+    <div data-tab-name="URL / Link">
+        <div class="flex-column-small">
+            <label for="url">URL:</label>
+            <input type="url" id="url" inputmode="url" placeholder="Enter URL..." autocomplete="url">
+        </div>
+    </div>
+    <div data-tab-name="Wi-Fi">
+        <div class="auto-fit-grid">
+            <div class="flex-column-small">
+                <label for="wifi-ssid">Network Name (SSID):</label>
+                <input type="text" id="wifi-ssid" placeholder="Enter Wi-Fi network name...">
+                <label for="wifi-hidden">
+                    <input type="checkbox" id="wifi-hidden">
+                    Hidden Network
+                </label>
+            </div>
+            <div class="flex-column-small">
+                <label for="wifi-security-type">Security Type:</label>
+                <select id="wifi-security-type">
+                    <option value="nopass">No password</option>
+                    <option value="WPA">WPA (Most common)</option>
+                    <option value="WEP">WEP (Legacy networks)</option>
+                </select>
+            </div>
+            <div class="flex-column-small">
+                <label for="wifi-password">Password:</label>
+                <input type="text" id="wifi-password" placeholder="Enter Wi-Fi password..." disabled>
+            </div>
+        </div>
+    </div>
+    <div data-tab-name="Email">
+        <div class="auto-fit-grid">
+            <div class="flex-column-small">
+                <label for="email-address">Email Address:</label>
+                <input type="email" id="email-address" placeholder="Enter email address..." autocomplete="email">
+            </div>
+            <div class="flex-column-small">
+                <label for="email-subject">Subject (Optional):</label>
+                <input type="text" id="email-subject" placeholder="Enter subject...">
+            </div>
+            <div class="flex-column-small">
+                <label for="email-body">Body (Optional):</label>
+                <textarea id="email-body" placeholder="Enter message body..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div data-tab-name="SMS">
+        <div class="auto-fit-grid">
+            <div class="flex-column-small">
+                <label for="sms-number">Phone Number:</label>
+                <input type="tel" id="sms-number" placeholder="Enter phone number..." autocomplete="tel">
+            </div>
+            <div class="flex-column-small">
+                <label for="sms-message">Message:</label>
+                <textarea id="sms-message" placeholder="Enter your message..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div data-tab-name="Phone">
+        <div class="flex-column-small">
+            <label for="phone-number">Phone Number:</label>
+            <input type="tel" id="phone-number" placeholder="Enter phone number..." autocomplete="tel">
+        </div>
+    </div>
+    <div data-tab-name="Plain Text">
+        <div class="flex-column-small">
+            <label for="text">Text:</label>
+            <input type="text" id="text" placeholder="Enter text...">
+        </div>
+    </div>
+    <div data-tab-name="Contact / vCard">
+        <div class="auto-fit-grid">
+            <div class="flex-column-small">
+                <label for="vcard-given-name">Given Name:</label>
+                <input type="text" id="vcard-given-name" placeholder="Enter given name..." autocomplete="given-name">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-family-name">Family Name (Surname):</label>
+                <input type="text" id="vcard-family-name" placeholder="Enter family name..." autocomplete="family-name">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-prefix">Prefix (e.g., Mr., Mrs., Dr.):</label>
+                <input type="text" id="vcard-prefix" placeholder="Enter prefix..." autocomplete="honorific-prefix">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-suffix">Suffix (e.g., Jr., Sr., III):</label>
+                <input type="text" id="vcard-suffix" placeholder="Enter suffix..." autocomplete="honorific-suffix">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-full-name">Full Name (Required):</label>
+                <input type="text" id="vcard-full-name" placeholder="Enter full name..." autocomplete="name">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-phone">Phone Number:</label>
+                <input type="tel" id="vcard-phone" placeholder="Enter phone number..." autocomplete="tel">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-email">Email Address:</label>
+                <input type="email" id="vcard-email" placeholder="Enter email address..." autocomplete="email">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-website">Website:</label>
+                <input type="url" id="vcard-website" placeholder="Enter website..." autocomplete="url">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-organization">Organization:</label>
+                <input type="text" id="vcard-organization" placeholder="Enter organization name..." autocomplete="organization">
+            </div>
+            <div class="flex-column-small">
+                <label for="vcard-title">Job Title:</label>
+                <input type="text" id="vcard-title" placeholder="Enter job title..." autocomplete="organization-title">
+            </div>
+        </div>
+    </div>
+</tab-panel>
+
+<div class="card style-options-card">
+    <color-input id="foreground-color" default-value="#000000" label="Foreground Color"></color-input>
+    <color-input id="background-color" default-value="#ffffff" label="Background Color"></color-input>
+
+    <div class="flex-column-small">
+        <span>Contrast: <span id="contrast">21.00 (<i class="ti ti-check text-success"></i> Excellent)</span></span>
+        <div class="flex-row contrast-buttons">
+            <button type="button" id="fix-foreground-color" disabled>Fix Foreground Color</button>
+            <button type="button" id="fix-background-color" disabled>Fix Background Color</button>
+        </div>
+    </div>
+
+    <div class="flex-column-small">
+        <label for="style">Style</label>
+        <select id="style">
+            <option value="square">Square</option>
+            <option value="rounded">Rounded</option>
+            <option value="fluid">Fluid</option>
+            <option value="dots">Dots</option>
+        </select>
+    </div>
+
+    <div class="flex-column-small">
+        <span>Image (Optional)</span>
+        <small-file-input accept=".aai,.art,.avif,.avs,.bmp,.bmp2,.bmp3,.cin,.cur,.dcx,.dds,.dpx,.dxt1,.dxt5,.exr,.farbfeld,.fax,.ff,.fits,.fl32,.fts,.g3,.gif,.gif87,.hdr,.heic,.heif,.hrz,.icb,.ico,.icon,.ipl,.j2c,.j2k,.jng,.jp2,.jpc,.jpe,.jpeg,.jpg,.jpm,.jps,.jxl,.mat,.miff,.mng,.mpo,.mtv,.otb,.palm,.pam,.pbm,.pcd,.pcds,.pct,.pcx,.pdb,.pfm,.pgm,.pgx,.phm,.picon,.pict,.pjpeg,.png,.png00,.png24,.png32,.png48,.png64,.png8,.pnm,.ppm,.psb,.psd,.ptif,.qoi,.ras,.sgi,.six,.sixel,.sun,.svg,.tga,.tiff,.tiff64,.vda,.vicar,.viff,.vips,.vst,.wbmp,.webp,.wpg,.xbm,.xpm,.xv" id="image"></small-file-input>
+    </div>
+</div>
+
+<div class="alert" id="output-card">
+    <div id="error-container" style="display: none;">
+        <strong><i class="ti ti-alert-triangle"></i> Error:</strong>
+        <br>
+        <span id="error-message"></span>
+    </div>
+    <div class="flex-column" id="output-container" style="display: none;">
+        <img id="preview" alt="QR code preview" />
+        <div class="flex-row">
+            <button type="button" id="download-svg" class="primary"><i class="ti ti-download"></i> Download SVG</button>
+            <button type="button" id="download-png"><i class="ti ti-download"></i> Download PNG</button>
+        </div>
+    </div>
+    <div id="no-output-message">
+        <p>Enter content to generate a QR code.</p>
+    </div>
+</div>
+
+<div class="alert">
+    <h2 class="normal-size-heading"><i class="ti ti-info-circle"></i> About QR Codes</h2>
+    <p>QR codes (quick-response codes) are a type of barcode. They store text information and can be quickly scanned by devices such as smartphones. QR codes are built to be resilient, with error correction that allows them to be read even if part of the code is damaged or obscured.</p>
+
+    <hr class="space-before space-after">
+
+    <h2 class="normal-size-heading"><i class="ti ti-help-circle"></i> FAQ</h2>
+
+    <details>
+        <summary>Why are QR codes sometimes hard to scan?</summary>
+        <p>There are a couple things that factor into how easy a QR code is to scan.</p>
+        <ul>
+            <li><strong>Contrast:</strong> The foreground and background colors should have sufficient contrast so that the scanner can easily tell them apart.</li>
+            <li><strong>Style:</strong> Some QR code styles, such as dots or other shapes, may be harder for scanners to read compared to traditional square patterns.</li>
+            <li><strong>Images:</strong> Images placed over the QR code obstruct the pattern. QR codes have error correction built in to account for obstruction, but excessive obstruction can still make them difficult to scan.</li>
+            <li><strong>Size & Distance:</strong> The larger the QR code and the closer the scanner is to it, the easier it will be to scan. Small or far-away QR codes are difficult for scanners to see clearly.</li>
+            <li><strong>Density:</strong> QR codes with higher data density (more information packed into the same area) can be harder to scan, especially if they are small.</li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>Can I change where the link in a QR code goes?</summary>
+        <p>No. Once a QR code is generated, the content it contains is fixed. If you need to change the link, you will have to generate a new QR code with the updated URL.</p>
+        <p>Some QR code generators may offer "dynamic" QR codes, which allow the QR code to point to different content after it has been generated. This works by putting the service's own link into the QR code. Their link then redirects to your content. This works, but it relies on the third-party service and often comes with limitations or subscription requirements. Plus, if the service ever goes down or you stop paying for it, your QR code will no longer work.</p>
+    </details>
+
+    <details>
+        <summary>Do QR codes expire?</summary>
+        <p>No. Once a QR code is generated, the content it contains remains the same forever.</p>
+        <p>Some QR code generators offer "dynamic" QR codes, which can be updated after they are created but are reliant on a third-party service. In such cases, the QR code itself does not expire, but the third-party service may impose limitations or expirations on the dynamic content.</p>
+    </details>
+
+    <details>
+        <summary>Why do some QR code generators charge for generating QR codes? / What is a "dynamic" QR code?</summary>
+        <p>Some QR code generators charge for generating QR codes because they create "dynamic" QR codes. "Dynamic" QR codes point to the service's own link, which then redirects to your content. This allows the QR code to point to different content after it has been generated (by changing where the service's link redirects to). This requires ongoing infrastructure and support from the service, which is why they charge for it.</p>
+
+        <strong>Benefits of dynamic QR codes:</strong>
+        <ul>
+            <li>Ability to change the destination content without generating a new QR code.</li>
+            <li>Tracking and analytics of QR code scans.</li>
+            <li>Link shortening (which makes the QR code easier to scan since less dense QR codes are easier to read).</li>
+        </ul>
+
+        <strong>Drawbacks of dynamic QR codes:</strong>
+        <ul>
+            <li>Dependence on a third-party service for redirection.</li>
+            <li>Potential subscription costs or limitations imposed by the service.</li>
+            <li>If the service goes down or you stop paying, the QR code will no longer work.</li>
+            <li>Less control over the QR code content compared to static QR codes.</li>
+            <li>Potential privacy concerns, as the third-party service tracks QR code usage.</li>
+            <li>Potential security risks if the third-party service is compromised (for example, if their servers are hacked, your QR code could be redirected to malicious content).</li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>If QR codes only contain text, how do they store Wi-Fi credentials, contact information, or other structured data?</summary>
+        <p>QR codes store structured data by writing it in a specific format. For example, Wi-Fi credentials are written using a standardized format like this: <code>WIFI:S:{SSID};T:{encryption};P:{password};;</code>. Similarly, contact information can be written using the vCard format. QR code readers recognize these formats and can interpret the data accordingly.</p>
+    </details>
+
+    <details>
+        <summary>If I make a Wi-Fi QR code, is my Wi-Fi password hidden?</summary>
+        <p>No. The Wi-Fi password is stored in plain text within the QR code, so anyone who scans the QR code can see the password. Therefore, you should only share Wi-Fi QR codes with people who you trust to have the password.</p>
+    </details>
+
+    <details>
+        <summary>Should I download the QR code as an SVG or PNG?</summary>
+        <p>It depends on your use case. SVG is a vector image format, which means it can be scaled to any size without looking blurry. PNG has a bit more compatibility with various platforms and applications, but scaling it up too much can make it look blurry.</p>
+        <p>In general, you should try using an SVG first, and only use a PNG if you encounter compatibility issues.</p>
+    </details>
+
+    <details>
+        <summary>Are QR codes dangerous to scan?</summary>
+        <p>QR codes contain links. Scanning a QR code is no different from clicking on a link. Links can be malicious, leading to phishing sites, malware downloads, or other harmful content. It is important to take the same precautions as you would when clicking on any link, such as verifying the source and destination, and being cautious with unknown QR codes.</p>
+    </details>
+</div>

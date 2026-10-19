@@ -1,17 +1,4 @@
-import { colordx, extend, getFormat } from '/assets/js/vendor/colordx/colordx.js';
-import lab from '/assets/js/vendor/colordx/lab.js';
-import lch from '/assets/js/vendor/colordx/lch.js';
-import cmyk from '/assets/js/vendor/colordx/cmyk.js';
-import hsv from '/assets/js/vendor/colordx/hsv.js';
-import hwb from '/assets/js/vendor/colordx/hwb.js';
-import p3 from '/assets/js/vendor/colordx/p3.js';
-import rec2020 from '/assets/js/vendor/colordx/rec2020.js';
-import a98rgb from '/assets/js/vendor/colordx/a98rgb.js';
-import prophoto from '/assets/js/vendor/colordx/prophoto.js';
-import names from '/assets/js/vendor/colordx/names.js';
-import a11y from '/assets/js/vendor/colordx/a11y.js';
-
-extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names, a11y]);
+import { getContrastRatio, adjustToTargetContrast, formatAsHexWithoutAlpha } from '/assets/js/utils.js';
 
 const foregroundColorInput = document.getElementById('foreground-color');
 const fixForeground45Button = document.getElementById('fix-foreground-4-5');
@@ -98,8 +85,8 @@ function fixBackground(targetRatio) {
 }
 
 function updateContrastResults() {
-    const contrastRatio = colordx(foregroundColorInput.value).contrast(colordx(backgroundColorInput.value));
-    contrastRatioElement.textContent = contrastRatio.toFixed(2) + ':1';
+    const contrastRatio = getContrastRatio(foregroundColorInput.value, backgroundColorInput.value);
+    contrastRatioElement.textContent = contrastRatio + ':1';
 
     // Pass/Fail results
     normalTextAaResultElement.classList.toggle('show-alternate-content', contrastRatio < 4.5);
@@ -121,91 +108,4 @@ function updateContrastResults() {
     fixForeground7Button.disabled = contrastRatio >= 7 || adjustToTargetContrast(foregroundColorInput.value, backgroundColorInput.value, 7).hitTarget === false;
     fixBackground45Button.disabled = contrastRatio >= 4.5 || adjustToTargetContrast(backgroundColorInput.value, foregroundColorInput.value, 4.5).hitTarget === false;
     fixBackground7Button.disabled = contrastRatio >= 7 || adjustToTargetContrast(backgroundColorInput.value, foregroundColorInput.value, 7).hitTarget === false;
-}
-
-// Utility Functions
-
-function formatAsHexWithoutAlpha(color, defaultColor = '#000000') {
-    let colorObject = colordx(color);
-
-    if (colorObject.isValid() === false) {
-        return defaultColor;
-    }
-
-    colorObject = colorObject.alpha(1);
-
-    return colorObject.toHex();
-}
-
-function adjustToTargetContrast(adjustColor, fixedColor, targetRatio) {
-    const step = 0.01;
-    const white = '#ffffff';
-    const black = '#000000';
-
-    const colorFormat = getFormat(adjustColor);
-
-    const adjustColordx = colordx(adjustColor);
-    const fixedColordx = colordx(fixedColor);
-    
-    let lightenedColor = adjustColordx;
-    let darkenedColor = adjustColordx;
-
-    while (lightenedColor.contrast(fixedColordx) < targetRatio
-        && darkenedColor.contrast(fixedColordx) < targetRatio) {
-        lightenedColor = lightenedColor.lighten(step);
-        darkenedColor = darkenedColor.darken(step);
-
-        if (formatAsHexWithoutAlpha(lightenedColor) === white && formatAsHexWithoutAlpha(darkenedColor) === black) {
-            // We've reached both ends of the spectrum without hitting the target ratio
-            break;
-        }
-    }
-
-    const lightenedContrast = lightenedColor.contrast(fixedColordx);
-    const darkenedContrast = darkenedColor.contrast(fixedColordx);
-
-    if (lightenedContrast >= darkenedContrast) {
-        const outputColor = convertColorToFormat(lightenedColor, colorFormat);
-        return { hitTarget: lightenedContrast >= targetRatio, color: outputColor };
-    } else {
-        const outputColor = convertColorToFormat(darkenedColor, colorFormat);
-        return { hitTarget: darkenedContrast >= targetRatio, color: outputColor };
-    }
-}
-
-function convertColorToFormat(colordx, format) {
-    switch (format) {
-        case 'rgb':
-            return colordx.toRgbString();
-        case 'hsl':
-            return colordx.toHslString();
-        case 'hsv':
-            return colordx.toHsvString();
-        case 'hwb': // Double-check this
-            return colordx.toHwbString();
-        case 'lab':
-            return colordx.toLabString();
-        case 'lch':
-            return colordx.toLchString();
-        case 'oklab':
-            return colordx.toOklabString();
-        case 'oklch':
-            return colordx.toOklchString();
-        case 'p3':
-            return colordx.toP3String();
-        case 'xyz':
-            return colordx.toXyzString();
-        case 'xyz-d65':
-            return colordx.toXyzD65String();
-        case 'cmyk':
-            return colordx.toCmykString();
-        case 'rec2020':
-            return colordx.toRec2020String();
-        case 'a98-rgb':
-            return colordx.toA98String();
-        case 'prophoto-rgb':
-            return colordx.toProphotoString();
-        default:
-            return colordx.toHex();
-    }
 }

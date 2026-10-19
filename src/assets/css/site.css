@@ -561,7 +561,7 @@ a:active {
 
 hr {
     border: none;
-    border-top: 1px solid var(--color-border);
+    border-top: var(--border);
     margin: 1rem 0;
 }
 
@@ -612,6 +612,22 @@ progress::-moz-progress-bar {
     outline-color: var(--color-text-accent);
 }
 
+details {
+    background-color: var(--color-bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+details summary {
+    cursor: pointer;
+}
+
+details[open] summary {
+    border-bottom: var(--border);
+    padding-bottom: 1rem;
+}
+
 .ti {
     /* Prevent layout shift */
     height: 1em;
@@ -640,7 +656,7 @@ progress::-moz-progress-bar {
     text-decoration: none;
     color: inherit;
     background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: var(--border);
     border-radius: var(--border-radius);
     padding: 1rem;
     transition-property: border-color, color;
@@ -682,7 +698,7 @@ input, select, textarea {
     font-size: inherit;
     color: inherit;
     background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: var(--border);
     border-radius: var(--border-radius);
     padding: 0.5rem;
     transition: border-color var(--transition-duration) var(--transition-timing-function);
@@ -1008,6 +1024,12 @@ button.success, .button.success {
     color: var(--color-text-accent);
 }
 
+.normal-size-heading {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-block: 0;
+}
+
 /* Utilities */
 
 .flex-row, .flex-row-small {
@@ -1047,10 +1069,16 @@ button.success, .button.success {
     gap: 0.25rem;
 }
 
+.auto-fit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    gap: 1rem;
+}
+
 .card, .card-small {
     display: block;
     background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: var(--border);
     border-radius: var(--border-radius);
     padding: 1rem;
 }
