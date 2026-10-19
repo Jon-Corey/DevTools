@@ -425,6 +425,8 @@ search {
     left: 1rem;
     right: 1rem;
     max-height: calc(100svh - var(--topbar-height) - 2rem);
+    max-width: 50rem;
+    margin-inline: auto;
     grid-template-rows: auto 1fr;
 
     background-color: var(--color-bg);
