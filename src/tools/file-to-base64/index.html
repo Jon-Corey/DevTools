@@ -1,0 +1,16 @@
+---
+title: File To Base64
+description: This tool allows you to convert files into Base64 strings or data URLs.
+short_description: Convert files to Base64 strings or data URLs.
+keywords: uri safe encoder btoa
+tags: File
+icon: ti-file-export
+js:
+    - /assets/components/file-input.js
+    - ./tool.js
+css: ./tool.css
+---
+
+<file-input id="file-input" multiple hide-file-list></file-input>
+
+<ul class="file-item-list" id="output"></ul>

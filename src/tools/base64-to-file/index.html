@@ -1,0 +1,36 @@
+---
+title: Base64 To File
+description: This tool allows you to convert a Base64 string or data URL into a downloadable file.
+short_description: Convert a Base64 string or data URL to a file.
+keywords: uri safe decoder atob
+tags: File
+icon: ti-file-import
+js:
+    - /assets/components/file-item.js
+    - ./tool.js
+---
+
+<div class="flex-column">
+    <div class="card">
+        <div class="flex-column">
+            <div class="flex-column-small" id="base64-container">
+                <label for="base64">Base64 String or Data URL</label>
+                <textarea id="base64" rows="5" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" placeholder="Paste your Base64 string or data URL here..."></textarea>
+                <div class="validation-message" id="validation-message"></div>
+            </div>
+
+            <div class="auto-fit-grid">
+                <div class="flex-column-small">
+                    <label for="file-name">File Name</label>
+                    <input type="text" id="file-name" placeholder="Enter file name..." autocomplete="off" spellcheck="false">
+                </div>
+
+                <div class="flex-column-small">
+                    <label for="file-extension">File Extension</label>
+                    <input type="text" id="file-extension" placeholder="Enter file extension..." autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+        </div>
+    </div>
+    <file-item id="file-item" button-icon="ti-download" button-label="Download file" style="display: none;"></file-item>
+</div>

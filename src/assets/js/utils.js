@@ -20,6 +20,64 @@ extend([lab, lch, cmyk, hsv, hwb, p3, rec2020, a98rgb, prophoto, names, a11y]);
 export const previewableImageFormats = ['png', 'jpeg', 'jpg', 'gif', 'webp', 'svg', 'bmp'];
 
 /**
+ * The default icon to use for file previews when the file type does not have a specific icon.
+ */
+export const defaultFileIcon = 'ti-file';
+
+/**
+ * The list of file icons to use for specific file types in file previews. Each entry specifies the file extensions and the corresponding icon class.
+ */
+export const fileIcons = [
+    {
+        // Image
+        extensions: ['png', 'jpeg', 'jpg', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico', 'avif', 'heic', 'heif', 'apng'],
+        icon: 'ti-photo'
+    },
+    {
+        // Video
+        extensions: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'mpeg', 'mpg'],
+        icon: 'ti-video'
+    },
+    {
+        // Font
+        extensions: ['woff', 'woff2', 'ttf', 'otf'],
+        icon: 'ti-file-typography'
+    },
+    {
+        // Archive
+        extensions: ['zip', 'rar', '7z', 'tar', 'gz', 'bz2'],
+        icon: 'ti-file-zip'
+    },
+    {
+        // Audio
+        extensions: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'm4a'],
+        icon: 'ti-file-music'
+    }
+];
+
+/**
+ * Gets the icon class to use for file previews for a given file extension.
+ * @param {string} fileExtension The file extension to get the icon for.
+ * @returns {string} The icon class for the given file extension.
+ */
+export function getFileIcon(fileExtension) {
+        let icon = defaultFileIcon;
+
+        if (!fileExtension || fileExtension.trim() === '') {
+            return icon;
+        }
+
+        for (const fileType of fileIcons) {
+            if (fileType.extensions.includes(fileExtension)) {
+                icon = fileType.icon;
+                break;
+            }
+        }
+
+        return icon;
+    }
+
+/**
  * Formats a number of bytes into a human-readable string.
  * @param {number} size The size in bytes to format.
  * @returns {string} The formatted file size string (e.g. "1.23 MB", "456 B").
@@ -57,7 +115,7 @@ export function downloadFile(file) {
     a.click();
 
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 /**

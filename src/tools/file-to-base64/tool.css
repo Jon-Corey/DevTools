@@ -1,0 +1,59 @@
+#output li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "preview name button"
+        "preview size button"
+        "buttons buttons buttons";
+    column-gap: 1rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    align-items: center;
+}
+
+.preview-container {
+    grid-area: preview;
+}
+
+.preview-container img {
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.preview-container .ti {
+    font-size: 3rem;
+}
+
+.name {
+    grid-area: name;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.size {
+    grid-area: size;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.remove-button {
+    grid-area: button;
+}
+
+.flex-row {
+    grid-area: buttons;
+    margin-block-end: 0;
+}
+
+.copy-unavailable .copy-button {
+    display: none;
+}

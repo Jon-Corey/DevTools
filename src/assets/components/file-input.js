@@ -2,7 +2,7 @@ import '/assets/components/file-item.js';
 import { generateUUID, getFileExtension } from '/assets/js/utils.js';
 
 class FileInput extends HTMLElement {
-    static observedAttributes = ['accept', 'multiple', 'ask-for-dimensions-for-svg'];
+    static observedAttributes = ['accept', 'multiple', 'ask-for-dimensions-for-svg', 'hide-file-list'];
 
     static singleText = 'Drop a file here or click to browse';
     static multipleText = 'Drop files here or click to browse';
@@ -163,7 +163,7 @@ class FileInput extends HTMLElement {
 
             // Output list
             const list = document.createElement('ul');
-            list.style.display = this._items.length > 0 ? '' : 'none';
+            this.updateListVisibility();
             shadow.appendChild(list);
         }
     }
@@ -204,6 +204,17 @@ class FileInput extends HTMLElement {
             } else {
                 labelText.textContent = FileInput.singleText;
             }
+        } else if (name === 'hide-file-list') {
+            const list = this.shadowRoot.querySelector('ul');
+            list.innerHTML = '';
+
+            if (!this.hasAttribute('hide-file-list')) {
+                for (const item of this._items) {
+                    this.addFileItem(item);
+                }
+            }
+
+            this.updateListVisibility();
         } else if (name === 'ask-for-dimensions-for-svg') {
             const fileItems = this.shadowRoot.querySelectorAll('file-item');
 
@@ -252,7 +263,6 @@ class FileInput extends HTMLElement {
             this.removeAllFiles();
         }
 
-        const list = this.shadowRoot.querySelector('ul');
         for (const file of files) {
             const item = {
                 id: generateUUID(),
@@ -261,27 +271,43 @@ class FileInput extends HTMLElement {
 
             this._items.push(item);
 
-            const fileItem = document.createElement('file-item');
-            fileItem.file = file;
-            fileItem.setAttribute('button-label', `Remove file ${file.name}`);
-            fileItem.dataset.id = item.id;
-            if (this.hasAttribute('ask-for-dimensions-for-svg')) {
-                fileItem.setAttribute('ask-for-dimensions-for-svg', '');
+            if (!this.hasAttribute('hide-file-list')) {
+                this.addFileItem(item);
             }
-            list.appendChild(fileItem);
-
-            fileItem.addEventListener('button-clicked', () => {
-                this.removeFile(item.id);
-            });
-
-            fileItem.addEventListener('dimensions-changed', (e) => {
-                this.updateItemDimensions(item.id, e.detail?.width, e.detail?.height);
-            });
         }
 
-        list.style.display = this._items.length > 0 ? '' : 'none';
-        
+        this.updateListVisibility();
+
         this.fireChangeEvent();
+    }
+
+    addFileItem(item) {
+        const list = this.shadowRoot.querySelector('ul');
+
+        const fileItem = document.createElement('file-item');
+        fileItem.file = item.file;
+        fileItem.setAttribute('button-label', `Remove file ${item.file.name}`);
+        fileItem.dataset.id = item.id;
+        if (this.hasAttribute('ask-for-dimensions-for-svg')) {
+            fileItem.setAttribute('ask-for-dimensions-for-svg', '');
+        }
+        list.appendChild(fileItem);
+
+        fileItem.addEventListener('button-clicked', () => {
+            this.removeFile(item.id);
+        });
+
+        fileItem.addEventListener('dimensions-changed', (e) => {
+            this.updateItemDimensions(item.id, e.detail?.width, e.detail?.height);
+        });
+    }
+
+    updateListVisibility() {
+        const list = this.shadowRoot.querySelector('ul');
+        if (list) {
+            const hidden = this.hasAttribute('hide-file-list') || this._items.length === 0;
+            list.style.display = hidden ? 'none' : '';
+        }
     }
 
     updateItemDimensions(id, width, height) {
@@ -361,9 +387,7 @@ class FileInput extends HTMLElement {
             fileItem.remove();
         }
 
-        // Hide list if no files left
-        const list = this.shadowRoot.querySelector('ul');
-        list.style.display = this._items.length > 0 ? '' : 'none';
+        this.updateListVisibility();
 
         this.fireChangeEvent();
     }

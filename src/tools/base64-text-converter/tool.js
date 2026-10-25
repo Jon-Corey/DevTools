@@ -28,8 +28,13 @@ function initialize() {
     }
 }
 
-function convert() {
+function getInputText() {
     const text = input.value;
+    return conversionTypeSelect.value === 'decode' ? text.replace(/\s+/g, '') : text;
+}
+
+function convert() {
+    const text = getInputText();
     const conversionType = conversionTypeSelect.value;
     const isValid = checkInputValidity();
 
@@ -48,7 +53,7 @@ function convert() {
 }
 
 function checkInputValidity() {
-    const text = input.value;
+    const text = getInputText();
     const conversionType = conversionTypeSelect.value;
 
     if (text === '') {

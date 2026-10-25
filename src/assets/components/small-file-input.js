@@ -1,26 +1,7 @@
-import { previewableImageFormats, getFileExtension, ensureSvgHasXmlns } from '/assets/js/utils.js';
+import { previewableImageFormats, getFileExtension, ensureSvgHasXmlns, getFileIcon } from '/assets/js/utils.js';
 
 class SmallFileInput extends HTMLElement {
     static observedAttributes = ['accept'];
-
-    static defaultFileIcon = 'ti-file';
-    static fileIcons = [
-        {
-            // Image
-            extensions: ['png', 'jpeg', 'jpg', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico', 'avif', 'heic', 'heif', 'apng'],
-            icon: 'ti-photo'
-        },
-        {
-            // Video
-            extensions: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'mpeg', 'mpg'],
-            icon: 'ti-video'
-        },
-        {
-            // Font
-            extensions: ['woff', 'woff2', 'ttf', 'otf'],
-            icon: 'ti-file-typography'
-        }
-    ]
 
     static css = `
         .layout {
@@ -308,14 +289,14 @@ class SmallFileInput extends HTMLElement {
                 img.src = await this.getPreviewUrl(this.#file);
                 previewContainer.appendChild(img);
             } else {
-                previewContainer.innerHTML = `<i class="ti ${this.getFileIcon(extension)}"></i>`;
+                previewContainer.innerHTML = `<i class="ti ${getFileIcon(extension)}"></i>`;
             }
 
             nameSpan.textContent = this.#file.name;
 
             fileInfo.style.display = '';
         } else {
-            previewContainer.innerHTML = `<i class="ti ${SmallFileInput.defaultFileIcon}"></i>`;
+            previewContainer.innerHTML = `<i class="ti ${getFileIcon('')}"></i>`;
             nameSpan.textContent = 'No file selected';
             fileInfo.style.display = 'none';
         }
@@ -387,19 +368,6 @@ class SmallFileInput extends HTMLElement {
         if (previewImage) {
             URL.revokeObjectURL(previewImage.src);
         }
-    }
-
-    getFileIcon(fileExtension) {
-        let icon = SmallFileInput.defaultFileIcon;
-
-        for (const fileType of SmallFileInput.fileIcons) {
-            if (fileType.extensions.includes(fileExtension)) {
-                icon = fileType.icon;
-                break;
-            }
-        }
-
-        return icon;
     }
 }
 

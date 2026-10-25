@@ -1,26 +1,7 @@
-import { previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions } from '/assets/js/utils.js';
+import { previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions, getFileIcon } from '/assets/js/utils.js';
 
 class FileItem extends HTMLElement {
     static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg', 'original-file-size'];
-
-    static defaultFileIcon = 'ti-file';
-    static fileIcons = [
-        {
-            // Image
-            extensions: ['png', 'jpeg', 'jpg', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico', 'avif', 'heic', 'heif', 'apng'],
-            icon: 'ti-photo'
-        },
-        {
-            // Video
-            extensions: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'mpeg', 'mpg'],
-            icon: 'ti-video'
-        },
-        {
-            // Font
-            extensions: ['woff', 'woff2', 'ttf', 'otf'],
-            icon: 'ti-file-typography'
-        }
-    ]
 
     static css = `
         .root {
@@ -542,7 +523,7 @@ class FileItem extends HTMLElement {
                 img.src = await this.getPreviewUrl(this.#file);
                 previewContainer.appendChild(img);
             } else {
-                previewContainer.innerHTML = `<i class="ti ${this.getFileIcon(extension)}"></i>`;
+                previewContainer.innerHTML = `<i class="ti ${getFileIcon(extension)}"></i>`;
             }
 
             nameSpan.textContent = this.#file.name;
@@ -559,7 +540,7 @@ class FileItem extends HTMLElement {
                 sizeSpan.textContent = formatFileSize(this.#file.size);
             }
         } else {
-            previewContainer.innerHTML = `<i class="ti ${FileItem.defaultFileIcon}"></i>`;
+            previewContainer.innerHTML = `<i class="ti ${getFileIcon('')}"></i>`;
 
             nameSpan.textContent = 'No file selected';
             sizeSpan.textContent = '0 B';
@@ -582,19 +563,6 @@ class FileItem extends HTMLElement {
         if (previewImage) {
             URL.revokeObjectURL(previewImage.src);
         }
-    }
-
-    getFileIcon(fileExtension) {
-        let icon = FileItem.defaultFileIcon;
-
-        for (const fileType of FileItem.fileIcons) {
-            if (fileType.extensions.includes(fileExtension)) {
-                icon = fileType.icon;
-                break;
-            }
-        }
-
-        return icon;
     }
 }
 
