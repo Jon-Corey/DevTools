@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Report a security issue
-    url: mailto:help@joncorey.dev?subject=DevTools%20Security%20Issue
+    url: https://joncorey.dev/contact
     about: Found a security vulnerability? Please don't open a public issue. Email me instead.
   - name: Email me directly
-    url: mailto:help@joncorey.dev
+    url: https://joncorey.dev/contact
     about: Have a question or feedback that doesn't fit as an issue on GitHub? Email me directly.
