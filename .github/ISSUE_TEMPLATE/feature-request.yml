@@ -1,0 +1,45 @@
+name: Feature Request
+description: Request a new feature or an improvement to an existing feature
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve DevTools! Please describe your idea below.
+        If you have an idea for a new tool, please use the [New Tool](https://github.com/Jon-Corey/DevTools/issues/new?template=new-tool.yml) template instead.
+  - type: input
+    id: tool
+    attributes:
+      label: Related tool
+      description: Which tool is this for? Leave blank if it applies to the site in general.
+      placeholder: e.g. Image Compressor
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What problem are you trying to solve, or what is missing or frustrating today?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe the feature or improvement you'd like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative solutions or workarounds you've considered.
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Mockups, screenshots, links, or anything else that helps.
+    validations:
+      required: false

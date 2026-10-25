@@ -1,0 +1,45 @@
+name: New Tool
+description: Suggest a new tool
+labels: ["new tool"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new tool! Please describe your tool idea below.
+        Note that the tools on DevTools run entirely on your own device so that your data stays private. We will not implement tools that require sending data to a server.
+  - type: input
+    id: name
+    attributes:
+      label: Tool name
+      description: A short, descriptive name for the tool.
+      placeholder: e.g. UUID Generator
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What should the tool do?
+      description: Describe what the tool would do, including the expected inputs and outputs.
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Why would this tool be useful? What problem does it solve? Give a specific example of when you would use this tool.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives
+      description: Are there similar tools or sites? Links are welcome, along with what they do well or poorly.
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Mockups, links, or anything else that helps.
+    validations:
+      required: false
