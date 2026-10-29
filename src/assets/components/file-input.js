@@ -163,8 +163,8 @@ class FileInput extends HTMLElement {
 
             // Output list
             const list = document.createElement('ul');
-            this.updateListVisibility();
             shadow.appendChild(list);
+            this.updateListVisibility();
         }
     }
 
