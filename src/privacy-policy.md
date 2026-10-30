@@ -4,6 +4,8 @@ title: Privacy Policy
 description: Read the privacy policy for DevTools, a collection of tools and resources for developers.
 ---
 
+<div class="privacy-policy-content">
+
 # Privacy Policy
 
 This privacy policy will explain how DevTools uses the personal data we collect from you when you use this website.
@@ -75,3 +77,5 @@ DevTools keeps its privacy policy under regular review and places any updates on
 If you have any questions about DevTools's privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us.
 
 Email us at: [help@joncorey.dev](mailto:help@joncorey.dev)
+
+</div>

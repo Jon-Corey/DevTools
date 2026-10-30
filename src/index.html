@@ -6,11 +6,11 @@ description: A collection of tools and resources for developers.
 
 <h1>Welcome to DevTools!</h1>
 <p class="text-subtle">DevTools is a collection of tools and resources for developers. All processing is done locally on your device so that your data stays private.</p>
-<hr class="space-after-large">
+<hr>
 
 {% assign tool_categories = collections | get_tool_categories %}
 {% for category in tool_categories %}
-    <section>
+    <section class="tool-card-section">
         <h2>{{ category[0] }}</h2>
         <ul class="tool-card-list">
             {% assign sorted_items = category[1] | sort_natural: "data.title" %}
