@@ -1,0 +1,7 @@
+#aspect-ratio, #decimal-aspect-ratio, #closest-common-aspect-ratio {
+    font-size: 2.5rem;
+}
+
+#error-message {
+    display: none;
+}
