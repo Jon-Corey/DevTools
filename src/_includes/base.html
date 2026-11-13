@@ -182,7 +182,7 @@
                 {% assign tool_categories = collections | get_tool_categories %}
                 {% for category in tool_categories %}
                     <section>
-                        <h2 class="text-subtle">{{ category[0] }}</h2>
+                        <strong class="text-subtle">{{ category[0] }}</strong>
                         <ul>
                             {% assign sorted_items = category[1] | sort_natural: "data.title" %}
                             {% for item in sorted_items %}
