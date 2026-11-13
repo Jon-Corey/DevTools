@@ -333,6 +333,20 @@ html, body {
     margin: auto;
 }
 
+/* Skip to Content */
+
+.skip-to-content {
+    position: absolute;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    left: calc(0.5rem + env(safe-area-inset-left));
+    z-index: 1100;
+    display: block;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-text-accent);
+    border-radius: var(--border-radius);
+}
+
 /* Nav Menu */
 
 .sidebar nav {
@@ -1062,6 +1076,19 @@ button.success, .button.success {
 }
 
 /* Utilities */
+
+.visually-hidden, .visually-hidden-focusable:not(:focus,:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 .flex-row, .flex-row-small {
     display: flex;

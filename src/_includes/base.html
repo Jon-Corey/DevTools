@@ -118,6 +118,8 @@
     {% endif %}
 </head>
 <body>
+    <a href="#main" class="skip-to-content visually-hidden-focusable">Skip to main content</a>
+
     <div id="grid-layout">
         <div class="main-logo">
             <a href="/">
@@ -204,7 +206,7 @@
         </aside>
 
         <div class="content">
-            <main>
+            <main id="main" tabindex="-1">
                 {{ content }}
             </main>
         </div>
