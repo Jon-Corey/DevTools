@@ -10,7 +10,13 @@ js: ./tool.js
 ---
 
 <div class="card">
-    <input type="text" id="search" placeholder="Search by code or description..." autofocus>
+    <div class="flex-column-small">
+        <label for="search">Search HTTP Status Codes</label>
+        <div class="search-container">
+            <i class="search-icon ti ti-search"></i>
+            <input type="text" id="search" placeholder="Search by code or description...">
+        </div>
+    </div>
 </div>
 
 <ul id="statuses">

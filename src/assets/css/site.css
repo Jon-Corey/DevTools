@@ -399,14 +399,29 @@ html, body {
 
 /* Search */
 
+.search-container {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-muted);
+}
+
+.search-container input {
+    padding-inline-start: 2rem;
+}
+
+/* Tool Search */
+
 search {
     margin-inline: auto;
     width: 30rem;
     max-width: 100%;
-}
-
-#search-input-container {
-    position: relative;
 }
 
 #search-input-container input {
@@ -438,15 +453,6 @@ search {
 
 .show-apple-shortcut #search-input-overlay {
     display: none;
-}
-
-#search-icon {
-    position: absolute;
-    top: 50%;
-    left: 0.5rem;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--color-text-muted);
 }
 
 #results-panel {
