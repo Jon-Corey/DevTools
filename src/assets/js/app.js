@@ -101,8 +101,12 @@ function toggleSidebarLarge() {
  */
 function openSidebarSmall() {
     const gridLayout = document.getElementById('grid-layout');
+    const closeMenuButton = document.getElementById('close-menu-button');
     if (gridLayout) {
         gridLayout.classList.add('sidebar-open-small');
+    }
+    if (closeMenuButton) {
+        closeMenuButton.focus();
     }
 }
 
@@ -112,8 +116,12 @@ function openSidebarSmall() {
  */
 function closeSidebarSmall() {
     const gridLayout = document.getElementById('grid-layout');
+    const openMenuButton = document.getElementById('open-menu-button');
     if (gridLayout) {
         gridLayout.classList.remove('sidebar-open-small');
+    }
+    if (openMenuButton) {
+        openMenuButton.focus();
     }
 }
 
