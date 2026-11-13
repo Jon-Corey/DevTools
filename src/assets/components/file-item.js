@@ -149,6 +149,7 @@ class FileItem extends HTMLElement {
         .toggle-button input[type="checkbox"] {
             position: absolute;
             clip: rect(0, 0, 0, 0);
+            clip-path: inset(50%);
             pointer-events: none;
         }
 
@@ -208,8 +209,8 @@ class FileItem extends HTMLElement {
                 </label>
                 <label class="button toggle-button">
                     <input type="checkbox" class="aspect-ratio-locked" name="aspect-ratio-locked" aria-label="Lock the aspect ratio to the image's original aspect ratio" checked />
-                    <div class="default-content"><i class="ti ti-link"></i></div>
-                    <div class="alternate-content"><i class="ti ti-link-off"></i></div>
+                    <div class="default-content"><i class="ti ti-link-off"></i></div>
+                    <div class="alternate-content"><i class="ti ti-link"></i></div>
                 </label>
                 <label>
                     Height (px)
@@ -335,7 +336,7 @@ class FileItem extends HTMLElement {
             aspectRatioLabel.appendChild(defaultContentDiv);
 
             const linkIcon = document.createElement('i');
-            linkIcon.className = 'ti ti-link';
+            linkIcon.className = 'ti ti-link-off';
             defaultContentDiv.appendChild(linkIcon);
 
             const alternateContentDiv = document.createElement('div');
@@ -343,7 +344,7 @@ class FileItem extends HTMLElement {
             aspectRatioLabel.appendChild(alternateContentDiv);
 
             const linkOffIcon = document.createElement('i');
-            linkOffIcon.className = 'ti ti-link-off';
+            linkOffIcon.className = 'ti ti-link';
             alternateContentDiv.appendChild(linkOffIcon);
 
             const heightLabel = document.createElement('label');
