@@ -1,3 +1,4 @@
+import '/assets/components/file-input.js';
 import { optimize } from '/assets/js/vendor/svgo/svgo.js';
 import { downloadFile, downloadFilesAsZip } from '/assets/js/utils.js';
 import '/assets/components/file-item.js';
@@ -9,6 +10,7 @@ const fileOutputList = document.getElementById('file-output');
 
 let optimizedFiles = [];
 
+await customElements.whenDefined('file-input');
 await initialize();
 
 async function initialize() {

@@ -1,3 +1,4 @@
+import '/assets/components/file-input.js';
 import { compressImage } from '/assets/js/magick-utils.js';
 import { downloadFile, downloadFilesAsZip } from '/assets/js/utils.js';
 import '/assets/components/file-item.js';
@@ -11,6 +12,7 @@ const loadingSpinner = document.querySelector('.loading-spinner');
 
 let compressedImages = [];
 
+await customElements.whenDefined('file-input');
 await initialize();
 
 async function initialize() {

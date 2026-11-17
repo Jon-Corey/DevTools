@@ -5,15 +5,13 @@ short_description: Convert colors between different formats.
 keywords: colours to from hex rgb hsl hsv hwb lab lch oklab oklch p3 xyz xyz-d65 cmyk rec2020 a98 prophoto css name
 tags: Color
 icon: ti-palette
-js:
-    - ./tool.js
-    - /assets/components/color-input.js
+js: ./tool.js
 css: ./tool.css
 ---
 
 <div class="flex-column" id="container">
     <div class="card">
-        <color-input id="color-input" default-value="#000000" label="Input Color"></color-input>
+        <color-input id="color-input" default-value="#000000" label="Input Color" data-persist></color-input>
     </div>
 
     <h2>Output Formats</h2>

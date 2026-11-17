@@ -12,8 +12,8 @@ css: ./tool.css
 <div class="card" id="options-card">
     <fieldset>
         <legend>Generate</legend>
-        <input type="number" id="number" min="1" max="100000" value="3" step="1" aria-label="Number of items to generate">
-        <select id="type" aria-label="Type of items to generate">
+        <input type="number" id="number" min="1" max="100000" value="3" step="1" aria-label="Number of items to generate" data-persist>
+        <select id="type" aria-label="Type of items to generate" data-persist>
             <option value="paragraphs">Paragraphs</option>
             <option value="sentences" selected>Sentences</option>
             <option value="words">Words</option>
@@ -21,7 +21,7 @@ css: ./tool.css
     </fieldset>
 
     <label>
-        <input type="checkbox" id="start-with-lorem-ipsum" checked>
+        <input type="checkbox" id="start-with-lorem-ipsum" checked data-persist>
         Start with "Lorem ipsum..."
     </label>
 </div>

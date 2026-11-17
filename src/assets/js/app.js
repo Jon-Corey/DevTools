@@ -57,7 +57,128 @@ try {
         selectedItems.forEach(item => item.classList.remove('selected'));
     });
     searchInput.addEventListener('input', updateResultsPanel);
+
+    // Restore and persist the values of elements marked with the data-persist attribute.
+    initializePersistedInputs();
 })();
+
+/**
+ * Finds all elements with a data-persist attribute, restores their values from localStorage, and saves their values to localStorage whenever they change.
+ * Keys are in the format `${toolSlug}.${elementId}`.
+ */
+function initializePersistedInputs() {
+    const toolSlug = getToolSlug();
+    const elements = document.querySelectorAll('[data-persist]');
+
+    for (const element of elements) {
+        if (!element.id) {
+            console.warn('Element with data-persist attribute is missing an id:', element);
+            continue;
+        }
+
+        const key = `${toolSlug}.${element.id}`;
+
+        // Custom elements must be defined before setting their value
+        const tagName = element.tagName.toLowerCase();
+        const ready = tagName.includes('-') ? customElements.whenDefined(tagName) : Promise.resolve();
+
+        ready.then(() => {
+            restorePersistedValue(element, key);
+
+            const save = () => savePersistedValue(element, key);
+            if (element instanceof HTMLDetailsElement) {
+                element.addEventListener('toggle', save);
+            } else {
+                element.addEventListener('input', save);
+                element.addEventListener('change', save);
+            }
+        });
+    }
+}
+
+/**
+ * Restores an element's value from localStorage, if a value has been stored for the given key.
+ * @param {HTMLElement} element  The element whose value should be restored.
+ * @param {string} key  The localStorage key.
+ */
+function restorePersistedValue(element, key) {
+    let storedValue;
+    try {
+        storedValue = localStorage.getItem(key);
+    } catch (error) {
+        return;
+    }
+    if (storedValue === null) {
+        return;
+    }
+
+    if (element instanceof HTMLInputElement && (element.type === 'checkbox' || element.type === 'radio')) {
+        element.checked = storedValue === 'true';
+    } else if (element instanceof HTMLDetailsElement) {
+        element.open = storedValue === 'true';
+    } else if (element instanceof HTMLSelectElement && element.multiple) {
+        try {
+            const selectedValues = JSON.parse(storedValue);
+            for (const option of element.options) {
+                option.selected = selectedValues.includes(option.value);
+            }
+        } catch (error) {
+            // Ignore malformed stored values.
+        }
+    } else if (element instanceof HTMLSelectElement) {
+        // Only restore the value if a matching option still exists.
+        if ([...element.options].some(option => option.value === storedValue)) {
+            element.value = storedValue;
+        }
+    } else if (element instanceof HTMLInputElement && element.type === 'file') {
+        // File inputs cannot be restored.
+    } else {
+        element.value = storedValue;
+    }
+}
+
+/**
+ * Saves an element's current value to localStorage.
+ * @param {HTMLElement} element  The element whose value should be saved.
+ * @param {string} key  The localStorage key.
+ */
+function savePersistedValue(element, key) {
+    try {
+        if (element instanceof HTMLInputElement && element.type === 'radio') {
+            // Checking a radio button unchecks the others in its group without firing events on them so update every persisted radio button in the same group.
+            const group = element.name
+                ? document.querySelectorAll(`input[type="radio"][name="${CSS.escape(element.name)}"][data-persist]`)
+                : [element];
+            for (const radio of group) {
+                if (radio.id) {
+                    localStorage.setItem(`${getToolSlug()}.${radio.id}`, String(radio.checked));
+                }
+            }
+        } else if (element instanceof HTMLInputElement && element.type === 'checkbox') {
+            localStorage.setItem(key, String(element.checked));
+        } else if (element instanceof HTMLDetailsElement) {
+            localStorage.setItem(key, String(element.open));
+        } else if (element instanceof HTMLSelectElement && element.multiple) {
+            const selectedValues = [...element.selectedOptions].map(option => option.value);
+            localStorage.setItem(key, JSON.stringify(selectedValues));
+        } else if (element instanceof HTMLInputElement && element.type === 'file') {
+            // File inputs cannot be persisted.
+        } else {
+            localStorage.setItem(key, String(element.value));
+        }
+    } catch (error) {
+        console.error(`Failed to save value for "${key}" to localStorage:`, error);
+    }
+}
+
+/**
+ * Gets the slug of the current tool from the URL path (e.g. '/tool/tool-slug/' -> 'tool-slug').
+ * @returns {string} The tool slug.
+ */
+function getToolSlug() {
+    const segments = window.location.pathname.split('/').filter(segment => segment !== '' && segment !== 'index.html');
+    return segments.at(-1) ?? '';
+}
 
 /**
  * Gets the current theme.

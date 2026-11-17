@@ -1,8 +1,10 @@
+import '/assets/components/file-input.js';
 import { previewableImageFormats, formatFileSize, getFileExtension, getFileNameWithoutExtension, ensureSvgHasXmlns, downloadFile, getFileIcon, convertFileToBase64 } from '/assets/js/utils.js';
 
 const fileInput = document.getElementById('file-input');
 const output = document.getElementById('output');
 
+await customElements.whenDefined('file-input');
 initialize();
 
 function initialize() {

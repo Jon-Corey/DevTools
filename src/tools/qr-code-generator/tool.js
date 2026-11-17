@@ -1,7 +1,11 @@
+import '/assets/components/color-input.js';
+import '/assets/components/range-input.js';
+import '/assets/components/small-file-input.js';
+import '/assets/components/tab-panel.js';
 import { optimize } from '/assets/js/vendor/svgo/svgo.js';
 import QrCodeWithLogo from '/assets/js/vendor/qrcode-with-logos/qrcode-with-logos.js';
 import { transformImage, compressImage } from '/assets/js/magick-utils.js';
-import { getContrastRatio, adjustToTargetContrast, convertFileToBase64, downloadFile, getFileExtension } from '/assets/js/utils.js';
+import { fireChangeEvent, getContrastRatio, adjustToTargetContrast, convertFileToBase64, downloadFile, getFileExtension } from '/assets/js/utils.js';
 
 const tabPanel = document.getElementById('tab-panel');
 
@@ -82,6 +86,10 @@ const styles = {
 let debounceTimeoutId;
 let fullNameEdited = false;
 
+await customElements.whenDefined('color-input');
+await customElements.whenDefined('range-input');
+await customElements.whenDefined('small-file-input');
+await customElements.whenDefined('tab-panel');
 initialize();
 
 function initialize() {
@@ -132,6 +140,8 @@ function initialize() {
 
     downloadPngButton.addEventListener('click', downloadPng);
     downloadSvgButton.addEventListener('click', downloadSvg);
+
+    inputChanged();
 }
 
 // Event Handlers
@@ -189,11 +199,13 @@ async function inputChanged(updateFullName = false) {
 
 function fixForegroundColor() {
     foregroundColorInput.value = adjustToTargetContrast(foregroundColorInput.value, backgroundColorInput.value, 7).color;
+    fireChangeEvent(foregroundColorInput);
     inputChanged();
 }
 
 function fixBackgroundColor() {
     backgroundColorInput.value = adjustToTargetContrast(backgroundColorInput.value, foregroundColorInput.value, 7).color;
+    fireChangeEvent(backgroundColorInput);
     inputChanged();
 }
 

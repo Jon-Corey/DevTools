@@ -6,28 +6,12 @@ const copyButton = document.getElementById('copy-button');
 const regenerateButton = document.getElementById('regenerate-button');
 const outputElement = document.getElementById('output');
 
-const uppercaseKey = 'uuid-generator.uppercase';
-const dashesKey = 'uuid-generator.include-dashes';
-
 initialize();
 
 function initialize() {
-    // Load settings from localStorage
-    const uppercase = (localStorage.getItem(uppercaseKey) || 'false') === 'true';
-    const includeDashes = (localStorage.getItem(dashesKey) || 'true') === 'true';
-
-    uppercaseCheckbox.checked = uppercase;
-    dashesCheckbox.checked = includeDashes;
-
     // Add event listeners
-    uppercaseCheckbox.addEventListener('change', () => {
-        localStorage.setItem(uppercaseKey, uppercaseCheckbox.checked);
-        updateUUID();
-    });
-    dashesCheckbox.addEventListener('change', () => {
-        localStorage.setItem(dashesKey, dashesCheckbox.checked);
-        updateUUID();
-    });
+    uppercaseCheckbox.addEventListener('change', updateUUID);
+    dashesCheckbox.addEventListener('change', updateUUID);
     copyButton.addEventListener('click', copyToClipboard);
     regenerateButton.addEventListener('click', updateUUID);
 

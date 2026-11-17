@@ -5,21 +5,12 @@ const conversionTypeSelect = document.getElementById('conversion');
 const output = document.getElementById('output');
 const copyButton = document.getElementById('copy-button');
 
-const conversionTypeKey = 'base64-text-converter.conversionType';
-
 initialize();
 
 function initialize() {
-    // Load settings from localStorage
-    const conversionType = localStorage.getItem(conversionTypeKey) || 'encode-base64';
-    conversionTypeSelect.value = conversionType;
-
     // Add event listeners
     input.addEventListener('input', convert);
-    conversionTypeSelect.addEventListener('change', () => {
-        localStorage.setItem(conversionTypeKey, conversionTypeSelect.value);
-        convert();
-    });
+    conversionTypeSelect.addEventListener('change', convert);
     copyButton.addEventListener('click', copyToClipboard);
 
     // Hide copy button if clipboard API is not available

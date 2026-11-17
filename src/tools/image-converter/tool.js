@@ -1,3 +1,6 @@
+import '/assets/components/file-input.js';
+import '/assets/components/color-input.js';
+import '/assets/components/range-input.js';
 import { transformImage } from '/assets/js/magick-utils.js';
 import { downloadFile, downloadFilesAsZip, getFileExtension } from '/assets/js/utils.js';
 import '/assets/components/file-item.js';
@@ -26,11 +29,6 @@ const size256x256Checkbox = document.getElementById('size-256x256');
 const downloadAllButton = document.getElementById('download-all-button');
 const convertedImagesList = document.getElementById('converted-images');
 
-const formatKey = 'image-converter.format';
-const backgroundColorKey = 'image-converter.backgroundColor';
-const qualityKey = 'image-converter.quality';
-const sizesKey = 'image-converter.sizes';
-
 const options = {
     // backgroundColor: if format doesn't support transparency (e.g. JPEG)
     // quality: for lossy formats (e.g. JPEG, WebP)
@@ -47,50 +45,20 @@ const options = {
 
 let convertedImages = [];
 
+await customElements.whenDefined('file-input');
+await customElements.whenDefined('color-input');
+await customElements.whenDefined('range-input');
 await initialize();
 
 async function initialize() {
-    // Load settings from localStorage
-    formatSelect.value = localStorage.getItem(formatKey) || 'PNG';
-    formatSelectChanged(true);
-
-    backgroundColorInput.value = localStorage.getItem(backgroundColorKey) || '#000000';
-
-    qualityInput.value = localStorage.getItem(qualityKey) || '90';
-
-    const savedSizes = localStorage.getItem(sizesKey)?.split(',')
-        || ['16x16','24x24','32x32','48x48','64x64','128x128','256x256'];
-
-    size16x16Checkbox.checked = savedSizes.includes('16x16');
-    size24x24Checkbox.checked = savedSizes.includes('24x24');
-    size32x32Checkbox.checked = savedSizes.includes('32x32');
-    size48x48Checkbox.checked = savedSizes.includes('48x48');
-    size64x64Checkbox.checked = savedSizes.includes('64x64');
-    size128x128Checkbox.checked = savedSizes.includes('128x128');
-    size256x256Checkbox.checked = savedSizes.includes('256x256');
-
     // Add event listeners
     fileInput.addEventListener('change', fileInputChanged);
     formatSelect.addEventListener('change', formatSelectChanged);
     convertButton.addEventListener('click', convertButtonClicked);
 
-    backgroundColorInput.addEventListener('change', () => {
-        localStorage.setItem(backgroundColorKey, backgroundColorInput.value);
-    });
-
-    qualityInput.addEventListener('change', () => {
-        localStorage.setItem(qualityKey, qualityInput.value);
-    });
-
-    size16x16Checkbox.addEventListener('change', sizesChanged);
-    size24x24Checkbox.addEventListener('change', sizesChanged);
-    size32x32Checkbox.addEventListener('change', sizesChanged);
-    size48x48Checkbox.addEventListener('change', sizesChanged);
-    size64x64Checkbox.addEventListener('change', sizesChanged);
-    size128x128Checkbox.addEventListener('change', sizesChanged);
-    size256x256Checkbox.addEventListener('change', sizesChanged);
-
     downloadAllButton.addEventListener('click', downloadAll);
+
+    formatSelectChanged();
 }
 
 // Event Handlers
@@ -103,11 +71,7 @@ function fileInputChanged() {
     }
 }
 
-function formatSelectChanged(skipPersistence = false) {
-    if (skipPersistence !== true) {
-        localStorage.setItem(formatKey, formatSelect.value);
-    }
-
+function formatSelectChanged() {
     const selectedFormatOptions = options[formatSelect.value];
 
     if (selectedFormatOptions.includes('backgroundColor')) {
@@ -191,20 +155,6 @@ async function convertButtonClicked() {
     downloadAllButton.disabled = false;
     convertButton.textContent = 'Convert';
     convertButton.disabled = false;
-}
-
-function sizesChanged() {
-    const selectedSizes = [];
-
-    if (size16x16Checkbox.checked) selectedSizes.push('16x16');
-    if (size24x24Checkbox.checked) selectedSizes.push('24x24');
-    if (size32x32Checkbox.checked) selectedSizes.push('32x32');
-    if (size48x48Checkbox.checked) selectedSizes.push('48x48');
-    if (size64x64Checkbox.checked) selectedSizes.push('64x64');
-    if (size128x128Checkbox.checked) selectedSizes.push('128x128');
-    if (size256x256Checkbox.checked) selectedSizes.push('256x256');
-
-    localStorage.setItem(sizesKey, selectedSizes.join(','));
 }
 
 function downloadAll() {

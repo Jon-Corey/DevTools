@@ -56,6 +56,14 @@ export const fileIcons = [
 ];
 
 /**
+ * Fires a change event on the specified element. Meant for when manually changing the value of an element with the data-persist attribute.
+ * @param {HTMLElement} element The element to fire the change event on.
+ */
+export function fireChangeEvent(element) {
+    element.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+/**
  * Gets the icon class to use for file previews for a given file extension.
  * @param {string} fileExtension The file extension to get the icon for.
  * @returns {string} The icon class for the given file extension.

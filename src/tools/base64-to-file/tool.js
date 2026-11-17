@@ -1,3 +1,4 @@
+import '/assets/components/file-item.js';
 import { downloadFile } from '/assets/js/utils.js';
 
 const base64Container = document.getElementById('base64-container');
@@ -7,6 +8,7 @@ const fileNameInput = document.getElementById('file-name');
 const fileExtensionInput = document.getElementById('file-extension');
 const fileItem = document.getElementById('file-item');
 
+await customElements.whenDefined('file-item');
 initialize();
 
 function initialize() {

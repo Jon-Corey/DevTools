@@ -5,11 +5,7 @@ short_description: Generate images for a Progressive Web App (PWA).
 keywords: webmanifest apple touch mobile phone ios android
 tags: Image
 icon: ti-library-photo
-js:
-    - /assets/components/file-input.js
-    - /assets/components/color-input.js
-    - /assets/components/range-input.js
-    - ./tool.js
+js: ./tool.js
 css: ./tool.css
 ---
 
@@ -32,9 +28,9 @@ css: ./tool.css
         <div id="maskable-preview-image"></div>
         <strong>Maskable Icon</strong>
     </div>
-    <range-input id="regular-padding" label="Regular Icon Padding" min="0" max="49" value="0" disabled></range-input>
-    <range-input id="maskable-padding" label="Maskable Icon Padding" min="0" max="49" value="10" disabled></range-input>
-    <color-input id="background-color" label="Background Color" default-value="#ffffff" disabled></color-input>
+    <range-input id="regular-padding" label="Regular Icon Padding" min="0" max="49" default-value="0" disabled data-persist></range-input>
+    <range-input id="maskable-padding" label="Maskable Icon Padding" min="0" max="49" default-value="10" disabled data-persist></range-input>
+    <color-input id="background-color" label="Background Color" default-value="#ffffff" disabled data-persist></color-input>
 </div>
 
 <button id="generate-button" class="primary" disabled>Generate</button>
@@ -44,24 +40,24 @@ css: ./tool.css
 <button id="download-button" disabled><i class="ti ti-download"></i> Download Bundle</button>
 
 <div class="flex-column">
-    <details id="generated-images-details">
+    <details id="generated-images-details" data-persist>
         <summary>Generated Images</summary>
         <ul id="generated-images" class="file-item-list"></ul>
     </details>
 
-    <details id="meta-tags-details">
+    <details id="meta-tags-details" data-persist>
         <summary>HTML Meta Tags</summary>
         <p>Place the following in the <code>&lt;head&gt;</code> section of each of your HTML files.</p>
         <pre><code id="meta-tags" class="language-html"></code></pre>
     </details>
 
-    <details id="web-app-manifest-details">
+    <details id="web-app-manifest-details" data-persist>
         <summary>Web App Manifest</summary>
         <p>Save the following JSON as <code>manifest.webmanifest</code> in the root of your web application.</p>
         <pre><code id="web-app-manifest" class="language-json"></code></pre>
     </details>
 
-    <details id="documentation-details">
+    <details id="documentation-details" data-persist>
         <summary>Explanation / Documentation</summary>
 
         <p>Progressive Web Apps (PWAs) need a lot of images in order to function and look right. This tool generates all of the required images from a single source image.</p>

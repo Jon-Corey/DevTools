@@ -1,3 +1,4 @@
+import '/assets/components/file-input.js';
 import { WoffCompressionContext } from '/assets/js/vendor/glypht/glypht.js';
 import { downloadFile, downloadFilesAsZip, getFileNameWithoutExtension, getFileExtension } from '/assets/js/utils.js';
 import '/assets/components/file-item.js';
@@ -14,60 +15,25 @@ const downloadAllButton = document.getElementById('download-all-button');
 
 const generatedFilesList = document.getElementById('generated-files');
 
-const ttfKey = 'font-file-converter.ttf';
-const woffKey = 'font-file-converter.woff';
-const woff2Key = 'font-file-converter.woff2';
-
 let generatedFiles = [];
 
+await customElements.whenDefined('file-input');
 initialize();
 
 function initialize() {
-    // Load settings from localStorage
-    outputTtfCheckbox.checked = localStorage.getItem(ttfKey) === 'true';
-    outputWoffCheckbox.checked = localStorage.getItem(woffKey) === 'true';
-    outputWoff2Checkbox.checked = (localStorage.getItem(woff2Key) || 'true') === 'true';
-
     // Add event listeners
-    fileInput.addEventListener('change', fileInputChanged);
+    fileInput.addEventListener('change', inputChanged);
     convertButton.addEventListener('click', convertButtonClicked);
     downloadAllButton.addEventListener('click', downloadAll);
 
-    outputTtfCheckbox.addEventListener('change', () => {
-        localStorage.setItem(ttfKey, outputTtfCheckbox.checked);
-
-        const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        if (fileInput.files.length > 0 && formatCount > 0) {
-            convertButton.disabled = false;
-        } else {
-            convertButton.disabled = true;
-        }
-    });
-    outputWoffCheckbox.addEventListener('change', () => {
-        localStorage.setItem(woffKey, outputWoffCheckbox.checked);
-
-        const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        if (fileInput.files.length > 0 && formatCount > 0) {
-            convertButton.disabled = false;
-        } else {
-            convertButton.disabled = true;
-        }
-    });
-    outputWoff2Checkbox.addEventListener('change', () => {
-        localStorage.setItem(woff2Key, outputWoff2Checkbox.checked);
-
-        const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
-        if (fileInput.files.length > 0 && formatCount > 0) {
-            convertButton.disabled = false;
-        } else {
-            convertButton.disabled = true;
-        }
-    });
+    outputTtfCheckbox.addEventListener('change', inputChanged);
+    outputWoffCheckbox.addEventListener('change', inputChanged);
+    outputWoff2Checkbox.addEventListener('change', inputChanged);
 }
 
 // Event Handlers
 
-function fileInputChanged() {
+function inputChanged() {
     const formatCount = [outputTtfCheckbox, outputWoffCheckbox, outputWoff2Checkbox].filter(checkbox => checkbox.checked).length;
     if (fileInput.files.length > 0 && formatCount > 0) {
         convertButton.disabled = false;

@@ -1,3 +1,5 @@
+import { fireChangeEvent } from '/assets/js/utils.js';
+
 const numberInput = document.getElementById('number');
 const typeSelect = document.getElementById('type');
 const startWithLoremIpsumCheckbox = document.getElementById('start-with-lorem-ipsum');
@@ -35,35 +37,13 @@ const maxWords = 100000;
 const maxSentences = 10000;
 const maxParagraphs = 1000;
 
-const numberKey = 'lorem-ipsum-generator.number';
-const typeKey = 'lorem-ipsum-generator.type';
-const startWithLoremIpsumKey = 'lorem-ipsum-generator.start-with-lorem-ipsum';
-
 initialize();
 
 function initialize() {
-    // Load settings from localStorage
-    const savedNumber = (localStorage.getItem(numberKey) || '3');
-    const savedType = (localStorage.getItem(typeKey) || 'sentences');
-    const savedStartWithLoremIpsum = (localStorage.getItem(startWithLoremIpsumKey) || 'true') === 'true';
-
-    numberInput.value = savedNumber;
-    typeSelect.value = savedType;
-    startWithLoremIpsumCheckbox.checked = savedStartWithLoremIpsum;
-
     // Add event listeners
-    numberInput.addEventListener('input', () => {
-        localStorage.setItem(numberKey, numberInput.value);
-        generateLoremIpsum();
-    });
-    typeSelect.addEventListener('change', () => {
-        localStorage.setItem(typeKey, typeSelect.value);
-        generateLoremIpsum();
-    });
-    startWithLoremIpsumCheckbox.addEventListener('change', () => {
-        localStorage.setItem(startWithLoremIpsumKey, startWithLoremIpsumCheckbox.checked);
-        generateLoremIpsum();
-    });
+    numberInput.addEventListener('input', generateLoremIpsum);
+    typeSelect.addEventListener('change', generateLoremIpsum);
+    startWithLoremIpsumCheckbox.addEventListener('change', generateLoremIpsum);
     regenerateButton.addEventListener('click', generateLoremIpsum);
     copyButton.addEventListener('click', copyToClipboard);
 
@@ -87,18 +67,22 @@ function generateLoremIpsum() {
     if (type === 'words' && number > maxWords) {
         number = maxWords;
         numberInput.value = maxWords;
+        fireChangeEvent(numberInput);
     }
     if (type === 'sentences' && number > maxSentences) {
         number = maxSentences;
         numberInput.value = maxSentences;
+        fireChangeEvent(numberInput);
     }
     if (type === 'paragraphs' && number > maxParagraphs) {
         number = maxParagraphs;
         numberInput.value = maxParagraphs;
+        fireChangeEvent(numberInput);
     }
     if (number < 1) {
         number = 1;
         numberInput.value = 1;
+        fireChangeEvent(numberInput);
     }
 
     const output = [];

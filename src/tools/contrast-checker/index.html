@@ -5,15 +5,13 @@ short_description: Check the contrast between two colors.
 keywords: wcag aaa compliance compliant colours readable readability
 tags: Color
 icon: ti-contrast
-js:
-    - ./tool.js
-    - /assets/components/color-input.js
+js: ./tool.js
 css: ./tool.css
 ---
 
 <div class="flex-row" id="color-row">
     <div class="card color-card">
-        <color-input id="foreground-color" default-value="#000000" label="Foreground Color"></color-input>
+        <color-input id="foreground-color" default-value="#000000" label="Foreground Color" data-persist></color-input>
         <div class="flex-row-small">
             <button type="button" id="fix-foreground-4-5" disabled>Fix to 4.5:1</button>
             <button type="button" id="fix-foreground-7" disabled>Fix to 7:1</button>
@@ -23,7 +21,7 @@ css: ./tool.css
     <button type="button" id="switch-colors-button" aria-label="Switch Colors"><i class="ti ti-arrows-left-right"></i> <span id="switch-colors-text"> Switch Colors</span></button>
 
     <div class="card color-card">
-        <color-input id="background-color" default-value="#ffffff" label="Background Color"></color-input>
+        <color-input id="background-color" default-value="#ffffff" label="Background Color" data-persist></color-input>
         <div class="flex-row-small">
             <button type="button" id="fix-background-4-5" disabled>Fix to 4.5:1</button>
             <button type="button" id="fix-background-7" disabled>Fix to 7:1</button>

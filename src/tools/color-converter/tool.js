@@ -1,3 +1,4 @@
+import '/assets/components/color-input.js';
 import { colordx, extend } from '/assets/js/vendor/colordx/colordx.js';
 import lab from '/assets/js/vendor/colordx/lab.js';
 import lch from '/assets/js/vendor/colordx/lch.js';
@@ -34,6 +35,7 @@ const outputCssName = document.getElementById('output-css-name');
 
 const copyButtons = document.querySelectorAll('button[data-copy-target]');
 
+await customElements.whenDefined('color-input');
 initialize();
 
 function initialize() {

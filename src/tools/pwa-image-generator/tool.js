@@ -1,3 +1,6 @@
+import '/assets/components/file-input.js';
+import '/assets/components/color-input.js';
+import '/assets/components/range-input.js';
 import Prism from '/assets/js/vendor/prism/prism.js'
 import '/assets/js/vendor/prism/prism-json.js';
 import { transformImage } from '/assets/js/magick-utils.js';
@@ -25,16 +28,6 @@ const webAppManifestContainer = document.getElementById('web-app-manifest');
 const generatedImagesDetails = document.getElementById('generated-images-details');
 const metaTagsDetails = document.getElementById('meta-tags-details');
 const webAppManifestDetails = document.getElementById('web-app-manifest-details');
-const documentationDetails = document.getElementById('documentation-details');
-
-const regularPaddingKey = 'pwa-image-generator.regularPadding';
-const maskablePaddingKey = 'pwa-image-generator.maskablePadding';
-const backgroundColorKey = 'pwa-image-generator.backgroundColor';
-
-const generatedImagesDetailsKey = 'pwa-image-generator.generatedImagesDetailsOpen';
-const metaTagsDetailsKey = 'pwa-image-generator.metaTagsDetailsOpen';
-const webAppManifestDetailsKey = 'pwa-image-generator.webAppManifestDetailsOpen';
-const documentationDetailsKey = 'pwa-image-generator.documentationDetailsOpen';
 
 // dpr: Device Pixel Ratio (how many pixels per point)
 // width: Width of the screen in points - smaller than height since portrait orientation is assumed
@@ -72,21 +65,14 @@ let maskablePreviewUpdateTimeoutId;
 
 let generatedImages = [];
 
+await customElements.whenDefined('file-input');
+await customElements.whenDefined('color-input');
+await customElements.whenDefined('range-input');
 initialize();
 
 function initialize() {
     // Initialize Prism
     Prism.manual = true;
-
-    // Load settings from localStorage
-    regularPaddingInput.value = localStorage.getItem(regularPaddingKey) || '0';
-    maskablePaddingInput.value = localStorage.getItem(maskablePaddingKey) || '10';
-    backgroundColorInput.value = localStorage.getItem(backgroundColorKey) || '#ffffff';
-
-    generatedImagesDetails.open = localStorage.getItem(generatedImagesDetailsKey) === 'true';
-    metaTagsDetails.open = localStorage.getItem(metaTagsDetailsKey) === 'true';
-    webAppManifestDetails.open = localStorage.getItem(webAppManifestDetailsKey) === 'true';
-    documentationDetails.open = localStorage.getItem(documentationDetailsKey) === 'true';
 
     // Add event listeners
     fileInput.addEventListener('change', fileInputChanged);
@@ -95,35 +81,6 @@ function initialize() {
     backgroundColorInput.addEventListener('change', backgroundColorChanged);
     generateButton.addEventListener('click', generateImages);
     downloadButton.addEventListener('click', downloadBundle);
-
-    generatedImagesDetails.addEventListener('toggle', () => {
-        if (generatedImagesDetails.open) {
-            localStorage.setItem(generatedImagesDetailsKey, 'true');
-        } else {
-            localStorage.removeItem(generatedImagesDetailsKey);
-        }
-    });
-    metaTagsDetails.addEventListener('toggle', () => {
-        if (metaTagsDetails.open) {
-            localStorage.setItem(metaTagsDetailsKey, 'true');
-        } else {
-            localStorage.removeItem(metaTagsDetailsKey);
-        }
-    });
-    webAppManifestDetails.addEventListener('toggle', () => {
-        if (webAppManifestDetails.open) {
-            localStorage.setItem(webAppManifestDetailsKey, 'true');
-        } else {
-            localStorage.removeItem(webAppManifestDetailsKey);
-        }
-    });
-    documentationDetails.addEventListener('toggle', () => {
-        if (documentationDetails.open) {
-            localStorage.setItem(documentationDetailsKey, 'true');
-        } else {
-            localStorage.removeItem(documentationDetailsKey);
-        }
-    });
 }
 
 async function fileInputChanged() {
@@ -154,18 +111,15 @@ async function fileInputChanged() {
 }
 
 async function backgroundColorChanged() {
-    localStorage.setItem(backgroundColorKey, backgroundColorInput.value);
     debounceRegularPreviewUpdate();
     debounceMaskablePreviewUpdate();
 }
 
 async function regularPaddingChanged() {
-    localStorage.setItem(regularPaddingKey, regularPaddingInput.value);
     debounceRegularPreviewUpdate();
 }
 
 async function maskablePaddingChanged() {
-    localStorage.setItem(maskablePaddingKey, maskablePaddingInput.value);
     debounceMaskablePreviewUpdate();
 }
 

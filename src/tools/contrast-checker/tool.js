@@ -1,4 +1,5 @@
-import { getContrastRatio, adjustToTargetContrast, formatAsHexWithoutAlpha } from '/assets/js/utils.js';
+import '/assets/components/color-input.js';
+import { fireChangeEvent, getContrastRatio, adjustToTargetContrast, formatAsHexWithoutAlpha } from '/assets/js/utils.js';
 
 const foregroundColorInput = document.getElementById('foreground-color');
 const fixForeground45Button = document.getElementById('fix-foreground-4-5');
@@ -23,19 +24,13 @@ const largeTextPreviewElement = document.getElementById('large-text-preview');
 const uiAaResultElement = document.getElementById('ui-aa-result');
 const uiPreviewElement = document.getElementById('ui-preview');
 
-const foregroundColorKey = 'contrast-checker.foreground-color';
-const backgroundColorKey = 'contrast-checker.background-color';
-
+await customElements.whenDefined('color-input');
 initialize();
 
 function initialize() {
-    // Load settings from localStorage
-    foregroundColorInput.value = localStorage.getItem(foregroundColorKey) || '#000000';
-    backgroundColorInput.value = localStorage.getItem(backgroundColorKey) || '#ffffff';
-
     // Add event listeners
-    foregroundColorInput.addEventListener('change', foregroundColorInputChanged);
-    backgroundColorInput.addEventListener('change', backgroundColorInputChanged);
+    foregroundColorInput.addEventListener('change', updateContrastResults);
+    backgroundColorInput.addEventListener('change', updateContrastResults);
     switchColorsButton.addEventListener('click', switchColors);
     fixForeground45Button.addEventListener('click', () => fixForeground(4.5));
     fixForeground7Button.addEventListener('click', () => fixForeground(7));
@@ -47,39 +42,26 @@ function initialize() {
 
 // Event Handlers
 
-function foregroundColorInputChanged() {
-    localStorage.setItem(foregroundColorKey, foregroundColorInput.value);
-
-    updateContrastResults();
-}
-
-function backgroundColorInputChanged() {
-    localStorage.setItem(backgroundColorKey, backgroundColorInput.value);
-
-    updateContrastResults();
-}
-
 function switchColors() {
     const tempColor = foregroundColorInput.value;
     foregroundColorInput.value = backgroundColorInput.value;
     backgroundColorInput.value = tempColor;
-
-    localStorage.setItem(foregroundColorKey, foregroundColorInput.value);
-    localStorage.setItem(backgroundColorKey, backgroundColorInput.value);
+    fireChangeEvent(foregroundColorInput);
+    fireChangeEvent(backgroundColorInput);
 
     updateContrastResults();
 }
 
 function fixForeground(targetRatio) {
     foregroundColorInput.value = adjustToTargetContrast(foregroundColorInput.value, backgroundColorInput.value, targetRatio).color;
-    localStorage.setItem(foregroundColorKey, foregroundColorInput.value);
+    fireChangeEvent(foregroundColorInput);
 
     updateContrastResults();
 }
 
 function fixBackground(targetRatio) {
     backgroundColorInput.value = adjustToTargetContrast(backgroundColorInput.value, foregroundColorInput.value, targetRatio).color;
-    localStorage.setItem(backgroundColorKey, backgroundColorInput.value);
+    fireChangeEvent(backgroundColorInput);
 
     updateContrastResults();
 }

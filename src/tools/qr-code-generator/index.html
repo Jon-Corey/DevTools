@@ -5,12 +5,7 @@ short_description: Create QR codes.
 keywords: wifi wi-fi email phone sms text url link vcard .svg .png
 tags: Utility
 icon: ti-qrcode
-js:
-    - /assets/components/color-input.js
-    - /assets/components/range-input.js
-    - /assets/components/small-file-input.js
-    - /assets/components/tab-panel.js
-    - ./tool.js
+js: ./tool.js
 css: ./tool.css
 ---
 
@@ -132,8 +127,8 @@ css: ./tool.css
 </tab-panel>
 
 <div class="card style-options-card">
-    <color-input id="foreground-color" default-value="#000000" label="Foreground Color"></color-input>
-    <color-input id="background-color" default-value="#ffffff" label="Background Color"></color-input>
+    <color-input id="foreground-color" default-value="#000000" label="Foreground Color" data-persist></color-input>
+    <color-input id="background-color" default-value="#ffffff" label="Background Color" data-persist></color-input>
 
     <div class="flex-column-small">
         <span>Contrast: <span id="contrast">21.00 (<i class="ti ti-check text-success"></i> Excellent)</span></span>
@@ -145,7 +140,7 @@ css: ./tool.css
 
     <div class="flex-column-small">
         <label for="style">Style</label>
-        <select id="style">
+        <select id="style" data-persist>
             <option value="square">Square</option>
             <option value="rounded">Rounded</option>
             <option value="fluid">Fluid</option>
