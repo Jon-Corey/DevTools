@@ -4,13 +4,8 @@ const resultsPanel = document.getElementById('results-panel');
 const searchResultsList = document.getElementById('search-results');
 const recentResultsList = document.getElementById('recent-results');
 
-let searchData;
-try {
-    searchData = JSON.parse(document.getElementById('search-data').textContent);
-} catch (error) {
-    console.error('Failed to parse search data:', error);
-    searchData = [];
-}
+/** @type {Array<{ title: string, description: string, short_description: string, keywords: string, icon: string, url: string }>} */
+let searchData = [];
 
 (() => {
     // Set the initial sidebar state for large screens based on localStorage when the page loads.
@@ -30,18 +25,8 @@ try {
         searchInputContainer.classList.add('show-apple-shortcut');
     }
 
-    // Populate the recent results list from localStorage
-    const recentResults = getRecentResults();
-    const reversedRecentResults = [...recentResults].reverse();
-    for (const result of reversedRecentResults) {
-        const data = searchData.find(item => item.title === result);
-        if (data) {
-            renderSearchResult(data, recentResultsList);
-        }
-    }
-    if (recentResultsList.querySelectorAll('li').length === 0) {
-        recentResultsList.innerHTML = '<li class="text-subtle">No recent searches</li>';
-    }
+    // Load the search data, then populate the recent results list
+    loadSearchData().then(renderRecentResults);
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('pointerdown', handlePointerDown);
@@ -278,6 +263,50 @@ function handlePointerDown(event) {
 function handleFocusIn(event) {
     if (!isSearchUiElement(event.target)) {
         hideResultsPanel();
+    }
+}
+
+/**
+ * Fetches the search data generated at build time and stores it in `searchData`.
+ * On failure, `searchData` stays empty so the search UI still works (with no results).
+ */
+async function loadSearchData() {
+    try {
+        const response = await fetch('/assets/js/search.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        searchData = await response.json();
+    } catch (error) {
+        console.error('Failed to load search data:', error);
+        searchData = [];
+    }
+
+    // If the user started typing before the data arrived, refresh the results
+    if (searchInput.value.trim() !== '') {
+        updateResultsPanel();
+    }
+}
+
+/**
+ * Populates the recent results list from localStorage using the loaded search data.
+ */
+function renderRecentResults() {
+    recentResultsList.innerHTML = '';
+    const reversedRecentResults = [...getRecentResults()].reverse();
+    for (const result of reversedRecentResults) {
+        const data = searchData.find(item => item.title === result);
+        if (data) {
+            renderSearchResult(data, recentResultsList);
+        }
+    }
+    if (recentResultsList.querySelectorAll('li').length === 0) {
+        recentResultsList.innerHTML = '<li class="text-subtle">No recent searches</li>';
+    }
+
+    // If the panel is open with an empty query, re-select the most recent result
+    if (resultsPanel.classList.contains('open') && searchInput.value.trim() === '') {
+        updateResultsPanel();
     }
 }
 

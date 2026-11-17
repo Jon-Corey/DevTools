@@ -212,20 +212,6 @@
         </div>
     </div>
 
-    <script type="application/json" id="search-data">
-        [
-            {% for item in collections.tool %}
-            {
-                "title": "{{ item.data.title }}",
-                "description": "{{ item.data.description }}",
-                "short_description": "{{ item.data.short_description }}",
-                "keywords": "{{ item.data.keywords }}",
-                "icon": "{{ item.data.icon }}",
-                "url": "{{ item.url }}"
-            }{% if forloop.last == false %},{% endif %}
-            {% endfor %}
-        ]
-    </script>
     <script src="/assets/js/app.js" defer></script>
     {% for script in js %}
         <script src="{{ script }}" type="module"></script>

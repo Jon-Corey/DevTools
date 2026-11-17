@@ -3,6 +3,8 @@ import path from 'node:path';
 import bundleModules from './config/bundle-modules.js';
 import assetsManifest from './config/assets-manifest.js';
 import subsetTabler from './config/subset-tabler.js';
+import createSearchData from './config/create-search-data.js';
+import { validatePage } from './config/validate-data.js';
 
 const THIRD_PARTY_MODULES = [
     {
@@ -133,7 +135,10 @@ export default async function (eleventyConfig) {
     // Merge data from multiple sources (such as tags)
     eleventyConfig.setDataDeepMerge(true);
 
-    // Add a shortcode to filter and sort collections down to just tool categories
+    // Validate page data
+    eleventyConfig.addGlobalData('eleventyDataSchema', () => validatePage);
+
+    // Add a filter to filter and sort collections down to just tool categories
     eleventyConfig.addFilter('get_tool_categories', function(collections) {
         return Object.entries(collections)
             .filter(([name]) => name !== 'all' && name !== 'tool')
@@ -144,4 +149,5 @@ export default async function (eleventyConfig) {
     eleventyConfig.addPlugin(bundleModules, { modules: THIRD_PARTY_MODULES });
     eleventyConfig.addPlugin(assetsManifest, SERVICE_WORKER_ASSET_OPTIONS);
     eleventyConfig.addPlugin(subsetTabler);
+    eleventyConfig.addPlugin(createSearchData);
 };
