@@ -9,8 +9,8 @@ const tablerFontPath = fileURLToPath(import.meta.resolve(`@tabler/icons-webfont/
 const classRegex = /ti-[\w\-]+/gi;
 const versionRegex = /Tabler Icons [\d\.]+/i;
 const classHexRegex = /\.(ti-[\w\-]+)::?before\s*{\s*content:\s*"\\([0-9a-f]+)/gi;
-const cssHeaderRegex = /^([\s\S]*?)\.ti-/i;
-const fontSourceRegex = /src:[^};]*/i;
+const cssBannerRegex = /^\/\*![\s\S]*?\*\//;
+const cssBaseRuleRegex = /\.ti\s*{[^}]*}/i;
 
 export default function (eleventyConfig, pluginOptions) {
     const cssPath = pluginOptions?.cssPath ?? ['assets', 'css'];
@@ -207,19 +207,28 @@ function createSubsettedCss(classHexMap, outputCssPath, relativeFontPath) {
 }
 
 /**
- * Gets the CSS header from the Tabler CSS file and updates the font source to the specified relative font path.
+ * Builds the CSS header: the Tabler banner comment (which includes the version), a single @font-face pointing at the
+ * subsetted font, and the base .ti rule. The upstream @font-face rules are ignored because they reference split font files.
  * @param {string} relativeFontPath The relative path to the font file.
- * @returns {string} The CSS header with the updated font source.
+ * @returns {string} The CSS header.
  */
 function getCssHeader(relativeFontPath) {
     const cssContent = fs.readFileSync(tablerCssPath, 'utf-8');
-    const headerMatch = cssContent.match(cssHeaderRegex);
-    if (!headerMatch) {
-        return '';
+
+    const banner = cssContent.match(cssBannerRegex)?.[0] ?? '';
+    if (!banner) {
+        console.warn('[subset-tabler] Tabler banner comment not found; version check will regenerate the subset on every build.');
     }
-    const newSourceCss = `src:url("/${relativeFontPath.replace(/\\/g, '/').replace(/^\/+/, '')}") format("woff2")`;
-    const header = headerMatch[1].replace(fontSourceRegex, newSourceCss);
-    return header;
+
+    const baseRule = cssContent.match(cssBaseRuleRegex)?.[0];
+    if (!baseRule) {
+        throw new Error('[subset-tabler] Could not find the base .ti rule in the Tabler CSS.');
+    }
+
+    const fontUrl = `/${relativeFontPath.replace(/\\/g, '/').replace(/^\/+/, '')}`;
+    const fontFace = `@font-face{font-family:"tabler-icons";font-style:normal;font-weight:400;src:url("${fontUrl}") format("woff2")}`;
+
+    return banner + fontFace + baseRule;
 }
 
 /**
