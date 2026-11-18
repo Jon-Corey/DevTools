@@ -56,5 +56,29 @@ async function onFetch(event) {
         }
     }
 
+    if (isCloudflareInsightsRequest(event.request)) {
+        return fetchCloudflareInsights(event.request);
+    }
+
     return fetch(event.request);
+}
+
+function isCloudflareInsightsRequest(request) {
+    const { hostname } = new URL(request.url);
+    return hostname === 'cloudflareinsights.com' || hostname.endsWith('.cloudflareinsights.com');
+}
+
+// Cloudflare Insights is commonly blocked by ad blockers. Since it does not affect site
+// functionality, swallow the failure and return an empty script instead of letting the
+// rejected fetch surface as console warnings/errors.
+async function fetchCloudflareInsights(request) {
+    try {
+        return await fetch(request);
+    } catch {
+        console.info('Service worker: Cloudflare Insights is unavailable or was blocked');
+        return new Response('', {
+            status: 200,
+            headers: { 'Content-Type': 'text/javascript' }
+        });
+    }
 }
