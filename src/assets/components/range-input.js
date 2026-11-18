@@ -1,78 +1,20 @@
+import { siteStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
+
 class RangeInput extends HTMLElement {
     static observedAttributes = ['label', 'default-value', 'min', 'max', 'step', 'disabled'];
 
     static css = `
-        fieldset {
-            border: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            flex-direction: row;
-            gap: 0.5rem;
-            text-align: start;
-
-            max-width: 100%;
-            box-sizing: border-box;
-            min-inline-size: unset;
-        }
-
-        fieldset > legend {
-            width: 100%;
-        }
-
-        fieldset > input {
-            flex: 1 1 auto;
-            width: 6rem;
-        }
-
         fieldset > input[type="number"] {
             flex: 0 0 auto;
             width: 5rem;
         }
 
-        input {
-            font-family: inherit;
-            font-size: inherit;
-            color: inherit;
-            background-color: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius);
-            padding: 0.5rem;
-            transition: border-color var(--transition-duration) var(--transition-timing-function);
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        input:hover, input:active {
-            border-color: var(--color-border-highlight);
-        }
-
-        input.invalid {
-            border-color: var(--color-danger);
-        }
-
-        input:focus-visible {
-            outline: solid 2px var(--color-primary);
-            border-color: transparent;
-        }
-
-        input[type="range"] {
-            padding: 0;
-            accent-color: var(--color-primary);
-        }
-
         input[type="range"], input[type="number"] {
             min-height: 2.5rem;
-            box-sizing: border-box;
-        }
-
-        input:disabled, select:disabled, textarea:disabled {
-            opacity: 0.7;
-            pointer-events: none;
         }
     `;
+
+    static styleSheet = createStyleSheet(this.css);
 
     /* Shadow DOM Structure:
     <fieldset>
@@ -129,9 +71,7 @@ class RangeInput extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(RangeInput.css);
-            shadow.adoptedStyleSheets = [styleSheet];
+            shadow.adoptedStyleSheets = [siteStyleSheet, RangeInput.styleSheet];
 
             // Get attributes
             const label = this.getAttribute('label') || 'Number';

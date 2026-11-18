@@ -1,4 +1,5 @@
 import { createIconElement, previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions, getFileIcon } from '/assets/js/utils.js';
+import { siteStyleSheet, iconStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
 
 class FileItem extends HTMLElement {
     static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg', 'original-file-size'];
@@ -87,90 +88,13 @@ class FileItem extends HTMLElement {
             height: 3rem;
         }
 
-        button, .button {
-            background-color: transparent;
-            color: var(--color-text);
-            border: none;
-
-            display: inline-block;
-            font-family: inherit;
-            font-size: 1.25rem;
-            line-height: normal;
-            font-weight: 500;
-            border-radius: var(--border-radius);
-            text-align: center;
-            transition: color var(--transition-duration) var(--transition-timing-function);
-            padding: 0.5rem;
-            cursor: pointer;
-            box-sizing: border-box;
-            touch-action: manipulation;
-        }
-
-        button:hover, .button:hover {
-            color: var(--color-text-highlight);
-        }
-
-        button:active, .button:active {
-            color: var(--color-text-muted);
-        }
-
         label {
             display: flex;
             flex-direction: column;
         }
 
         input {
-            font-family: inherit;
-            font-size: inherit;
-            color: inherit;
-            background-color: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius);
-            padding: 0.5rem;
-            transition: border-color var(--transition-duration) var(--transition-timing-function);
             width: 5rem;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        input:hover, input:active {
-            border-color: var(--color-border-highlight);
-        }
-
-        input.invalid, .invalid input {
-            border-color: var(--color-danger);
-        }
-
-        input:focus-visible {
-            outline: solid 2px var(--color-primary);
-            border-color: transparent;
-        }
-
-        .toggle-button input[type="checkbox"] {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-            clip-path: inset(50%);
-            pointer-events: none;
-        }
-
-        .alternate-content {
-            display: none !important;
-        }
-
-        .toggle-button:has(input[type="checkbox"]:checked) .default-content {
-            display: none !important;
-        }
-
-        .toggle-button:has(input[type="checkbox"]:checked) .alternate-content {
-            display: block !important;
-        }
-
-        .text-danger {
-            color: var(--color-text-danger);
-        }
-
-        .text-success {
-            color: var(--color-text-success);
         }
 
         @container (width < 500px) {
@@ -194,6 +118,8 @@ class FileItem extends HTMLElement {
         }
     `;
 
+    static styleSheet = createStyleSheet(this.css);
+
     /* Shadow DOM Structure:
     <li class="root">
         <div class="layout">
@@ -207,7 +133,7 @@ class FileItem extends HTMLElement {
                     Width (px)
                     <input class="width" name="width" type="number" min="1" value="100">
                 </label>
-                <label class="button toggle-button">
+                <label class="button icon-only-button toggle-button">
                     <input type="checkbox" class="aspect-ratio-locked" name="aspect-ratio-locked" aria-label="Lock the aspect ratio to the image's original aspect ratio" checked />
                     <div class="default-content"><i class="ti ti-link-off" aria-hidden="true"></i></div>
                     <div class="alternate-content"><i class="ti ti-link" aria-hidden="true"></i></div>
@@ -255,7 +181,7 @@ class FileItem extends HTMLElement {
         super();
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         this.upgradeProperty('file');
         this.upgradeProperty('width');
         this.upgradeProperty('height');
@@ -266,12 +192,7 @@ class FileItem extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const iconStyleSheet = new CSSStyleSheet();
-            iconStyleSheet.replaceSync(await fetch('/assets/css/tabler-icons.css').then(res => res.text()));
-
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(FileItem.css);
-            shadow.adoptedStyleSheets = [styleSheet, iconStyleSheet];
+            shadow.adoptedStyleSheets = [siteStyleSheet, iconStyleSheet, FileItem.styleSheet];
 
             const li = document.createElement('li');
             li.classList.add('root');
@@ -317,7 +238,7 @@ class FileItem extends HTMLElement {
             widthInput.onchange = this.widthChanged.bind(this);
 
             const aspectRatioLabel = document.createElement('label');
-            aspectRatioLabel.classList.add('button', 'toggle-button');
+            aspectRatioLabel.classList.add('button', 'icon-only-button', 'toggle-button');
             dimensionsDiv.appendChild(aspectRatioLabel);
 
             const aspectRatioInput = document.createElement('input');
@@ -360,6 +281,7 @@ class FileItem extends HTMLElement {
 
             const button = document.createElement('button');
             button.type = 'button';
+            button.className = 'icon-only-button';
             button.setAttribute('aria-label', buttonLabel);
             layoutDiv.appendChild(button);
 

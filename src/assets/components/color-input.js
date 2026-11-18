@@ -9,65 +9,15 @@ import rec2020 from '/assets/js/vendor/colordx/rec2020.js';
 import a98rgb from '/assets/js/vendor/colordx/a98rgb.js';
 import prophoto from '/assets/js/vendor/colordx/prophoto.js';
 import names from '/assets/js/vendor/colordx/names.js';
+import { siteStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
 
 class ColorInput extends HTMLElement {
     static observedAttributes = ['label', 'default-value', 'allow-alpha', 'disabled'];
 
     static css = `
-        fieldset {
-            border: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            flex-direction: row;
-            gap: 0.5rem;
-            text-align: start;
-
-            max-width: 100%;
-            box-sizing: border-box;
-            min-inline-size: unset;
-        }
-
-        fieldset > legend {
-            width: 100%;
-        }
-
-        fieldset > input {
-            flex: 1 1 auto;
-            width: 6rem;
-        }
-
         fieldset > input[type="color"] {
             flex: 0 0 auto;
             width: 2.5rem;
-        }
-
-        input {
-            font-family: inherit;
-            font-size: inherit;
-            color: inherit;
-            background-color: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius);
-            padding: 0.5rem;
-            transition: border-color var(--transition-duration) var(--transition-timing-function);
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        input:hover, input:active {
-            border-color: var(--color-border-highlight);
-        }
-
-        input.invalid {
-            border-color: var(--color-danger);
-        }
-
-        input:focus-visible {
-            outline: solid 2px var(--color-primary);
-            border-color: transparent;
         }
 
         input[type="color"] {
@@ -101,18 +51,9 @@ class ColorInput extends HTMLElement {
         input[type="color"]::-moz-color-swatch:hover {
             border-color: var(--color-border-highlight);
         }
-
-        input[type="text"], input[type="color"] {
-            min-height: 2.5rem;
-            box-sizing: border-box;
-        }
-
-        input:disabled, select:disabled, textarea:disabled {
-            opacity: 0.7;
-            pointer-events: none;
-            filter: grayscale(1);
-        }
     `;
+
+    static styleSheet = createStyleSheet(this.css);
 
     /* Shadow DOM Structure:
     <fieldset>
@@ -177,9 +118,7 @@ class ColorInput extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(ColorInput.css);
-            shadow.adoptedStyleSheets = [styleSheet];
+            shadow.adoptedStyleSheets = [siteStyleSheet, ColorInput.styleSheet];
 
             // Fieldset
             const fieldset = document.createElement('fieldset');

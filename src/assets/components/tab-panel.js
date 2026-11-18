@@ -1,16 +1,22 @@
 import { createIconElement, generateUUID } from '/assets/js/utils.js';
+import { siteStyleSheet, iconStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
 
 class TabPanel extends HTMLElement {
     static observedAttributes = [];
 
     static css = `
-        :focus-visible {
-            outline-color: var(--color-text-accent);
-        }
-
         .tab-bar {
             display: flex;
             box-shadow: inset 0 -1px var(--color-border);
+        }
+
+        .tab, .scroll-button {
+            --button-color-bg: var(--color-bg-muted);
+            --button-color-bg-hover: var(--color-bg-muted);
+            --button-color-bg-active: var(--color-bg-muted);
+            --button-color-border-hover: var(--color-border);
+
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
 
         .scroll-button {
@@ -18,20 +24,8 @@ class TabPanel extends HTMLElement {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--color-bg-muted);
-            color: var(--color-text);
-            border: var(--border);
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            font-family: inherit;
             font-size: 1.25rem;
             padding: 0 0.5rem;
-            cursor: pointer;
-            touch-action: manipulation;
-            transition: color var(--transition-duration) var(--transition-timing-function);
-        }
-
-        .scroll-button[hidden] {
-            display: none;
         }
 
         .scroll-left {
@@ -61,37 +55,17 @@ class TabPanel extends HTMLElement {
         }
 
         .tab {
-            background-color: var(--color-bg-muted);
-            color: var(--color-text);
-            border: var(--border);
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-
-            display: inline-block;
-            font-family: inherit;
             font-size: 1rem;
             line-height: normal;
-            font-weight: 500;
-            text-align: center;
-            transition: color var(--transition-duration) var(--transition-timing-function);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            box-sizing: border-box;
-            touch-action: manipulation;
-
             white-space: nowrap;
         }
 
         .tab.active {
-            background-color: var(--color-bg);
+            --button-color-bg: var(--color-bg);
+            --button-color-bg-hover: var(--color-bg);
+            --button-color-bg-active: var(--color-bg);
+
             border-bottom-color: transparent;
-        }
-
-        .tab:hover, .scroll-button:hover {
-            color: var(--color-text-highlight);
-        }
-
-        .tab:active, .scroll-button:active {
-            color: var(--color-text-muted);
         }
 
         .tab[aria-disabled="true"], .scroll-button[aria-disabled="true"] {
@@ -111,6 +85,8 @@ class TabPanel extends HTMLElement {
         }
     `;
 
+    static styleSheet = createStyleSheet(this.css);
+
     /* Shadow DOM Structure:
         <div class="tab-bar">
             <button type="button" class="scroll-button scroll-left" aria-label="Previous tab" hidden><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
@@ -128,19 +104,6 @@ class TabPanel extends HTMLElement {
             <slot></slot>
         </div>
     */
-
-    static #iconStyleSheetPromise = null;
-
-    static getIconStyleSheet() {
-        TabPanel.#iconStyleSheetPromise ??= fetch('/assets/css/tabler-icons.css')
-            .then(res => res.text())
-            .then(text => {
-                const sheet = new CSSStyleSheet();
-                sheet.replaceSync(text);
-                return sheet;
-            });
-        return TabPanel.#iconStyleSheetPromise;
-    }
 
     #currentTab = 0;
     #selectedPanel = null;
@@ -177,13 +140,7 @@ class TabPanel extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(TabPanel.css);
-            shadow.adoptedStyleSheets = [styleSheet];
-
-            TabPanel.getIconStyleSheet().then(iconStyleSheet => {
-                shadow.adoptedStyleSheets = [...shadow.adoptedStyleSheets, iconStyleSheet];
-            });
+            shadow.adoptedStyleSheets = [siteStyleSheet, iconStyleSheet, TabPanel.styleSheet];
 
             this.#tabBar = document.createElement('div');
             this.#tabBar.className = 'tab-bar';

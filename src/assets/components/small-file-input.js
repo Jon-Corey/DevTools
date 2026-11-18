@@ -1,4 +1,5 @@
 import { createIconElement, previewableImageFormats, getFileExtension, ensureSvgHasXmlns, getFileIcon } from '/assets/js/utils.js';
+import { siteStyleSheet, iconStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
 
 class SmallFileInput extends HTMLElement {
     static observedAttributes = ['accept'];
@@ -57,36 +58,15 @@ class SmallFileInput extends HTMLElement {
             white-space: nowrap;
         }
 
-        button {
-            background-color: transparent;
-            color: var(--color-text);
-            border: none;
-
-            display: inline-block;
-            font-family: inherit;
-            font-size: 1.25rem;
-            line-height: normal;
-            font-weight: 500;
-            border-radius: var(--border-radius);
-            text-align: center;
-            transition: color var(--transition-duration) var(--transition-timing-function);
+        .file-info button {
             padding: 0.25rem;
-            cursor: pointer;
-            box-sizing: border-box;
-            touch-action: manipulation;
-
             width: 2rem;
             height: 2rem;
-        }
-
-        button:hover {
-            color: var(--color-text-highlight);
-        }
-
-        button:active {
-            color: var(--color-text-muted);
+            min-height: 0;
         }
     `;
+
+    static styleSheet = createStyleSheet(this.css);
 
     /* Shadow DOM Structure:
     <div class="layout">
@@ -127,18 +107,13 @@ class SmallFileInput extends HTMLElement {
         super();
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         this.upgradeProperty('file');
 
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const iconStyleSheet = new CSSStyleSheet();
-            iconStyleSheet.replaceSync(await fetch('/assets/css/tabler-icons.css').then(res => res.text()));
-
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(SmallFileInput.css);
-            shadow.adoptedStyleSheets = [styleSheet, iconStyleSheet];
+            shadow.adoptedStyleSheets = [siteStyleSheet, iconStyleSheet, SmallFileInput.styleSheet];
 
             const layout = document.createElement('div');
             layout.className = 'layout';
@@ -219,6 +194,7 @@ class SmallFileInput extends HTMLElement {
             fileInfo.appendChild(nameSpan);
 
             const removeButton = document.createElement('button');
+            removeButton.className = 'icon-only-button';
             removeButton.ariaLabel = 'Remove file';
             fileInfo.appendChild(removeButton);
 

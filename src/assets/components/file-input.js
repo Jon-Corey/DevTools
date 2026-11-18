@@ -1,5 +1,6 @@
 import '/assets/components/file-item.js';
 import { createIconElement, generateUUID, getFileExtension } from '/assets/js/utils.js';
+import { siteStyleSheet, iconStyleSheet, createStyleSheet } from '/assets/js/componentStyles.js';
 
 class FileInput extends HTMLElement {
     static observedAttributes = ['accept', 'multiple', 'ask-for-dimensions-for-svg', 'hide-file-list'];
@@ -40,28 +41,9 @@ class FileInput extends HTMLElement {
             font-size: 3rem;
             pointer-events: none;
         }
-
-        .error-message {
-            color: var(--color-status-text);
-            background-color: var(--color-warning);
-            border: 1px solid var(--color-warning);
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            white-space: pre-wrap;
-            display: none;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-inline: 0;
-            margin-block-start: 0;
-            margin-block-end: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
     `;
+
+    static styleSheet = createStyleSheet(this.css);
 
     /* Shadow DOM Structure:
     <label>
@@ -69,7 +51,7 @@ class FileInput extends HTMLElement {
         <span class="label-text">Drop a file here or click to browse</span>
         <input type="file" style="display: none;" accept="...">
     </label>
-    <ul>
+    <ul class="file-item-list">
         <file-item></file-item>
     </ul>
     */
@@ -88,7 +70,7 @@ class FileInput extends HTMLElement {
         return Object.freeze(this._items.map(item => item.file));
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         this.upgradeProperty('value');
         this.upgradeProperty('files');
 
@@ -97,12 +79,7 @@ class FileInput extends HTMLElement {
         if (!this.shadowRoot) {
             const shadow = this.attachShadow({ mode: 'open' });
 
-            const iconStyleSheet = new CSSStyleSheet();
-            iconStyleSheet.replaceSync(await fetch('/assets/css/tabler-icons.css').then(res => res.text()));
-
-            const styleSheet = new CSSStyleSheet();
-            styleSheet.replaceSync(FileInput.css);
-            shadow.adoptedStyleSheets = [styleSheet, iconStyleSheet];
+            shadow.adoptedStyleSheets = [siteStyleSheet, iconStyleSheet, FileInput.styleSheet];
 
             // Label / dropzone
             const label = document.createElement('label');
@@ -162,6 +139,7 @@ class FileInput extends HTMLElement {
 
             // Output list
             const list = document.createElement('ul');
+            list.classList.add('file-item-list');
             shadow.appendChild(list);
             this.updateListVisibility();
         }
