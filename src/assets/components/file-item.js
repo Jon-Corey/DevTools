@@ -1,4 +1,4 @@
-import { previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions, getFileIcon } from '/assets/js/utils.js';
+import { createIconElement, previewableImageFormats, formatFileSize, getFileExtension, ensureSvgHasXmlns, getSvgDimensions, getFileIcon } from '/assets/js/utils.js';
 
 class FileItem extends HTMLElement {
     static observedAttributes = ['button-icon', 'button-label', 'ask-for-dimensions-for-svg', 'original-file-size'];
@@ -209,8 +209,8 @@ class FileItem extends HTMLElement {
                 </label>
                 <label class="button toggle-button">
                     <input type="checkbox" class="aspect-ratio-locked" name="aspect-ratio-locked" aria-label="Lock the aspect ratio to the image's original aspect ratio" checked />
-                    <div class="default-content"><i class="ti ti-link-off"></i></div>
-                    <div class="alternate-content"><i class="ti ti-link"></i></div>
+                    <div class="default-content"><i class="ti ti-link-off" aria-hidden="true"></i></div>
+                    <div class="alternate-content"><i class="ti ti-link" aria-hidden="true"></i></div>
                 </label>
                 <label>
                     Height (px)
@@ -285,8 +285,7 @@ class FileItem extends HTMLElement {
             previewContainer.classList.add('preview-container');
             layoutDiv.appendChild(previewContainer);
 
-            const fileIcon = document.createElement('i');
-            fileIcon.className = 'ti ti-file';
+            const fileIcon = createIconElement('ti-file');
             previewContainer.appendChild(fileIcon);
 
             const nameSpan = document.createElement('span');
@@ -335,16 +334,14 @@ class FileItem extends HTMLElement {
             defaultContentDiv.classList.add('default-content');
             aspectRatioLabel.appendChild(defaultContentDiv);
 
-            const linkIcon = document.createElement('i');
-            linkIcon.className = 'ti ti-link-off';
+            const linkIcon = createIconElement('ti-link-off');
             defaultContentDiv.appendChild(linkIcon);
 
             const alternateContentDiv = document.createElement('div');
             alternateContentDiv.classList.add('alternate-content');
             aspectRatioLabel.appendChild(alternateContentDiv);
 
-            const linkOffIcon = document.createElement('i');
-            linkOffIcon.className = 'ti ti-link';
+            const linkOffIcon = createIconElement('ti-link');
             alternateContentDiv.appendChild(linkOffIcon);
 
             const heightLabel = document.createElement('label');
@@ -366,8 +363,7 @@ class FileItem extends HTMLElement {
             button.setAttribute('aria-label', buttonLabel);
             layoutDiv.appendChild(button);
 
-            const buttonIconElement = document.createElement('i');
-            buttonIconElement.className = `ti ${buttonIcon}`;
+            const buttonIconElement = createIconElement(buttonIcon);
             button.appendChild(buttonIconElement);
 
             button.onclick = this.fireButtonClickedEvent.bind(this);
@@ -524,7 +520,7 @@ class FileItem extends HTMLElement {
                 img.src = await this.getPreviewUrl(this.#file);
                 previewContainer.appendChild(img);
             } else {
-                previewContainer.innerHTML = `<i class="ti ${getFileIcon(extension)}"></i>`;
+                previewContainer.replaceChildren(createIconElement(getFileIcon(extension)));
             }
 
             nameSpan.textContent = this.#file.name;
@@ -541,7 +537,7 @@ class FileItem extends HTMLElement {
                 sizeSpan.textContent = formatFileSize(this.#file.size);
             }
         } else {
-            previewContainer.innerHTML = `<i class="ti ${getFileIcon('')}"></i>`;
+            previewContainer.replaceChildren(createIconElement(getFileIcon('')));
 
             nameSpan.textContent = 'No file selected';
             sizeSpan.textContent = '0 B';

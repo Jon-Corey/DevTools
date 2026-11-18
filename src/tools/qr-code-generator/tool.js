@@ -5,7 +5,7 @@ import '/assets/components/tab-panel.js';
 import { optimize } from '/assets/js/vendor/svgo/svgo.js';
 import QrCodeWithLogo from '/assets/js/vendor/qrcode-with-logos/qrcode-with-logos.js';
 import { transformImage, compressImage } from '/assets/js/magick-utils.js';
-import { fireChangeEvent, getContrastRatio, adjustToTargetContrast, convertFileToBase64, downloadFile, getFileExtension } from '/assets/js/utils.js';
+import { createIconElement, fireChangeEvent, getContrastRatio, adjustToTargetContrast, convertFileToBase64, downloadFile, getFileExtension } from '/assets/js/utils.js';
 
 const tabPanel = document.getElementById('tab-panel');
 
@@ -166,26 +166,7 @@ async function inputChanged(updateFullName = false) {
     const foregroundColor = foregroundColorInput.value;
     const backgroundColor = backgroundColorInput.value;
     const contrastRatio = getContrastRatio(foregroundColor, backgroundColor);
-    let contrastDescription = '';
-    switch (true) {
-        case contrastRatio >= 10:
-            contrastDescription = '<i class="ti ti-check text-success"></i> Excellent';
-            break;
-        case contrastRatio >= 7:
-            contrastDescription = '<i class="ti ti-check text-success"></i> Good';
-            break;
-        case contrastRatio >= 4.5:
-            contrastDescription = '<i class="ti ti-minus text-warning"></i> Fair';
-            break;
-        case contrastRatio >= 3:
-            contrastDescription = '<i class="ti ti-x text-danger"></i> Poor';
-            break;
-        default:
-            contrastDescription = '<i class="ti ti-x text-danger"></i> Bad';
-            break;
-    }
-
-    contrastOutput.innerHTML = `${contrastRatio} (${contrastDescription})`;
+    addContrastOutputContent(contrastOutput, contrastRatio);
 
     fixForegroundColorButton.disabled = getContrastRatio(foregroundColor, backgroundColor) >= 7 || adjustToTargetContrast(foregroundColor, backgroundColor, 7).hitTarget === false;
     fixBackgroundColorButton.disabled = getContrastRatio(foregroundColor, backgroundColor) >= 7 || adjustToTargetContrast(backgroundColor, foregroundColor, 7).hitTarget === false;
@@ -576,4 +557,37 @@ async function optimizeSVG(file) {
     const text = await file.text();
     const result = optimize(text);
     return new File([result.data], file.name, { type: 'image/svg+xml' });
+}
+
+function addContrastOutputContent(contrastOutput, contrastRatio) {
+    let iconElement;
+    let text;
+
+    switch (true) {
+        case contrastRatio >= 10:
+            iconElement = createIconElement('ti-check', 'text-success');
+            text = 'Excellent';
+            break;
+        case contrastRatio >= 7:
+            iconElement = createIconElement('ti-check', 'text-success');
+            text = 'Good';
+            break;
+        case contrastRatio >= 4.5:
+            iconElement = createIconElement('ti-minus', 'text-warning');
+            text = 'Fair';
+            break;
+        case contrastRatio >= 3:
+            iconElement = createIconElement('ti-x', 'text-danger');
+            text = 'Poor';
+            break;
+        default:
+            iconElement = createIconElement('ti-x', 'text-danger');
+            text = 'Bad';
+            break;
+    }
+
+    contrastOutput.innerHTML = '';
+    contrastOutput.appendChild(document.createTextNode(`${contrastRatio} (`));
+    contrastOutput.appendChild(iconElement);
+    contrastOutput.appendChild(document.createTextNode(` ${text})`));
 }

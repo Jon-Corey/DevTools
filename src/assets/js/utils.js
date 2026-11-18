@@ -64,6 +64,19 @@ export function fireChangeEvent(element) {
 }
 
 /**
+ * Creates a new icon element with the specified classes. Adds the 'ti' base class automatically. Also adds aria-hidden="true" for accessibility.
+ * @param {string} iconClass The icon class to use.
+ * @param {string} additionalClasses Additional classes to add to the icon element.
+ * @returns {HTMLElement} The created icon element.
+ */
+export function createIconElement(iconClass, additionalClasses = '') {
+    const i = document.createElement('i');
+    i.className = `ti ${iconClass} ${additionalClasses}`.trim();
+    i.ariaHidden = 'true';
+    return i;
+}
+
+/**
  * Gets the icon class to use for file previews for a given file extension.
  * @param {string} fileExtension The file extension to get the icon for.
  * @returns {string} The icon class for the given file extension.

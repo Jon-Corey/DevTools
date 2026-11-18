@@ -124,7 +124,7 @@
         <div class="main-logo">
             <a href="/">
                 <strong>
-                    <svg viewBox="0 0 20 20" class="icon text-accent">
+                    <svg viewBox="0 0 20 20" class="icon text-accent" aria-hidden="true">
                         <path d="M12.5 3.5 a3.5 3.5 0 1 0 4 4 l-2.31 2.31 l-3.16 -0.85 l-0.85 -3.16 z" />
                         <path d="M10 10 l-5 5" stroke-width="2.5" />
 
@@ -135,23 +135,23 @@
                 </strong>
             </a>
             <button type="button" id="close-menu-button" class="icon-only-button" aria-label="Close Sidebar" onclick="closeSidebarSmall()">
-                <i class="ti ti-x"></i>
+                {% icon 'ti-x' %}
             </button>
         </div>
 
         <header class="topbar">
             <button type="button" id="toggle-sidebar-button" class="icon-only-button" aria-label="Toggle Sidebar" onclick="toggleSidebarLarge()">
-                <i class="ti ti-layout-sidebar"></i>
+                {% icon 'ti-layout-sidebar' %}
             </button>
             <button type="button" id="open-menu-button" class="icon-only-button" aria-label="Open Sidebar" onclick="openSidebarSmall()">
-                <i class="ti ti-menu-2"></i>
+                {% icon 'ti-menu-2' %}
             </button>
 
             <search>
                 <div id="search-input-container" class="search-container">
-                    <i id="search-icon" class="search-icon ti ti-search"></i>
+                    {% icon 'ti-search' 'search-icon' %}
                     <input id="search-input" type="search" inputmode="search" placeholder="Search tools..." aria-label="Search tools" aria-keyshortcuts="Control+K">
-                    <span id="search-input-overlay-apple"><kbd><i class="ti ti-command"></i></kbd>+<kbd>K</kbd></span>
+                    <span id="search-input-overlay-apple"><kbd aria-label="Command">{% icon 'ti-command' %}</kbd>+<kbd>K</kbd></span>
                     <span id="search-input-overlay"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>
                 </div>
                 <div id="results-panel">
@@ -161,19 +161,19 @@
                         <ul id="recent-results"></ul>
                     </div>
                     <div id="results-panel-footer">
-                        <span><kbd aria-label="Arrow Up"><i class="ti ti-arrow-up"></i></kbd> <kbd aria-label="Arrow Down"><i class="ti ti-arrow-down"></i></kbd> to navigate</span>
-                        <span><kbd aria-label="Enter"><i class="ti ti-corner-down-left"></i></kbd> to select</span>
+                        <span><kbd aria-label="Arrow Up">{% icon 'ti-arrow-up' %}</kbd> <kbd aria-label="Arrow Down">{% icon 'ti-arrow-down' %}</kbd> to navigate</span>
+                        <span><kbd aria-label="Enter">{% icon 'ti-corner-down-left' %}</kbd> to select</span>
                         <span><kbd>Esc</kbd> to close</span>
                     </div>
                 </div>
             </search>
 
             <a href="https://github.com/Jon-Corey/DevTools" class="button icon-only-button" aria-label="GitHub Repository" target="_blank" rel="noopener noreferrer">
-                <i class="ti ti-brand-github"></i>
+                {% icon 'ti-brand-github' %}
             </a>
             <button type="button" class="icon-only-button" aria-label="Toggle Theme" onclick="toggleTheme()">
-                <i class="ti ti-moon light-only"></i>
-                <i class="ti ti-sun dark-only"></i>
+                {% icon 'ti-moon' 'light-only' %}
+                {% icon 'ti-sun' 'dark-only' %}
             </button>
         </header>
 
@@ -188,7 +188,7 @@
                             {% for item in sorted_items %}
                                 <li{% if item.url == page.url %} aria-current="page"{% endif %}>
                                     <a href="{{ item.url }}">
-                                        <i class="ti {{ item.data.icon }} text-accent"></i>
+                                        {% icon item.data.icon 'text-accent' %}
                                         {{ item.data.title }}
                                     </a>
                                 </li>

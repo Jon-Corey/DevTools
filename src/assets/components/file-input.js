@@ -1,5 +1,5 @@
 import '/assets/components/file-item.js';
-import { generateUUID, getFileExtension } from '/assets/js/utils.js';
+import { createIconElement, generateUUID, getFileExtension } from '/assets/js/utils.js';
 
 class FileInput extends HTMLElement {
     static observedAttributes = ['accept', 'multiple', 'ask-for-dimensions-for-svg', 'hide-file-list'];
@@ -65,7 +65,7 @@ class FileInput extends HTMLElement {
 
     /* Shadow DOM Structure:
     <label>
-        <i class="ti ti-upload"></i>
+        <i class="ti ti-upload" aria-hidden="true"></i>
         <span class="label-text">Drop a file here or click to browse</span>
         <input type="file" style="display: none;" accept="...">
     </label>
@@ -110,8 +110,7 @@ class FileInput extends HTMLElement {
             label.role = 'button';
             shadow.appendChild(label);
 
-            const icon = document.createElement('i');
-            icon.className = 'ti ti-upload';
+            const icon = createIconElement('ti-upload');
             label.appendChild(icon);
 
             const labelText = document.createElement('span');

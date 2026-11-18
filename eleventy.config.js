@@ -145,6 +145,13 @@ export default async function (eleventyConfig) {
             .sort(([nameA], [nameB]) => nameA.localeCompare(nameB));
     });
 
+    // Add an icon shortcode for rendering icons in a consistent and accessible way
+    // Based on createIconElement from utils.js
+    eleventyConfig.addShortcode('icon', function(iconClass, additionalClasses = '') {
+        const classesString = `ti ${iconClass} ${additionalClasses}`.trim();
+        return `<i class="${classesString}" aria-hidden="true"></i>`;
+    });
+
     // Add plugins
     eleventyConfig.addPlugin(bundleModules, { modules: THIRD_PARTY_MODULES });
     eleventyConfig.addPlugin(assetsManifest, SERVICE_WORKER_ASSET_OPTIONS);

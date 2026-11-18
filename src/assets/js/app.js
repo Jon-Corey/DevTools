@@ -511,6 +511,7 @@ function renderSearchResult(item, parent) {
 
     const icon = document.createElement('i');
     icon.className = `ti ${item.icon} text-accent`;
+    icon.ariaHidden = 'true';
     a.appendChild(icon);
 
     const titleSpan = document.createElement('span');

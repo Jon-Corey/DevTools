@@ -9,7 +9,7 @@ icon: ti-library-photo
 
 <div class="danger alert" id="image-too-small-warning">
     <strong>
-        <i class="ti ti-alert-circle"></i>
+        {% icon 'ti-alert-circle' %}
         Source Image is Too Small
     </strong>
     <p>The image you uploaded is too small to generate the required images. Please upload an image that is at least 512x512 pixels or upload an SVG image.</p>
@@ -35,7 +35,7 @@ icon: ti-library-photo
 
 <hr>
 
-<button id="download-button" disabled><i class="ti ti-download"></i> Download Bundle</button>
+<button id="download-button" disabled>{% icon 'ti-download' %} Download Bundle</button>
 
 <div class="flex-column">
     <details id="generated-images-details" data-persist>

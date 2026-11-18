@@ -1,4 +1,4 @@
-import { previewableImageFormats, getFileExtension, ensureSvgHasXmlns, getFileIcon } from '/assets/js/utils.js';
+import { createIconElement, previewableImageFormats, getFileExtension, ensureSvgHasXmlns, getFileIcon } from '/assets/js/utils.js';
 
 class SmallFileInput extends HTMLElement {
     static observedAttributes = ['accept'];
@@ -91,7 +91,7 @@ class SmallFileInput extends HTMLElement {
     /* Shadow DOM Structure:
     <div class="layout">
         <label>
-            <i class="ti ti-upload"></i>
+            <i class="ti ti-upload" aria-hidden="true"></i>
             <span class="label-text">Upload a file</span>
             <input type="file" style="display: none;" accept="...">
         </label>
@@ -101,7 +101,7 @@ class SmallFileInput extends HTMLElement {
             </div>
             <span class="name">filename.ext</span>
             <button type="button" aria-label="Remove file">
-                <i class="ti ti-x"></i>
+                <i class="ti ti-x" aria-hidden="true"></i>
             </button>
         </div>
     </div>
@@ -175,8 +175,7 @@ class SmallFileInput extends HTMLElement {
                 }
             };
 
-            const icon = document.createElement('i');
-            icon.className = 'ti ti-upload';
+            const icon = createIconElement('ti-upload');
             label.appendChild(icon);
 
             const textNode = document.createTextNode(' ');
@@ -211,8 +210,7 @@ class SmallFileInput extends HTMLElement {
             previewContainer.className = 'preview-container';
             fileInfo.appendChild(previewContainer);
 
-            const fileIcon = document.createElement('i');
-            fileIcon.className = 'ti ti-file';
+            const fileIcon = createIconElement('ti-file');
             previewContainer.appendChild(fileIcon);
 
             const nameSpan = document.createElement('span');
@@ -228,8 +226,7 @@ class SmallFileInput extends HTMLElement {
                 await this.removeFile();
             };
 
-            const removeButtonIcon = document.createElement('i');
-            removeButtonIcon.className = 'ti ti-x';
+            const removeButtonIcon = createIconElement('ti-x');
             removeButton.appendChild(removeButtonIcon);
         }
 
@@ -289,14 +286,14 @@ class SmallFileInput extends HTMLElement {
                 img.src = await this.getPreviewUrl(this.#file);
                 previewContainer.appendChild(img);
             } else {
-                previewContainer.innerHTML = `<i class="ti ${getFileIcon(extension)}"></i>`;
+                previewContainer.replaceChildren(createIconElement(getFileIcon(extension)));
             }
 
             nameSpan.textContent = this.#file.name;
 
             fileInfo.style.display = '';
         } else {
-            previewContainer.innerHTML = `<i class="ti ${getFileIcon('')}"></i>`;
+            previewContainer.replaceChildren(createIconElement(getFileIcon('')));
             nameSpan.textContent = 'No file selected';
             fileInfo.style.display = 'none';
         }

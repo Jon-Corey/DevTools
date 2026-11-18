@@ -129,7 +129,7 @@ icon: ti-qrcode
     <color-input id="background-color" default-value="#ffffff" label="Background Color" data-persist></color-input>
 
     <div class="flex-column-small">
-        <span>Contrast: <span id="contrast">21.00 (<i class="ti ti-check text-success"></i> Excellent)</span></span>
+        <span>Contrast: <span id="contrast">21.00 ({% icon 'ti-check' 'text-success' %} Excellent)</span></span>
         <div class="flex-row contrast-buttons">
             <button type="button" id="fix-foreground-color" disabled>Fix Foreground Color</button>
             <button type="button" id="fix-background-color" disabled>Fix Background Color</button>
@@ -154,15 +154,15 @@ icon: ti-qrcode
 
 <div class="alert" id="output-card">
     <div id="error-container" style="display: none;">
-        <strong><i class="ti ti-alert-triangle"></i> Error:</strong>
+        <strong>{% icon 'ti-alert-triangle' %} Error:</strong>
         <br>
         <span id="error-message"></span>
     </div>
     <div class="flex-column" id="output-container" style="display: none;">
         <img id="preview" alt="QR code preview" />
         <div class="flex-row">
-            <button type="button" id="download-svg" class="primary"><i class="ti ti-download"></i> Download SVG</button>
-            <button type="button" id="download-png"><i class="ti ti-download"></i> Download PNG</button>
+            <button type="button" id="download-svg" class="primary">{% icon 'ti-download' %} Download SVG</button>
+            <button type="button" id="download-png">{% icon 'ti-download' %} Download PNG</button>
         </div>
     </div>
     <div id="no-output-message">
@@ -171,12 +171,12 @@ icon: ti-qrcode
 </div>
 
 <div class="alert">
-    <h2 class="normal-size-heading"><i class="ti ti-info-circle"></i> About QR Codes</h2>
+    <h2 class="normal-size-heading">{% icon 'ti-info-circle' %} About QR Codes</h2>
     <p>QR codes (quick-response codes) are a type of barcode. They store text information and can be quickly scanned by devices such as smartphones. QR codes are built to be resilient, with error correction that allows them to be read even if part of the code is damaged or obscured.</p>
 
     <hr class="space-before space-after">
 
-    <h2 class="normal-size-heading"><i class="ti ti-help-circle"></i> FAQ</h2>
+    <h2 class="normal-size-heading">{% icon 'ti-help-circle' %} FAQ</h2>
 
     <details>
         <summary>Why are QR codes sometimes hard to scan?</summary>

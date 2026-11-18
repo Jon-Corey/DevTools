@@ -17,7 +17,7 @@ description: A collection of tools and resources for developers.
             {% for item in sorted_items %}
                 <li class="tool-card">
                     <a href="{{ item.url }}">
-                        <i class="ti {{ item.data.icon }} text-accent"></i>
+                        {% icon item.data.icon 'text-accent' %}
                         <h3>
                             {{ item.data.title }}
                         </h3>

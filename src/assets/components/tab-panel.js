@@ -1,4 +1,4 @@
-import { generateUUID } from '/assets/js/utils.js';
+import { createIconElement, generateUUID } from '/assets/js/utils.js';
 
 class TabPanel extends HTMLElement {
     static observedAttributes = [];
@@ -113,7 +113,7 @@ class TabPanel extends HTMLElement {
 
     /* Shadow DOM Structure:
         <div class="tab-bar">
-            <button type="button" class="scroll-button scroll-left" aria-label="Previous tab" hidden><i class="ti ti-chevron-left"></i></button>
+            <button type="button" class="scroll-button scroll-left" aria-label="Previous tab" hidden><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
             <ul role="tablist">
                 <li role="presentation">
                     <button type="button" role="tab" class="tab active">Tab 1</button>
@@ -122,7 +122,7 @@ class TabPanel extends HTMLElement {
                     <button type="button" role="tab" class="tab">Tab 2</button>
                 </li>
             </ul>
-            <button type="button" class="scroll-button scroll-right" aria-label="Next tab" hidden><i class="ti ti-chevron-right"></i></button>
+            <button type="button" class="scroll-button scroll-right" aria-label="Next tab" hidden><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
         </div>
         <div class="panel-container">
             <slot></slot>
@@ -234,8 +234,7 @@ class TabPanel extends HTMLElement {
         button.setAttribute('aria-label', label);
         button.hidden = true;
 
-        const iconElement = document.createElement('i');
-        iconElement.className = `ti ${icon}`;
+        const iconElement = createIconElement(icon);
         button.appendChild(iconElement);
 
         button.addEventListener('click', () => this.selectAdjacentTab(direction));

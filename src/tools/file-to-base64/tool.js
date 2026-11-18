@@ -1,5 +1,5 @@
 import '/assets/components/file-input.js';
-import { previewableImageFormats, formatFileSize, getFileExtension, getFileNameWithoutExtension, ensureSvgHasXmlns, downloadFile, getFileIcon, convertFileToBase64 } from '/assets/js/utils.js';
+import { createIconElement, previewableImageFormats, formatFileSize, getFileExtension, getFileNameWithoutExtension, ensureSvgHasXmlns, downloadFile, getFileIcon, convertFileToBase64 } from '/assets/js/utils.js';
 
 const fileInput = document.getElementById('file-input');
 const output = document.getElementById('output');
@@ -52,7 +52,7 @@ async function addItem(item) {
         img.src = await getPreviewUrl(item.file);
         previewContainer.appendChild(img);
     } else {
-        previewContainer.innerHTML = `<i class="ti ${getFileIcon(extension)}"></i>`;
+        previewContainer.replaceChildren(createIconElement(getFileIcon(extension)));
     }
 
     const nameSpan = document.createElement('span');
@@ -74,8 +74,7 @@ async function addItem(item) {
     removeButton.addEventListener('click', () => fileInput.removeFile(item.id));
     li.appendChild(removeButton);
 
-    const buttonIcon = document.createElement('i');
-    buttonIcon.className = `ti ti-x`;
+    const buttonIcon = createIconElement('ti-x');
     removeButton.appendChild(buttonIcon);
 
     const flexRow = document.createElement('div');
@@ -85,28 +84,19 @@ async function addItem(item) {
     const copyDataUrlButton = document.createElement('button');
     copyDataUrlButton.classList.add('copy-button');
     copyDataUrlButton.classList.add('primary');
-    copyDataUrlButton.innerHTML = `
-        <span class="default-content"><i class="ti ti-copy"></i> Copy Data URL</span>
-        <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
-    `;
+    addButtonContent(copyDataUrlButton, 'Copy Data URL', true);
     copyDataUrlButton.addEventListener('click', async (event) => await copyDataUrl(event, item.id));
     flexRow.appendChild(copyDataUrlButton);
 
     const copyBase64Button = document.createElement('button');
     copyBase64Button.classList.add('copy-button');
-    copyBase64Button.innerHTML = `
-        <span class="default-content"><i class="ti ti-copy"></i> Copy Base64</span>
-        <span class="alternate-content"><i class="ti ti-check"></i> Copied!</span>
-    `;
+    addButtonContent(copyBase64Button, 'Copy Base64', true);
     copyBase64Button.addEventListener('click', async (event) => await copyBase64(event, item.id));
     flexRow.appendChild(copyBase64Button);
 
     const downloadAsTextButton = document.createElement('button');
     downloadAsTextButton.classList.add('download-button');
-    downloadAsTextButton.innerHTML = `
-        <span class="default-content"><i class="ti ti-download"></i> Download as Text</span>
-        <span class="alternate-content"><i class="ti ti-check"></i> Downloaded!</span>
-    `;
+    addButtonContent(downloadAsTextButton, 'Download as Text', false);
     downloadAsTextButton.addEventListener('click', async (event) => await downloadAsText(event, item.id));
     flexRow.appendChild(downloadAsTextButton);
 }
@@ -173,4 +163,28 @@ function revokePreviewUrl(id) {
     if (previewImage) {
         URL.revokeObjectURL(previewImage.src);
     }
+}
+
+function addButtonContent(button, defaultText, isCopy) {
+    // Default content
+    const defaultContent = document.createElement('span');
+    defaultContent.className = 'default-content';
+    button.appendChild(defaultContent);
+
+    const defaultIcon = createIconElement(isCopy ? 'ti-copy' : 'ti-download');
+    defaultContent.appendChild(defaultIcon);
+
+    const defaultTextNode = document.createTextNode(' ' + defaultText);
+    defaultContent.appendChild(defaultTextNode);
+
+    // Alternate content
+    const alternateContent = document.createElement('span');
+    alternateContent.className = 'alternate-content';
+    button.appendChild(alternateContent);
+
+    const alternateIcon = createIconElement('ti-check');
+    alternateContent.appendChild(alternateIcon);
+
+    const alternateTextNode = document.createTextNode(isCopy ? ' Copied!' : ' Downloaded!');
+    alternateContent.appendChild(alternateTextNode);
 }
