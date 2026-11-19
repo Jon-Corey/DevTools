@@ -678,6 +678,44 @@ details[open] summary {
     display: none !important;
 }
 
+/* Web components - prevent layout shift */
+
+color-input, file-input, file-item, range-input, small-file-input, tab-panel {
+    display: block;
+}
+
+color-input:not(:defined) {
+    min-height: calc(1lh + 2.5rem);
+}
+
+file-input:not(:defined) {
+    min-height: 10rem;
+    margin-bottom: 1rem;
+}
+
+file-item:not(:defined) {
+    min-height: 5.25rem;
+}
+
+range-input:not(:defined) {
+    min-height: calc(1lh + 2.75rem);
+}
+
+small-file-input:not(:defined) {
+    min-height: calc(1lh + 1.5rem + 2px);
+}
+
+tab-panel:not(:defined) > :not(:first-child) {
+    display: none;
+}
+
+tab-panel:not(:defined) {
+    /* Top:    tab bar (2.5rem) + .panel-container padding (1rem)
+       Sides:  .panel-container padding (1rem) + side border (1px)
+       Bottom: .panel-container padding (1rem) + bottom border (1px) */
+    padding: 3.5rem calc(1rem + 1px) calc(1rem + 1px);
+}
+
 /* Tool cards */
 
 .tool-card-section h2 {
